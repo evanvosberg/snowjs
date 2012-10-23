@@ -1,0 +1,18 @@
+[submodule "external/jquery"]
+	path = external/jquery
+	url = https://evanvosberg@github.com/evanvosberg/jquery.git
+[submodule "external/requirejs"]
+	path = external/requirejs
+	url = https://evanvosberg@github.com/evanvosberg/requirejs.git
+[submodule "external/jquery-ui"]
+	path = external/jquery-ui
+	url = https://evanvosberg@github.com/evanvosberg/jquery-ui.git
+[submodule "external/jquery-tmpl"]
+	path = external/jquery-tmpl
+	url = https://evanvosberg@github.com/evanvosberg/jquery-tmpl.git
+[submodule "external/jquery-color"]
+	path = external/jquery-color
+	url = https://evanvosberg@github.com/evanvosberg/jquery-color.git
+[submodule "external/jquery-datalink"]
+	path = external/jquery-datalink
+	url = https://evanvosberg@github.com/evanvosberg/jquery-datalink.git
