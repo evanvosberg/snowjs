@@ -1,9 +1,9 @@
-[submodule "external/jquery"]
-	path = external/jquery
-	url = https://github.com/evanvosberg/jquery.git
 [submodule "external/requirejs"]
 	path = external/requirejs
 	url = https://github.com/evanvosberg/requirejs.git
+[submodule "external/jquery"]
+	path = external/jquery
+	url = http://github.com/jquery/jquery
 [submodule "external/jquery-ui"]
 	path = external/jquery-ui
 	url = http://github.com/evanvosberg/jquery-ui.git
