@@ -10,6 +10,7 @@ research
 #Symlinks 'source' begin
 src/script/jquery/color/svg-names.js
 src/script/jquery/color.js
+src/script/jquery/cookie.js
 src/script/jquery/effects/blind.js
 src/script/jquery/effects/bounce.js
 src/script/jquery/effects/clip.js
