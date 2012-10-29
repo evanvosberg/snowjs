@@ -16,6 +16,9 @@
 [submodule "external/jquery-datalink"]
 	path = external/jquery-datalink
 	url = https://github.com/evanvosberg/jquery-datalink.git
+[submodule "external/jquery-metadata"]
+	path = external/jquery-metadata
+	url = https://github.com/evanvosberg/jquery-metadata.git
 [submodule "external/jquery.scrollTo"]
 	path = external/jquery.scrollTo
 	url = https://github.com/evanvosberg/jquery.scrollTo.git

@@ -26,6 +26,7 @@ src/script/jquery/effects/transfer.js
 src/script/jquery/effects.js
 src/script/jquery/fn/datalink.js
 src/script/jquery/fn/scrollto.js
+src/script/jquery/metadata.js
 src/script/jquery/tmpl.js
 src/script/jquery/ui/accordion.js
 src/script/jquery/ui/autocomplete.js
