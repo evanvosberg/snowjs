@@ -52,4 +52,19 @@ src/script/jquery/ui/widget.js
 src/script/jquery.js
 src/script/require.js
 src/script/util/json.js
+src/style/jquery/ui/accordion.css
+src/style/jquery/ui/autocomplete.css
+src/style/jquery/ui/button.css
+src/style/jquery/ui/core.css
+src/style/jquery/ui/datepicker.css
+src/style/jquery/ui/dialog.css
+src/style/jquery/ui/menu.css
+src/style/jquery/ui/progressbar.css
+src/style/jquery/ui/resizable.css
+src/style/jquery/ui/selectable.css
+src/style/jquery/ui/slider.css
+src/style/jquery/ui/spinner.css
+src/style/jquery/ui/tabs.css
+src/style/jquery/ui/theme.css
+src/style/jquery/ui/tooltip.css
 #Symlinks 'source' end
