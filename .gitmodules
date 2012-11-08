@@ -28,3 +28,6 @@
 [submodule "external/JSON-js"]
 	path = external/JSON-js
 	url = https://github.com/evanvosberg/JSON-js.git
+[submodule "external/qunit"]
+	path = external/qunit
+	url = https://github.com/jquery/qunit.git
