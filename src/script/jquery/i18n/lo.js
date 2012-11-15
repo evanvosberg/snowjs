@@ -1,0 +1,52 @@
+(function($) {
+    var regions = $.i18n.regions,
+        en = $.i18n.defaults,
+        standard = en.calendars.standard,
+        region = regions["lo"] = $.extend(true, {}, en, {
+        name: "lo",
+        englishName: "Lao",
+        nativeName: "ລາວ",
+        language: "lo",
+        numberFormat: {
+            pattern: ["(n)"],
+            groupSizes: [3,0],
+            percent: {
+                groupSizes: [3,0]
+            },
+            currencies: {'':{
+                pattern: ["(n$)","n$"],
+                groupSizes: [3,0],
+                symbol: "₭"
+            }}
+        },
+        calendars: {
+            standard: $.extend(true, {}, standard, {
+                days: {
+                    names: ["ວັນອາທິດ","ວັນຈັນ","ວັນອັງຄານ","ວັນພຸດ","ວັນພະຫັດ","ວັນສຸກ","ວັນເສົາ"],
+                    namesAbbr: ["ອາທິດ","ຈັນ","ອັງຄານ","ພຸດ","ພະຫັດ","ສຸກ","ເສົາ"],
+                    namesShort: ["ອ","ຈ","ອ","ພ","ພ","ສ","ເ"]
+                },
+                months: {
+                    names: ["ມັງກອນ","ກຸມພາ","ມີນາ","ເມສາ","ພຶດສະພາ","ມິຖຸນາ","ກໍລະກົດ","ສິງຫາ","ກັນຍາ","ຕຸລາ","ພະຈິກ","ທັນວາ",""],
+                    namesAbbr: ["ມັງກອນ","ກຸມພາ","ມີນາ","ເມສາ","ພຶດສະພາ","ມິຖຸນາ","ກໍລະກົດ","ສິງຫາ","ກັນຍາ","ຕຸລາ","ພະຈິກ","ທັນວາ",""]
+                },
+                AM: ["ເຊົ້າ","ເຊົ້າ","ເຊົ້າ"],
+                PM: ["ແລງ","ແລງ","ແລງ"],
+                patterns: {
+                    d: "dd/MM/yyyy",
+                    D: "dd MMMM yyyy",
+                    t: "H:mm tt",
+                    T: "HH:mm:ss",
+                    f: "dd MMMM yyyy H:mm tt",
+                    F: "dd MMMM yyyy HH:mm:ss",
+                    M: "dd MMMM",
+                    Y: "MMMM yyyy",
+                    l: "dd/MM/yyyy H:mm tt",
+                    L: "dd/MM/yyyy HH:mm:ss"
+                }
+            })
+        }
+    }, regions["lo"]);
+    region.calendar = region.calendars.standard;
+    region.numberFormat.currency = region.numberFormat.currencies[''];
+}(jQuery));

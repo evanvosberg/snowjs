@@ -1,0 +1,99 @@
+/*
+ * @author			Evan Vosberg
+ * @copyright		© 2012 by Evan Vosberg
+ * @info			http://github.com/evanvosberg
+ *
+ * @license         Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
+ *
+ * @module			jquery/ui/scrollbox
+ */
+
+.ui-scrollbox {
+	-webkit-text-size-adjust: none;
+	overflow: hidden !important;
+}
+.ui-scrollbox-helper {
+	position: absolute;
+	display: none;
+	z-index: 999999;
+}
+.ui-scrollbox-helper:focus {
+	outline: none;
+}
+.ui-scrollbox-layer {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.ui-scrollbox-drag-x, .ui-scrollbox-drag-y {
+	margin: 1px;
+	background-image: none;
+}
+.ui-scrollbox-drag-x {
+	bottom: 0;
+	left: 0;
+	margin-top: 0;
+	width: 7px;
+	min-width: 7px;
+	height: 7px;
+}
+.ui-scrollbox-drag-y {
+	top: 0;
+	right: 0;
+	margin-left: 0;
+	width: 7px;
+	height: 7px;
+	min-height: 7px;
+}
+
+/* padding right and bottom fix */
+.ui-scrollbox-padding-x, .ui-scrollbox-padding-y {
+	display: block;
+	top: 0;
+	left: 0;
+}
+.ui-scrollbox-padding-x {
+	width: 100%;
+	height: 0;
+}
+.ui-scrollbox-padding-y {
+	width: 0;
+	height: 100%;
+}
+
+/* EXAMPLE: like Lion (drag element rounds and colors)
+.ui-scrollbox-drag-x,
+.ui-scrollbox-drag-y {
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-o-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.ui-scrollbox-light .ui-scrollbox-helper.ui-state-default {
+	border-color: #ccc;
+	background-color: #333;
+	background-color: rgba(0,0,0,0.5);
+}
+.ui-scrollbox-light .ui-scrollbox-helper.ui-state-hover,
+.ui-scrollbox-light .ui-scrollbox-helper.ui-state-active, 
+.ui-scrollbox-light .ui-scrollbox-helper.ui-state-focus {
+	background-color: #303030;
+	background-color: rgba(0,0,0,0.8);
+}
+
+.ui-scrollbox-dark .ui-scrollbox-helper.ui-state-default {
+	border-color: #666;
+	background-color: #fff;
+	background-color: rgba(255,255,255,0.5);
+}
+
+.ui-scrollbox-dark .ui-scrollbox-helper.ui-state-hover,
+.ui-scrollbox-dark .ui-scrollbox-helper.ui-state-active, 
+.ui-scrollbox-dark .ui-scrollbox-helper.ui-state-focus {
+	background-color: #f0f0f0;
+	background-color: rgba(255,255,255,0.8);
+}
+*/
