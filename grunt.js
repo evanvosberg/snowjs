@@ -441,6 +441,8 @@ module.exports = function (grunt) {
 		ignoreList.push("");
 		ignoreList.push(ignoreBegin);
 		paths.forEach(function (abspath) {
+			abspath = abspath.replace(/\/$/, "");
+			
 			if (fs.lstatSync(abspath)
 				.isSymbolicLink()) {
 				ignoreList.push(abspath);
@@ -457,6 +459,8 @@ module.exports = function (grunt) {
 	grunt.registerMultiTask("clean", "Clean directory.", function () {
 		file.expandDirs(this.file.src)
 			.forEach(function (abspath) {
+				abspath = abspath.replace(/\/$/, "");
+				
 				if (fs.lstatSync(abspath)
 					.isSymbolicLink()) {
 					fs.unlinkSync(abspath);

@@ -58,6 +58,7 @@ src/style/jquery/ui/button.css
 src/style/jquery/ui/core.css
 src/style/jquery/ui/datepicker.css
 src/style/jquery/ui/dialog.css
+src/style/jquery/ui/images
 src/style/jquery/ui/menu.css
 src/style/jquery/ui/progressbar.css
 src/style/jquery/ui/resizable.css
