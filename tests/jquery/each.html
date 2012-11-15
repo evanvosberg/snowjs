@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "jquery/each";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$.each()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var arrBase	= ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
+				objBase = { A:0, B:1, C:2, D:3, E:4, F:5, G:6, H:7, I:8 },
+				t;
+
+			t = $.merge([],arrBase);
+			deepEqual(
+				$.each( t, true, function( i, key ){
+					if( /[ACD]/.test(key) )
+						return "X";
+				}),
+				["X", "B", "X", "X", "E", "F", "G", "H", "I"],
+				"$.each( t, true, function( i, key ){ if( /[ACD]/.test(key) )return \"X\"; })"
+			);
+
+			t = $.extend({},objBase);
+			deepEqual(
+				$.each( t, true, function( key, no ){
+					return  no >=6 ? false : no+1;
+				}),
+				{ A:1, B:2, C:3, D:4, E:5, F:6, G:6, H:7, I:8 },
+				"$.each( t, true, function( key, no ){ return  no >=6 ? false : no+1; })"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

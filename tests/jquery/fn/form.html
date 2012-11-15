@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<form id="f0">
+			<input id="f1" name="c" type="checkbox" checked="checked"/>
+			<input id="f2" name="c" type="checkbox"/>
+			<input id="f3" name="r" type="radio" checked="checked"/>
+			<input id="f4" name="r" type="radio"/>
+			<input id="f5" name="t" type="text" value="text"/>
+			<input id="f6" name="t" type="text" value=""/>
+			<select id="f7" name="s">
+				<option selected="selected">A</option>
+				<option>b</option>
+			</select>
+		</form>
+		<form id="f8">
+			<input id="f9" name="c" type="checkbox"/>
+		</form>
+	</div>
+	<script>
+	var moduleName = "jquery/fn/form";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$().form...()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var form = $('form'),
+				cloneA = form.clone(),
+				cloneB = form.clone(),
+				cloneC = form.clone();
+
+			equal(
+				$('form :input').length,
+				8,
+				"$('form :input').length"
+			);
+
+			equal(
+				$('form').formInput().length,
+				7,
+				"$('form').formInput().length"
+			);
+
+			// ORINGINAL
+			equal(
+				$('form').formInput().filter(':checked').length,
+				2,
+				"$('form').formInput().filter(':checked').length"
+			);
+			equal(
+				$('form').formInput().filter(':radio:eq(1)').filter(':checked').length,
+				0,
+				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
+			);
+			equal(
+				$('form').formInput().filter('[value=text]').length,
+				1,
+				"$('form').formInput().filter('[value=text]').length"
+			);
+			equal(
+				$('form').find(':selected').length,
+				1,
+				"$('form').find(':selected').length"
+			);
+
+			// MODIFY
+			form.find('#f2').prop('checked',true);
+			cloneA.find('#f2').prop('checked',true);
+			cloneB.find('#f2').prop('checked',true);
+			cloneC.find('#f2').prop('checked',true);
+			equal(
+				$('form').formInput().filter(':checked').length,
+				3,
+				"$('form').formInput().filter(':checked').length"
+			);
+			form.find('#f4').prop('checked',true);
+			cloneA.find('#f4').prop('checked',true);
+			cloneB.find('#f4').prop('checked',true);
+			cloneC.find('#f4').prop('checked',true);
+			equal(
+				$('form').formInput().filter(':radio:eq(1)').filter(':checked').length,
+				1,
+				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
+			);
+			form.find('#f6').val('text');
+			cloneA.find('#f6').val('text');
+			cloneB.find('#f6').val('text');
+			cloneC.find('#f6').val('text');
+			equal(
+				$('form').formInput().filter('[value=text]').length,
+				2,
+				"$('form').formInput().filter('[value=text]').length"
+			);
+
+			// RESET
+			cloneA.formInput().formReset();
+			equal(
+				cloneA.formInput().filter(':checked').length,
+				2,
+				"$('form').formInput().filter(':checked').length"
+			);
+			equal(
+				cloneA.formInput().filter(':radio:eq(1)').filter(':checked').length,
+				0,
+				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
+			);
+			equal(
+				cloneA.formInput().filter('[value=text]').length,
+				1,
+				"$('form').formInput().filter('[value=text]').length"
+			);
+
+			// RESET
+			cloneB.formReset();
+			equal(
+				cloneB.formInput().filter(':checked').length,
+				2,
+				"$('form').formInput().filter(':checked').length"
+			);
+			equal(
+				cloneB.formInput().filter(':radio:eq(1)').filter(':checked').length,
+				0,
+				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
+			);
+			equal(
+				cloneB.formInput().filter('[value=text]').length,
+				1,
+				"$('form').formInput().filter('[value=text]').length"
+			);
+
+			// GROUP
+			equal(
+				cloneB.formInput().formGroup().length,
+				cloneB.first().find(':input:radio[name=r]').length,
+				"$('form').formInput().formGroup().length"
+			);
+			equal(
+				cloneB.formInput(':checkbox').formGroup().length,
+				cloneB.first().find(':input:checkbox[name=c]').length,
+				"$('form').formInput(':checkbox').formGroup().length"
+			);
+
+			// CLEAR
+			cloneC.formClear();
+			equal(
+				cloneC.formInput().filter(':checked').length,
+				0,
+				"$('form').formInput().filter(':checked').length"
+			);
+			equal(
+				cloneC.formInput().filter(':radio:eq(0)').filter(':checked').length,
+				0,
+				"$('form').formInput().filter(':radio:eq(0)').filter(':checked').length"
+			);
+			equal(
+				cloneC.formInput().filter('[value=text]').length,
+				0,
+				"$('form').formInput().filter('[value=text]').length"
+			);
+			equal(
+				cloneC.find(':selected').length,
+				0,
+				"$('form').find(':selected').length"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

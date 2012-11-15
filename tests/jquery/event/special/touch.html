@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<style>
+	.drag {
+		position:    absolute;
+		margin:      15px;
+		border:      solid 5px;
+		padding:     10px;
+		width:       100px;
+		height:      100px
+	}
+	</style>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div class="drag"></div>
+		<div class="drag"></div>
+		<div class="drag"></div>
+		<div class="drag"></div>
+	</div>
+	<script>
+	var moduleName = "jquery/event/special/touch";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("method", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var elem = $('.drag'),
+				t;
+
+			// BIND
+			elem.on( 'touchdrag',  function(event){
+					var elem = $(this),
+						prop = elem.position();
+
+					elem.css({
+						top:	(prop.top  + event.dragDeltaY) +'px',
+						left:	(prop.left + event.dragDeltaX) +'px'
+					});
+					
+					event.preventDefault();
+				})
+				.on( 'touchpinch',  function(event){
+					var elem = $(this),
+						prop = elem.position();
+					
+					prop.width  = elem.width();
+					prop.height = elem.height();
+
+					elem.css({
+						top:	(prop.top  - (event.pinchDeltaY/2)) +'px',
+						left:	(prop.left - (event.pinchDeltaX/2)) +'px',
+						height:	(prop.height + event.pinchDeltaY) +'px',
+						width:	(prop.width  + event.pinchDeltaX) +'px'
+					});
+					
+					event.preventDefault();
+				})
+				.on( 'touchswipeup touchswiperight touchswipebottom touchwipeleft',  function(){
+				});
+
+			// BASE
+			elem.each(function(i){
+				t = $._data( this ).events.touchstart;
+				equal(
+					t.length,
+					3,
+					"elem["+i+"]: $._data( this ).events.touchstart.length"
+				);
+				equal(
+					t[0].namespace,
+					'_specialTouchdrag',
+					"elem["+i+"]: $._data( this ).events.touchstart[0].namespace"
+				);
+				equal(
+					t[1].namespace,
+					'_specialTouchpinch',
+					"elem["+i+"]: $._data( this ).events.touchstart[1].namespace"
+				);
+				equal(
+					t[2].namespace,
+					'_specialTouchswipe',
+					"elem["+i+"]: $._data( this ).events.touchstart[1].namespace"
+				);
+			});
+			
+
+			// UNBIND
+			elem.off('touchpinch');
+			elem.each(function(i){
+				t = $._data( this ).events.touchstart;
+				equal(
+					t.length,
+					2,
+					"elem["+i+"]: $._data( this ).events.touchstart.length"
+				);
+				equal(
+					t[0].namespace,
+					'_specialTouchdrag',
+					"elem["+i+"]: $._data( this ).events.touchstart[0].namespace"
+				);
+				equal(
+					t[1].namespace,
+					'_specialTouchswipe',
+					"elem["+i+"]: $._data( this ).events.touchstart[1].namespace"
+				);
+			});
+
+			elem.each(function(i){
+				t = $._data( this ).events.touchswipeup;
+				equal(
+					t.length,
+					1,
+					"elem["+i+"]: $._data( this ).events.touchswipeup.length"
+				);
+				t = $._data( this ).events.touchswiperight;
+				equal(
+					t.length,
+					1,
+					"elem["+i+"]: $._data( this ).events.touchswiperight.length"
+				);
+				t = $._data( this ).events.touchswipebottom;
+				equal(
+					t.length,
+					1,
+					"elem["+i+"]: $._data( this ).events.touchswipebottom.length"
+				);
+				t = $._data( this ).events.touchwipeleft;
+				equal(
+					t.length,
+					1,
+					"elem["+i+"]: $._data( this ).events.touchwipeleft.length"
+				);
+			});
+
+			// UNBIND
+			elem.off('touchdrag touchswipeup touchswiperight touchswipebottom touchwipeleft');
+
+			$(document)
+				.on("touchdrag",function(event){
+					event.preventDefault();
+				})
+				.on("touchswipeup",function(){
+					$("#qunit-header").text("up");
+				})
+				.on("touchswiperight",function(){
+					$("#qunit-header").text("right");
+				})
+				.on("touchswipedown",function(){
+					$("#qunit-header").text("down");
+				})
+				.on("touchswipeleft",function(){
+					$("#qunit-header").text("left");
+				})
+			//	.off("touchdrag touchswipeup touchswiperight touchswipedown touchswipeleft");
+
+			$(document)
+				.on("touchpinch",function(event){
+					event.preventDefault();
+				})
+				.on("touchpinchin",function(){
+					$("#qunit-header").text("in");
+				})
+				.on("touchpinchout",function(){
+					$("#qunit-header").text("out");
+				})
+			//	.off("touchpinch touchpinchin touchpinchout");
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

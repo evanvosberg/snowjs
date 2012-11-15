@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<input type="text" name="A" title="MyTitle"/>
+		<input type="text" name="C" title="MyTitle"/>
+		<input type="text" name="B"/>
+	</div>
+	<script>
+	var moduleName = "jquery/fn/attr";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$().toggleAttr()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			equal(
+				$(':input').filter('[title]').length,
+				2,
+				"$(':input').filter('[title]').length"
+			);
+
+			equal(
+				$(':input').toggleAttr('title','MyTitle').filter('[title]').length,
+				1,
+				"$(':input').toggleAttr('title','MyTitle').filter('[title]').length"
+			);
+
+			equal(
+				$(':input').filter('[name=A]').length,
+				1,
+				"$(':input').filter('[name=A]').length"
+			);
+
+			equal(
+				$(':input').filter('[name=B]').length,
+				1,
+				"$(':input').filter('[name=B]').length"
+			);
+
+			equal(
+				$(':input').toggleAttr('name','A').filter('[name=A]').length,
+				2,
+				"$(':input').toggleAttr('name','A').filter('[name=A]').length"
+			);
+
+			equal(
+				$(':input').toggleAttr('name','A','B').filter('[name=B]').length,
+				2,
+				"$(':input').toggleAttr('name','A','B').filter('[name=B]').length"
+			);
+
+			equal(
+				$(':input').toggleAttr('name','B').filter('[name=B]').length,
+				1,
+				"$(':input').toggleAttr('name','B').filter('[name=B]').length"
+			);
+
+			equal(
+				$(':input').toggleAttr('name','C').filter('[name=C]').length,
+				3,
+				"$(':input').toggleAttr('name','C').filter('[name=C]').length"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

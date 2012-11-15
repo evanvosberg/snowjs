@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script"
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "jquery/tmpl";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$.tmpl()", function() {
+
+		require(["jquery", moduleName], function ($) {
+				// jQuerySubClass
+				jQuerySub = $.sub();
+				jQuerySub.fn.qunitTest = $.noop;
+
+				// Define a template
+				$.template('tests/jquery/tmpl', "<div>\n	<ul {{elem(jQuerySub) 'list'}}>\n	{{each(i, row) rows}}\n		<li {{elem 'listitem_'+i}}>${row}</li>\n	{{/each}}\n	</ul>\n	<ul {{elem 'listed'}}>\n	{{each(i, row) rows}}\n		<li {{elem 'listedItems'}}>${row}</li>\n	{{/each}}\n	</ul>\n</div>");
+
+				var data = {
+						rows: [
+							'line A',
+							'line B',
+							'line C',
+							'line D',
+							'line E'
+						]
+					},
+					div = $.tmpl('tests/jquery/tmpl',data),
+					ul;
+
+				// first list
+				ul = div.find('ul:first');
+
+				equal(
+					ul.children().length,
+					5,
+					"ul.children().length"
+				);
+
+				equal(
+					ul.children(':eq(0)').text(),
+					'line A',
+					"ul.children(':eq(0)').text()"
+				);
+
+				equal(
+					ul.children(':eq(2)').text(),
+					'line C',
+					"ul.children(':eq(2)').text()"
+				);
+
+				equal(
+					$.isPlainObject( ul.tmplItem() ),
+					true,
+					"$.isPlainObject( ul.tmplItem() )"
+				);
+
+				deepEqual(
+					ul.tmplItem().data,
+					data,
+					"ul.tmplItem().data"
+				);
+
+				deepEqual(
+					ul.tmplItem('data'),
+					data,
+					"ul.tmplItem('data')"
+				);
+
+				equal(
+					$.isPlainObject( ul.tmplItem().elements ),
+					true,
+					"$.isPlainObject( ul.tmplItem().elements )"
+				);
+
+				equal(
+					$.isPlainObject( ul.tmplItem('elements') ),
+					true,
+					"$.isPlainObject( ul.tmplItem('elements') )"
+				);
+
+				equal(
+					ul.tmplItem('elements').list instanceof jQuerySub,
+					true,
+					"ul.tmplItem('elements').list instanceof jQuerySub"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_0 instanceof jQuerySub,
+					false,
+					"ul.tmplItem('elements').listitem_0 instanceof jQuerySub"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_0 instanceof jQuery,
+					true,
+					"ul.tmplItem('elements').listitem_0 instanceof jQuery"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_0.is('li'),
+					true,
+					"ul.tmplItem('elements').listitem_0.is('li')"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_1.is('li'),
+					true,
+					"ul.tmplItem('elements').listitem_1.is('li')"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_2.is('li'),
+					true,
+					"ul.tmplItem('elements').listitem_2.is('li')"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_3.is('li'),
+					true,
+					"ul.tmplItem('elements').listitem_3.is('li')"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_4.is('li'),
+					true,
+					"ul.tmplItem('elements').listitem_4.is('li')"
+				);
+
+				equal(
+					ul.tmplItem('elements').listitem_5 == undefined,
+					true,
+					"ul.tmplItem('elements').listitem_5 == undefined"
+				);
+
+				// second list
+				ul = div.find('ul:first');
+
+				equal(
+					ul.children().length,
+					5,
+					"ul.children().length"
+				);
+
+				equal(
+					ul.tmplItem('elements').listed instanceof $,
+					true,
+					"ul.tmplItem('elements').listed instanceof $"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems instanceof $,
+					true,
+					"ul.tmplItem('elements').listedItems instanceof $"
+				);
+
+				equal(
+					ul.tmplItem('elements').listed.length,
+					1,
+					"ul.tmplItem('elements').listed.length"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems.length,
+					5,
+					"ul.tmplItem('elements').listedItems.length"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems.eq(0).text(),
+					'line A',
+					"ul.tmplItem('elements').listedItems.eq(0).text()"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems.eq(1).text(),
+					'line B',
+					"ul.tmplItem('elements').listedItems.eq(1).text()"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems.eq(2).text(),
+					'line C',
+					"ul.tmplItem('elements').listedItems.eq(2).text()"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems.eq(3).text(),
+					'line D',
+					"ul.tmplItem('elements').listedItems.eq(3).text()"
+				);
+
+				equal(
+					ul.tmplItem('elements').listedItems.eq(4).text(),
+					'line E',
+					"ul.tmplItem('elements').listedItems.eq(4).text()"
+				);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

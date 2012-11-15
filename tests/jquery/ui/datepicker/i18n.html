@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script type="text/javascript">function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script type="text/javascript">
+	base("../../../../");
+
+	var require = {
+			baseUrl: "src/script",
+			config: {
+				"jquery/i18n": {
+					region: ['de-DE','en-US','fr-FR']
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<input type="text" id="datepicker01"/>
+	</div>
+	<script type="text/javascript">
+	var moduleName = "jquery/ui/datepicker/i18n";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("method", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var elem = $('#datepicker01');
+			
+			elem.datepicker({region: "de-DE"});
+			$.each({
+				dayNames		: [ "Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag" ],
+				dayNamesMin		: [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ],
+				dayNamesShort	: [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ],
+				monthNames		: [ "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember", "" ],
+				monthNamesShort	: [ "Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", "" ],
+				firstDay		: 1,
+				shortYearCutoff : "+19",
+				dateFormat		: "dd.mm.yy"
+			}, function( name, value ){	
+				deepEqual(
+					elem.datepicker('option',name),
+					value,
+					"$('#datepicker01').datepicker('option','" + name + "') == '" + value + "'"
+				);
+			});
+			
+			elem.datepicker("option", {region: "en-US"});
+			$.each({
+				dayNames		: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+				dayNamesMin		: [ "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" ],
+				dayNamesShort	: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+				monthNames		: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "" ],
+				monthNamesShort	: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "" ],
+				firstDay		: 0,
+				shortYearCutoff : "+19",
+				dateFormat		: "m/d/yy"
+			}, function( name, value ){	
+				deepEqual(
+					elem.datepicker('option',name),
+					value,
+					"$('#datepicker01').datepicker('option','" + name + "') == '" + value + "'"
+				);
+			});
+			
+			elem.datepicker("option", "region", "fr-FR");
+			$.each({
+				dayNames		: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
+				dayNamesMin		: [ "di", "lu", "ma", "me", "je", "ve", "sa" ],
+				dayNamesShort	: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
+				monthNames		: [ "janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre", "" ],
+				monthNamesShort	: [ "janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc.", "" ],
+				firstDay		: 1,
+				shortYearCutoff : "+19",
+				dateFormat		: "dd/mm/yy"
+			}, function( name, value ){	
+				deepEqual(
+					elem.datepicker('option',name),
+					value,
+					"$('#datepicker01').datepicker('option','" + name + "') == '" + value + "'"
+				);
+			});
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

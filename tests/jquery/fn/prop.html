@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<input type="checkbox" disabled="disabled" checked="checked" tabindex="2"/>
+		<input type="checkbox" disabled="disabled"/>
+		<input type="checkbox" checked="checked"/>
+	</div>
+	<script>
+	var moduleName = "jquery/fn/prop";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$().toggleProp()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			equal(
+				$(':input').filter(':disabled').length,
+				2,
+				"$(':input').filter(':disabled').length"
+			);
+
+			equal(
+				$(':input').toggleProp('disabled',true).filter(':disabled').length,
+				1,
+				"$(':input').toggleProp('disabled',true).filter(':disabled').length"
+			);
+
+			equal(
+				$(':input').filter(':checked').length,
+				2,
+				"$(':input').filter(':checked').length"
+			);
+
+			equal(
+				$(':input').toggleProp('checked',true).filter(':checked').length,
+				1,
+				"$(':input').toggleProp('checked',true).filter(':checked').length"
+			);
+
+			equal(
+				$(':input').filter('[multiple]').length,
+				0,
+				"$(':input').filter('[multiple]').length"
+			);
+
+			equal(
+				$(':input').toggleProp('multiple',true).filter('[multiple]').length,
+				3,
+				"$(':input').toggleProp('multiple',true).filter('[multiple]').length"
+			);
+
+			equal(
+				$(':input').filter('[tabindex=2]').length,
+				1,
+				"$(':input').filter('[tabindex=2]').length"
+			);
+
+			equal(
+				$(':input').toggleProp('tabindex',2,0).filter('[tabindex=2]').length,
+				2,
+				"$(':input').toggleProp('tabindex',2,0).filter('[tabindex=2]').length"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

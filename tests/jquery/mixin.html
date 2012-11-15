@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script"
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "jquery/mixin";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$.mixin()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var obj = function(){
+					this.C = 3;
+					this.D = 4;
+					this.E = {X:24};
+				};
+
+			obj.prototype = {
+				A: 1,
+				B: 2
+			};
+
+			deepEqual(
+				$.mixin( {}, new obj() ),
+				{ C:3, D:4, E:{X:24} },
+				"$.mixin( {}, new obj() )"
+			);
+
+			deepEqual(
+				$.mixin( true, { A:['A','B','C'], C:8, E:{Z:26} }, new obj() ),
+				{ A:['A','B','C'], C:3, E:{Z:26,X:24}, D:4 },
+				"$.mixin( true, { A:['A','B','C'], C:8, E:{Z:26} }, new obj() )"
+			);
+
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

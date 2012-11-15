@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<input type="text" name="t1" readonly="readonly"/>
+		<input type="text" name="t2"/>
+		<input type="text" name="t3" readonly="readonly"/>
+		<input type="radio" name="r1" readonly="readonly"/>
+		<input type="radio" name="r1"/>
+		<select name="s1">
+			<option selected="selected">A</option>
+			<option>B</option>
+			<option>C</option>
+			<option>D</option>
+		</select>
+		<div id="tab" tabIndex="0"></div>
+	</div>
+	<script>
+	var moduleName = "jquery/expr";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("method", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			equal(
+				$('#qunit-fixture :readonly').length,
+				3,
+				"$('#qunit-fixture :readonly').length"
+			);
+
+			$(':input[name=t3]').prop('readonly',false);
+			equal(
+				$('#qunit-fixture :readonly').length,
+				2,
+				"$(':input[name=t3]').prop('readonly',false); $('#qunit-fixture :readonly').length"
+			);
+
+			$(':input[name=t3]').val('text 3');
+			equal(
+				$('#qunit-fixture :changed').length,
+				1,
+				"$(':input[name=t3]').val('text 3'); $('#qunit-fixture :changed').length"
+			);
+
+			$('option:eq(1)').prop('selected',true);
+			equal(
+				$('#qunit-fixture :changed').length,
+				2,
+				"$('option:eq(1)').prop('selected',true); $('#qunit-fixture :changed').length"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

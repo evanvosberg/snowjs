@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "util/string";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest(".reverse()", function() {
+		require([moduleName], function(mod){
+
+			equal(
+				mod.reverse("Hello world!"),
+				"!dlrow olleH",
+				".reverse(\"Hello world!\")"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest(".escExpStr()", function() {
+		require([moduleName], function(mod){
+		
+			equal(
+				mod.escExpStr("([Hello*world!])"),
+				"\\(\\[Hello\\*world!\\]\\)",
+				".escExpStr(\"([Hello*world!])\")"
+			);
+			equal(
+				mod.escExpStr( "([Hello*world!])", "()" ),
+				"(\\[Hello\\*world!\\])",
+				".escExpStr( \"([Hello*world!])\", \"()\" )"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest(".stripTags()", function() {
+		require([moduleName], function(mod){
+			
+			equal(
+				mod.stripTags("<div>Hello<strong>world</strong><em>!</em><br /></div>"),
+				" Hello world  !   ",
+				".stripTags(\"<div>Hello<strong>world</strong><em>!</em><br /></div>\")"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest(".htmlspecialchars()", function() {
+		require([moduleName], function(mod){	
+			
+			equal(
+				mod.htmlspecialchars( "<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>" ),
+				"&lt;h1 id=&quot;qunit-header&quot;&gt;QUnit&lt;/h1&gt;&lt;h2 id=&quot;qunit-banner&quot;&gt;Yes &amp; No&lt;/h2&gt;",
+				".htmlspecialchars( \"<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>\" )"
+			);
+			equal(
+				mod.htmlspecialchars( "<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>", 0 ),
+				"&lt;h1 id=&quot;qunit-header&quot;&gt;QUnit&lt;/h1&gt;&lt;h2 id=&quot;qunit-banner&quot;&gt;Yes &amp; No&lt;/h2&gt;",
+				".htmlspecialchars( \"<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>\", 0 )"
+			);
+			equal(
+				mod.htmlspecialchars( "<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>", 1 ),
+				"&lt;h1 id=\"qunit-header\"&gt;QUnit&lt;/h1&gt;&lt;h2 id=\"qunit-banner\"&gt;Yes &amp; No&lt;/h2&gt;",
+				".htmlspecialchars( \"<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>\", 1 )"
+			);
+			equal(
+				mod.htmlspecialchars( "<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>", 2 ),
+				"&lt;h1 id=&quot;qunit-header&quot;&gt;QUnit&lt;/h1&gt;&lt;h2 id=&quot;qunit-banner&quot;&gt;Yes &amp; No&lt;/h2&gt;",
+				".htmlspecialchars( \"<h1 id=\"qunit-header\">QUnit</h1><h2 id=\"qunit-banner\">Yes & No</h2>\", 2 )"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest(".shrink()", function() {
+		require([moduleName], function(mod){
+			
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt" ),
+				"Lorem ipsum dolor sit amet, consetetur sadipsci...",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\" )"
+			);
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", {ratio:0.25} ),
+				"Lorem ipsum... sed diam nonumy eirmod tempor invidunt",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", {ratio:0.25} )"
+			);
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", {ratio:0.5} ),
+				"Lorem ipsum dolor sit a...numy eirmod tempor invidunt",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", {ratio:0.5} )"
+			);
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", {ratio:0.75} ),
+				"Lorem ipsum dolor sit amet, consete...tempor invidunt",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", {ratio:0.75} )"
+			);
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", {ratio:0} ),
+				"...g elitr, sed diam nonumy eirmod tempor invidunt",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", {ratio:0} )"
+			);
+			
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", 80 ),
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirm...",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", 80 )"
+			);
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", {length:70, cut:false} ),
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam...",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", {length:70, cut:false} )"
+			);
+			equal(
+				mod.shrink( "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt", {length:70, cut:false, spacer:"....."} ),
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed.....",
+				".shrink(\"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt\", {length:70, cut:false, spacer:\".....\"} )"
+			);
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>

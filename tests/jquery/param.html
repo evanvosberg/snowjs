@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script"
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "jquery/param";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$.param()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			equal(
+				$.param( { A:["A","B","C"], C:8, E:{Z:26} } ),
+				"A%5B%5D=A&A%5B%5D=B&A%5B%5D=C&C=8&E%5BZ%5D=26",
+				"$.param( { A:[\"A\",\"B\",\"C\"], C:8, E:{Z:26} } )"
+			);
+			equal(
+				$.param( { 0:"A", 1:"B", 2:"C", 3:[ "A", "B", "C", "D", "E", "F", "G", "H", "I" ], 4:"E", 6:"G", 7:"H", 8:"I", R:{A:1}, length:9 } ),
+				"0=A&1=B&2=C&3%5B%5D=A&3%5B%5D=B&3%5B%5D=C&3%5B%5D=D&3%5B%5D=E&3%5B%5D=F&3%5B%5D=G&3%5B%5D=H&3%5B%5D=I&4=E&6=G&7=H&8=I&R%5BA%5D=1&length=9",
+				"$.param( { 0:\"A\", 1:\"B\", 2:\"C\", 3:[ \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\" ], 4:\"E\", 6:\"G\", 7:\"H\", 8:\"I\", R:{A:1}, length:9 } )"
+			);
+
+			deepEqual(
+				$.param( "A%5B%5D=A&A%5B%5D=B&A%5B%5D=C&C=8&E%5BZ%5D=26" ),
+				{ A:["A","B","C"], C:"8", E:{Z:"26"} },
+				"$.param( \"A%5B%5D=A&A%5B%5D=B&A%5B%5D=C&C=8&E%5BZ%5D=26\" )"
+			);
+			deepEqual(
+				$.param( "0=A&1=B&2=C&3%5B%5D=A&3%5B%5D=B&3%5B%5D=C&3%5B%5D=D&3%5B%5D=E&3%5B%5D=F&3%5B%5D=G&3%5B%5D=H&3%5B%5D=I&4=E&6=G&7=H&8=I&R%5BA%5D=1&length=9" ),
+				{ 0:"A", 1:"B", 2:"C", 3: [ "A", "B", "C", "D", "E", "F", "G", "H", "I" ], 4:"E", 6:"G", 7:"H", 8:"I", R: { A:"1" }, length:"9" },
+				"$.param( \"0=A&1=B&2=C&3%5B%5D=A&3%5B%5D=B&3%5B%5D=C&3%5B%5D=D&3%5B%5D=E&3%5B%5D=F&3%5B%5D=G&3%5B%5D=H&3%5B%5D=I&4=E&6=G&7=H&8=I&R%5BA%5D=1&length=9\" )"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

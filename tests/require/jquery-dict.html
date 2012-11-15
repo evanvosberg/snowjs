@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script",
+			config: {
+				"jquery/dict": {
+					region: "de-DE"
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "require/jquery-dict";
+
+	module(moduleName);
+
+	(function(){
+
+		// Simulate jQuery AJAX requests
+		function ajaxOverload ($) {
+			$.ajax = function (s) {
+				var deferred = $.Deferred(),
+					jqXHR = deferred.promise({
+						abort: function(){
+							deferred.rejectWith(s.context || jqXHR, [ jqXHR, "abort", "Request abort."]);
+						}
+					}),
+					data;
+
+				switch (s.url) {
+					case "src/script/jquery/dict/A-1.de-DE.json":
+						data = {"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"};
+						break;
+					case "src/script/jquery/dict/A-1.en-US.json":
+						data = {"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"};
+						break;
+					case "http://github.com/evanvosberg/appdk.json?region=de-DE":
+						data = {"Hello":"Hallo","Mr":"Herr","Mrs":"Frau"};
+						break;
+
+					case "src/script/base.de-DE.json":
+						data = {"Apply":"Übernehmen", "Cancel":"Abbrechen", "Close":"Schließen", "Delete":"Löschen", "Ok":"Ok", "Save":"Speichern"};
+						break;
+					case "src/script/base/app.de-DE.json":
+						data = ["base", {"View":"Ansicht", "Welcome to MyApp":"Willkommen bei MyApp"}];
+						break;
+					case "src/script/base/app/toolbar.de-DE.json":
+						data = ["base/app", {"Preview":"Vorschau", "Redo":"Wiederholen", "Undo":"Rückgängig"}];
+						break;
+				}
+
+				setTimeout(function(){
+					if (data) {
+						deferred.resolveWith(s.context || jqXHR, [ data, "success", jqXHR]);
+					}
+					else {
+						deferred.rejectWith(s.context || jqXHR, [ jqXHR, "error", "No data received."]);
+					}
+				}, 200);
+
+				return jqXHR;
+			};
+		}
+
+		asyncTest("require", function() {
+			require([moduleName], function(mod){
+				ok(true, moduleName + " loaded via require.");
+
+				ok(mod, moduleName + " module object exists.");
+
+				start();
+			});
+		});
+
+		asyncTest("require/jquery-dict!...", function() {
+
+			require(["jquery"], function($){
+
+				// Over load jQuery AJAX requests
+				ajaxOverload($);
+
+				require(["require/jquery-dict!jquery/dict/A-1", "require/jquery-dict!jquery/dict/A-1.en-US", "require/jquery-dict!http://github.com/evanvosberg/appdk.json"], function (dictA1_deDE, dictA1_enUS, dictExtern_deDE) {
+
+					equal(
+						dictA1_deDE instanceof $.Dictionary,
+						true,
+						"Module result \"require/jquery-dict!jquery/dict/A-1\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictA1_deDE.dict,
+						{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+						"Translation map of required and loaded dictionary \"require/jquery-dict!jquery/dict/A-1\"."
+					);
+
+					equal(
+						dictA1_enUS instanceof $.Dictionary,
+						true,
+						"Module result \"require/jquery-dict!jquery/dict/A-1.en-US\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictA1_enUS.dict,
+						{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"},
+						"Translation map of required and loaded dictionary \"require/jquery-dict!jquery/dict/A-1.en-US\"."
+					);
+
+					equal(
+						dictExtern_deDE instanceof $.Dictionary,
+						true,
+						"Module result \"require/jquery-dict!http://github.com/evanvosberg/appdk.json\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictExtern_deDE.dict,
+						{"Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
+						"Translation map of required and loaded dictionary \"require/jquery-dict!http://github.com/evanvosberg/appdk.json\"."
+					);
+
+					equal(
+						require("require/jquery-dict!jquery/dict/A-1") instanceof $.Dictionary,
+						true,
+						"Loadable via require(\"require/jquery-dict!jquery/dict/A-1\") if it's already loaded. (Don't load again)"
+					);
+
+					start();
+				});
+			});
+		});
+
+		asyncTest("$dict!...", function() {
+
+			require(["jquery"], function($){
+
+				// Over load jQuery AJAX requests
+				ajaxOverload($);
+
+				require(["$dict!jquery/dict/A-1", "$dict!jquery/dict/A-1.en-US", "$dict!http://github.com/evanvosberg/appdk.json"], function (dictA1_deDE, dictA1_enUS, dictExtern_deDE) {
+
+					equal(
+						dictA1_deDE instanceof $.Dictionary,
+						true,
+						"Module result \"$dict!jquery/dict/A-1\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictA1_deDE.dict,
+						{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+						"Translation map of required and loaded dictionary \"$dict!jquery/dict/A-1\"."
+					);
+
+					equal(
+						dictA1_enUS instanceof $.Dictionary,
+						true,
+						"Module result \"$dict!jquery/dict/A-1.en-US\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictA1_enUS.dict,
+						{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"},
+						"Translation map of required and loaded dictionary \"$dict!jquery/dict/A-1.en-US\"."
+					);
+
+					equal(
+						dictExtern_deDE instanceof $.Dictionary,
+						true,
+						"Module result \"$dict!http://github.com/evanvosberg/appdk.json\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictExtern_deDE.dict,
+						{"Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
+						"Translation map of required and loaded dictionary \"$dict!http://github.com/evanvosberg/appdk.json\"."
+					);
+
+					equal(
+						require("$dict!jquery/dict/A-1") instanceof $.Dictionary,
+						true,
+						"Loadable via require(\"$dict!jquery/dict/A-1\") if it's already loaded. (Don't load again)"
+					);
+
+					start();
+				});
+			});
+		});
+
+		asyncTest("require/jquery-dict!...", function() {
+
+			require(["jquery"], function($){
+
+				// Over load jQuery AJAX requests
+				ajaxOverload($);
+
+				require(["require/jquery-dict!base/app/toolbar"], function (dictBaseAppToolbar_deDE) {
+
+					equal(
+						dictBaseAppToolbar_deDE instanceof $.Dictionary,
+						true,
+						"Module result \"require/jquery-dict!base/app/toolbar\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictBaseAppToolbar_deDE.dict,
+						{"Apply":"Übernehmen","Cancel":"Abbrechen","Close":"Schließen","Delete":"Löschen","Ok":"Ok","Save":"Speichern","View":"Ansicht","Welcome to MyApp":"Willkommen bei MyApp","Preview":"Vorschau","Redo":"Wiederholen","Undo":"Rückgängig"},
+						"Translation map of required and loaded dictionary \"require/jquery-dict!base/app/toolbar\" includes also \"require/jquery-dict!base/app\" and \"require/jquery-dict!base\"."
+					);
+
+					start();
+				});
+			});
+		});
+
+		asyncTest("$dict!...", function() {
+
+			require(["jquery"], function($){
+
+				// Over load jQuery AJAX requests
+				ajaxOverload($);
+
+				require(["$dict!base/app/toolbar"], function (dictBaseAppToolbar_deDE) {
+
+					equal(
+						dictBaseAppToolbar_deDE instanceof $.Dictionary,
+						true,
+						"Module result \"$dict!base/app/toolbar\" is a $.Dictionary instance."
+					);
+					deepEqual(
+						dictBaseAppToolbar_deDE.dict,
+						{"Apply":"Übernehmen","Cancel":"Abbrechen","Close":"Schließen","Delete":"Löschen","Ok":"Ok","Save":"Speichern","View":"Ansicht","Welcome to MyApp":"Willkommen bei MyApp","Preview":"Vorschau","Redo":"Wiederholen","Undo":"Rückgängig"},
+						"Translation map of required and loaded dictionary \"$dict!base/app/toolbar\" includes also \"$dict!base/app\" and \"$dict!base\"."
+					);
+
+					start();
+				});
+			});
+		});
+	}());
+	</script>
+</body>
+</html>

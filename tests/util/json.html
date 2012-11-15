@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "util/json";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest(".encode", function() {
+		require([moduleName], function(mod){
+		
+			equal(
+				mod.encode({ 0:"A", 1:"B", 2:"C", 3:"D", 4:"E", 5:"F", 6:"G", 7:"H", 8:"I", length:9 }),
+				"{\"0\":\"A\",\"1\":\"B\",\"2\":\"C\",\"3\":\"D\",\"4\":\"E\",\"5\":\"F\",\"6\":\"G\",\"7\":\"H\",\"8\":\"I\",\"length\":9}",
+				".encode({ 0:\"A\", 1:\"B\", 2:\"C\", 3:\"D\", 4:\"E\", 5:\"F\", 6:\"G\", 7:\"H\", 8:\"I\", length:9 })"
+			);
+			
+			equal(
+				mod.encode([ "A", "B", "C", "D", "E", "F", "G", "H", "I" ]),
+				"[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\",\"I\"]",
+				".encode([ \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\" ])"
+			);
+			
+			equal(
+				mod.encode({ 0:"A", 1:"B", 2:"C", 3:[ "A", "B", "C", "D", "E", "F", "G", "H", "I" ], 4:"E", 6:"G", 7:"H", 8:"I", R:{A:1}, length:9 }),
+				"{\"0\":\"A\",\"1\":\"B\",\"2\":\"C\",\"3\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\",\"I\"],\"4\":\"E\",\"6\":\"G\",\"7\":\"H\",\"8\":\"I\",\"R\":{\"A\":1},\"length\":9}",
+				".encode({ 0:\"A\", 1:\"B\", 2:\"C\", 3:[ \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\" ], 4:\"E\", R:{A:1}, 6:\"G\", 7:\"H\", 8:\"I\", length:9 })"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest(".decode", function() {
+		require([moduleName], function(mod){
+		
+			deepEqual(
+				mod.decode("{\"0\":\"A\",\"1\":\"B\",\"2\":\"C\",\"3\":\"D\",\"4\":\"E\",\"5\":\"F\",\"6\":\"G\",\"7\":\"H\",\"8\":\"I\",\"length\":9}"),
+				{ 0:"A", 1:"B", 2:"C", 3:"D", 4:"E", 5:"F", 6:"G", 7:"H", 8:"I", length:9 },
+				".decode({ 0:\"A\", 1:\"B\", 2:\"C\", 3:\"D\", 4:\"E\", 5:\"F\", 6:\"G\", 7:\"H\", 8:\"I\", length:9 })"
+			);
+			
+			deepEqual(
+				mod.decode("[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\",\"I\"]"),
+				[ "A", "B", "C", "D", "E", "F", "G", "H", "I" ],
+				".decode([ \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\" ])"
+			);
+			
+			deepEqual(
+				mod.decode("{\"0\":\"A\",\"1\":\"B\",\"2\":\"C\",\"3\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\",\"I\"],\"4\":\"E\",\"6\":\"G\",\"7\":\"H\",\"8\":\"I\",\"R\":{\"A\":1},\"length\":9}"),
+				{ 0:"A", 1:"B", 2:"C", 3:[ "A", "B", "C", "D", "E", "F", "G", "H", "I" ], 4:"E", 6:"G", 7:"H", 8:"I", R:{A:1}, length:9 },
+				".decode({ 0:\"A\", 1:\"B\", 2:\"C\", 3:[ \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\" ], 4:\"E\", 6:\"G\", 7:\"H\", 8:\"I\", R:{A:1}, length:9 })"
+			);
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>

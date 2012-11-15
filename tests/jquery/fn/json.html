@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		Hello World!
+		<div class="box">
+			Inner text ... !
+			<span>
+				Deeper inner text ...
+			</span>
+		</div>
+		middle of my text
+		<span>
+			more inner text
+		</span>
+		The end.
+	</div>
+	<script>
+	var moduleName = "jquery/fn/json";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$().toJSON()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var list = $( $.parseXML('<list>Start<entry full-name="Number 1"><nr>1</nr><category>Tests</category><desc><p>Text of no. 1.</p><a href="entry/1/more.html">more...</a></desc></entry><entry full-name="Number 2"><nr>2</nr><category>Tests</category><category>Advanced</category><desc><p>Text of no. 2.</p><a href="entry/2/more.html">more...</a></desc></entry>End</list>') ).find('list');
+
+			equal(
+				list.toJSON(),
+				'{"entry":[{"nr":"1","category":"Tests","desc":{"p":"Text of no. 1.","a":{"href":"entry/1/more.html","text":"more..."}},"full-name":"Number 1"},{"nr":"2","category":["Tests","Advanced"],"desc":{"p":"Text of no. 2.","a":{"href":"entry/2/more.html","text":"more..."}},"full-name":"Number 2"}],"text":["Start","End"]}',
+				"$('list').toJSON()"
+			);
+			
+			deepEqual(
+				list.toJSON({ getObject:true }),
+				{"entry":[{"nr":"1","category":"Tests","desc":{"p":"Text of no. 1.","a":{"href":"entry/1/more.html","text":"more..."}},"full-name":"Number 1"},{"nr":"2","category":["Tests","Advanced"],"desc":{"p":"Text of no. 2.","a":{"href":"entry/2/more.html","text":"more..."}},"full-name":"Number 2"}],"text":["Start","End"]},
+				"$('list').toJSON({ getObject:true })"
+			);
+			
+			equal(
+				list.toJSON({ camelCase:true, multiple:'entry > category', cdata:'entry > desc' }),
+				'{"entry":[{"nr":"1","category":["Tests"],"desc":"<p>Text of no. 1.</p><a href=\\\"entry/1/more.html\\\">more...</a>","fullName":"Number 1"},{"nr":"2","category":["Tests","Advanced"],"desc":"<p>Text of no. 2.</p><a href=\\\"entry/2/more.html\\\">more...</a>","fullName":"Number 2"}],"text":["Start","End"]}',
+				"$('list').toJSON({ camelCase:true, multiple:'entry > category', cdata:'entry > desc' })"
+			);
+			
+			deepEqual(
+				list.toJSON({ camelCase:true, multiple:'entry > category', cdata:'entry > desc', getObject:true }),
+				{"entry":[{"nr":"1","category":["Tests"],"desc":"<p>Text of no. 1.</p><a href=\"entry/1/more.html\">more...</a>","fullName":"Number 1"},{"nr":"2","category":["Tests","Advanced"],"desc":"<p>Text of no. 2.</p><a href=\"entry/2/more.html\">more...</a>","fullName":"Number 2"}],"text":["Start","End"]},
+				"$('list').toJSON({ camelCase:true, multiple:'entry > category', cdata:'entry > desc', getObject:true })"
+			);
+			
+			equal(
+				list.toJSON({ extended:true }),
+				'{"entry":[{"nr":[{"text":["1"]}],"category":[{"text":["Tests"]}],"desc":[{"p":[{"text":["Text of no. 1."]}],"a":[{"href":"entry/1/more.html","text":["more..."]}]}],"full-name":"Number 1"},{"nr":[{"text":["2"]}],"category":[{"text":["Tests"]},{"text":["Advanced"]}],"desc":[{"p":[{"text":["Text of no. 2."]}],"a":[{"href":"entry/2/more.html","text":["more..."]}]}],"full-name":"Number 2"}],"text":["Start","End"]}',
+				"('list').toJSON({ extended:true })"
+			);
+			
+			deepEqual(
+				list.toJSON({ extended:true, getObject:true }),
+				{"entry":[{"nr":[{"text":["1"]}],"category":[{"text":["Tests"]}],"desc":[{"p":[{"text":["Text of no. 1."]}],"a":[{"href":"entry/1/more.html","text":["more..."]}]}],"full-name":"Number 1"},{"nr":[{"text":["2"]}],"category":[{"text":["Tests"]},{"text":["Advanced"]}],"desc":[{"p":[{"text":["Text of no. 2."]}],"a":[{"href":"entry/2/more.html","text":["more..."]}]}],"full-name":"Number 2"}],"text":["Start","End"]},
+				"('list').toJSON({ extended:true, getObject:true })"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

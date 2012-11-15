@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script"
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "jquery/xml";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("method", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var A_xmlDoc = $.parseXML(
+					'<?xml version="1.0" encoding="utf-8"?>' +
+					'<api>' +
+					'  <categories onclick="alert(\'hello\')">' +
+					'    <category name="Ajax">' +
+					'      <category name="Global Ajax Event Handlers"/>' +
+					'      <category name="Helper Functions"/>' +
+					'      <category name="Low-Level Interface"/>' +
+					'      <category name="Shorthand Methods"/>' +
+					'    </category>' +
+					'    <category name="Attributes"/>' +
+					'    <category name="Core"/>' +
+					'    <category name="CSS"/>' +
+					'    <category name="Data"/>' +
+					'    <category name="Dimensions"/>' +
+					'    <category name="Effects">' +
+					'      <category name="Basics"/>' +
+					'      <category name="Custom"/>' +
+					'      <category name="Fading"/>' +
+					'      <category name="Sliding"/>' +
+					'    </category>' +
+					'    <category name="Events">' +
+					'      <category name="Browser Events"/>' +
+					'      <category name="Document Loading"/>' +
+					'      <category name="Event Handler Attachment"/>' +
+					'      <category name="Event Object"/>' +
+					'      <category name="Form Events"/>' +
+					'      <category name="Keyboard Events"/>' +
+					'      <category name="Mouse Events"/>' +
+					'    </category>' +
+					'  </categories>' +
+					'</api>'
+				),
+				B_xmlDoc = $.parseXML(
+					'<?xml version="1.0" encoding="utf-8"?>' +
+					'<api>' +
+					'</api>'
+				);
+
+			var $A = $(A_xmlDoc),
+				$B = $(B_xmlDoc),
+
+				A_innerXML = $A.find('api').xml(),
+				B_innerXML = $B.find('api').xml();
+
+			equal(
+				A_innerXML.length > 1,
+				true,
+				"A_innerXML.length > 1"
+			);
+
+			equal(
+				B_innerXML.length > 1,
+				false,
+				"B_innerXML.length > 1"
+			);
+
+			equal(
+				$A.find('category').length > $B.find('category').length,
+				true,
+				"$A.find('category').length > $B.find('category').length"
+			);
+
+			B_innerXML = $B.find('api').xml( A_innerXML ).xml();
+
+			equal(
+				B_innerXML.length > 1,
+				true,
+				"B_innerXML.length > 1"
+			);
+
+			equal(
+				$A.find('category').length == $B.find('category').length,
+				true,
+				"$A.find('category').length == $B.find('category').length"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script",
+			config: {
+				"jquery/i18n": {
+					region: "de-DE"
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "require/jquery-tmpl";
+
+	module(moduleName);
+
+	(function(){
+
+		// Simulate jQuery AJAX requests
+		function ajaxOverload ($) {
+			$.ajax = function (s) {
+				var deferred = $.Deferred(),
+					jqXHR = deferred.promise({
+						abort: function(){
+							deferred.rejectWith(s.context || jqXHR, [ jqXHR, "abort", "Request abort."]);
+						}
+					}),
+					data;
+
+				switch (s.url) {
+					case "src/script/jquery/tmpl/example.tmpl.html":
+						data = "<div><div/>";
+						break;
+				}
+
+				setTimeout(function(){
+					if (data) {
+						deferred.resolveWith(s.context || jqXHR, [ data, "success", jqXHR]);
+					}
+					else {
+						deferred.rejectWith(s.context || jqXHR, [ jqXHR, "error", "No data received."]);
+					}
+				}, 200);
+
+				return jqXHR;
+			};
+		}
+
+		asyncTest("require", function() {
+			require([moduleName], function(mod){
+				ok(true, moduleName + " loaded via require.");
+
+				ok(mod, moduleName + " module object exists.");
+
+				start();
+			});
+		});
+
+		asyncTest("require/jquery-tmpl!...", function() {
+
+			require(["jquery"], function($){
+
+				// Over load jQuery AJAX requests
+				ajaxOverload($);
+
+				require(["require/jquery-tmpl!jquery/tmpl/example"], function (tmplExample) {
+
+					ok(tmplExample, "Loaded \"require/jquery-tmpl!jquery/tmpl/example\".");
+
+					equal(
+						tmplExample.toString().replace(/\s/g,""), // To string has different results in different engines
+						"functionanonymous(jQuery,$item){var$=jQuery,call,__=[],$data=$item.data;with($data){__.push('<div><div/>');}return__;}",
+						"Converted template is equal to test for \"require/jquery-tmpl!jquery/tmpl/example\"."
+					);
+
+					ok(
+						require("require/jquery-tmpl!jquery/tmpl/example"),
+						"Loadable via require(\"require/jquery-tmpl!jquery/tmpl/example\") if it's already loaded. (Don't load again)"
+					);
+
+					start();
+				});
+			});
+		});
+
+		asyncTest("$tmpl!...", function() {
+
+			require(["jquery"], function($){
+
+				// Over load jQuery AJAX requests
+				ajaxOverload($);
+
+				require(["$tmpl!jquery/tmpl/example"], function (tmplExample) {
+
+					ok(tmplExample, "Loaded \"$tmpl!jquery/tmpl/example\".");
+
+					equal(
+						tmplExample.toString().replace(/\s/g,""), // To string has different results in different engines
+						"functionanonymous(jQuery,$item){var$=jQuery,call,__=[],$data=$item.data;with($data){__.push('<div><div/>');}return__;}",
+						"Converted template is equal to test for \"$tmpl!jquery/tmpl/example\"."
+					);
+
+					ok(
+						require("$tmpl!jquery/tmpl/example"),
+						"Loadable via require(\"$tmpl!jquery/tmpl/example\") if it's already loaded. (Don't load again)"
+					);
+
+					start();
+				});
+			});
+		});
+	}());
+	</script>
+</body>
+</html>

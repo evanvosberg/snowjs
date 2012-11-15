@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../");
+
+	var require = {
+			baseUrl	: "src/script"
+		},
+		jQueryConfig = {
+			noConflict: "jq",
+			ajax: {
+				url: "?"	
+			},
+			compareVersion: {
+			    intern: -12
+			},
+			dict: {
+				region: 'de-DE',
+				parser: /(?:^|[^\{\$])(\{(.*?[^\\])\})/g
+			},
+			i18n: {
+				region: ["de-DE", "en-US"],
+				currency: ["EUR", "USD"]
+			},
+			metaparse: {
+				type: "html5",
+				name: "metaparse",
+				autoparse: true
+			},
+			mime: {
+				groups: {
+					"custom/*": "image/jpeg,application/json"
+				}
+			},
+			shrink: {
+				ratio: 0.7,
+				spacer: ".....",
+				cut: true
+			},
+			storage: {
+				namespace: "qunit::"
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+	<script src="src/script/jquery.js"></script>
+	<script src="src/script/jquery-sdk.js"></script>
+	<script>
+	var moduleName = "jquery-sdk";
+
+	module(moduleName);
+
+	(function($){
+		// Define a subclass
+		jQuerySub = $.sub();
+
+		// TEST
+		var t = {};
+
+		t.instantly = $('#qunit-fixture').length;
+
+		$.ready(function(){
+			t.ready = $('#qunit-fixture').length;
+		});
+
+		$.ready({DOM: true},function(){
+			t.ready_DOM = $('#qunit-fixture').length;
+		});
+
+		$.provide('provide-1', {DOM:true}, function(){
+			t.provide_DOM = $('#qunit-fixture').length;
+		});
+
+		asyncTest('jQuery.ready() -> require()', function() {
+
+			$.ready({
+					DOM:	true,
+					plugin:	['jQuery.tmpl', 'jQuery.i18n', 'jQuery.dict'],
+					script: 'provide-1'
+				},
+				function($){
+
+					equal(
+						t.instantly,
+						0,
+						"$('#qunit-fixture').length"
+					);
+
+					equal(
+						t.ready,
+						1,
+						"$.ready() -> $('#qunit-fixture').length"
+					);
+
+					equal(
+						t.ready_DOM,
+						1,
+						"$.ready({ DOM: true }) -> $('#qunit-fixture').length"
+					);
+
+					equal(
+						t.provide_DOM,
+						1,
+						"$.provide({ DOM: true }) -> $('#qunit-fixture').length"
+					);
+
+					equal(
+						t.provide,
+						1,
+						"$.provide() -> $('#qunit-fixture').length"
+					);
+
+					equal(
+						!!$.tmpl,
+						true,
+						"$.ready({ plugin: [jQuery.tmpl', 'jQuery.i18n', 'jQuery.dict] }) -> $.tmpl"
+					);
+
+					equal(
+						!!$.i18n,
+						true,
+						"$.ready({ plugin: [jQuery.tmpl', 'jQuery.i18n', 'jQuery.dict] }) -> $.i18n"
+					);
+
+					equal(
+						!!$.dict,
+						true,
+						"$.ready({ plugin: [jQuery.tmpl', 'jQuery.i18n', 'jQuery.dict] }) -> $.dict"
+					);
+
+					start();
+				});
+
+		});
+
+		$.provide('provide-2',function(){
+			t.provide = $('#qunit-fixture').length;
+		});
+
+		// TEST: standard
+		test("$()",function(){
+
+			equal(
+				$.isPlainObject($.config),
+				true,
+				"$.isPlainObject($.config)"
+			);
+
+			equal(
+				$.isPlainObject($.debug),
+				true,
+				"$.isPlainObject($.debug)"
+			);
+
+			equal(
+				$.isFunction($.debug.warn),
+				true,
+				"$.isFunction($.debug.warn)"
+			);
+
+			equal(
+				$.isFunction($.ready),
+				true,
+				"$.isFunction($.ready)"
+			);
+
+			equal(
+				$.isFunction($.provide),
+				true,
+				"$.isFunction($.provide)"
+			);
+
+			equal(
+				$.isFunction($.plugin),
+				true,
+				"$.isFunction($.plugin)"
+			);
+
+			equal(
+				jQuerySub() instanceof $,
+				true,
+				"jQuerySub() instanceof $"
+			);
+
+			equal(
+				$().sub(jQuerySub) instanceof $,
+				true,
+				"$().sub(jQuerySub) instanceof $"
+			);
+
+			equal(
+				$().sub(jQuerySub) instanceof jQuerySub,
+				true,
+				"$().sub(jQuerySub) instanceof jQuerySub"
+			);
+
+			equal(
+				$().sub('jQuerySub') instanceof $,
+				true,
+				"$().sub('jQuerySub') instanceof $"
+			);
+
+			equal(
+				$().sub('jQuerySub') instanceof jQuerySub,
+				true,
+				"$().sub('jQuerySub') instanceof jQuerySub"
+			);
+
+			equal(
+				jQuerySub('#qunit-fixture').length,
+				1,
+				"jQuerySub('#qunit-fixture').length"
+			);
+
+			equal(
+				$('#qunit-fixture').sub(jQuerySub).length,
+				1,
+				"$('#qunit-fixture').sub(jQuerySub).length"
+			);
+
+			equal(
+				$('#qunit-fixture').sub('jQuerySub').length,
+				1,
+				"$('#qunit-fixture').sub('jQuerySub').length"
+			);
+
+		});
+
+	}(jQuery));
+	</script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "require";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest(".config()", function() {
+		require([moduleName], function(mod){
+			deepEqual(
+				mod.config(),
+				{
+					"baseUrl": "src/script/",
+					"config": {},
+					"map": {
+						"*": {
+							"script": "require/script",
+							"$dict": "require/jquery-dict",
+							"$i18n": "require/jquery-i18n",
+							"$ready": "require/jquery-ready",
+							"$tmpl": "require/jquery-tmpl"
+						}
+					},
+					"minified": false,
+					"paths": {},
+					"pkgs": {},
+					"shim": {},
+					"waitSeconds": 7
+				},
+				"Access contextual config."
+			);
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>

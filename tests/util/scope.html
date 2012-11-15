@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "util/scope";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest("scope()", function() {
+
+		test = {
+			fn: {
+				init: function () {
+					return;
+				}
+			}
+		};
+
+		require([moduleName], function(mod){
+
+			equal(
+				typeof mod("test.fn.init"),
+				"function",
+				"Check type of: scope(\"test.fn.init\")"
+			);
+
+			equal(
+				window.my,
+				undefined,
+				"window.my"
+			);
+
+			equal(
+				typeof mod("my.special.plain.object"),
+				"object",
+				"Check type of: scope(\"my.special.plain.object\")"
+			);
+			equal(
+				typeof window.my.special.plain.object,
+				"object",
+				"Check type of: window.my.special.plain.object"
+			);
+
+			equal(
+				typeof mod("foo.extended", my.special.plain.object),
+				"object",
+				"Check type of: scope(\"foo.extended\", my.special.plain.object)"
+			);
+			equal(
+				typeof window.my.special.plain.object.foo.extended,
+				"object",
+				"Check type of: window.my.special.plain.object.foo.extended"
+			);
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>

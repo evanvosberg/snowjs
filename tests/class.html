@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "class";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest("Class()", function() {
+
+		require([moduleName], function (mod) {
+
+			mod( "BaseClass", {
+				constructor: function(){
+					this.base = "";
+				},
+				A: function(){
+					this.base += "-BaseA";
+				},
+				B: function(){
+					this.base += "-BaseB";
+				}
+			});
+
+			mod( "ExtClass", BaseClass, {
+				constructor: function(){
+					this._superApply(arguments);
+					this.ext = "";
+				},
+				A: function(){
+					this.ext += "-ExtA";
+				},
+				B: function(){
+					this._superApply(arguments);
+					this.ext += "-ExtB";
+				}
+			});
+
+			mod( "MultiClass", [BaseClass, ExtClass], {
+				constructor: function(){
+					this._superApply(arguments);
+					this.ext = "";
+				},
+				A: function(){
+					this.ext += "-MultiA";
+				},
+				B: function(){
+					this._superApply(arguments);
+					this.ext += "-MultiB";
+				}
+			});
+
+			var baseObj = new BaseClass(),
+				extObj = new ExtClass(),
+				multiObj = new MultiClass();
+
+			equal(
+				baseObj.base,
+				"",
+				"new BaseClass();"
+			);
+			baseObj.A();
+			equal(
+				baseObj.base,
+				"-BaseA",
+				".A(); .base == \"-BaseA\""
+			);
+			baseObj.B();
+			equal(
+				baseObj.base,
+				"-BaseA-BaseB",
+				".B(); .base == \"-BaseA-BaseB\""
+			);
+
+
+			equal(
+				extObj.base,
+				"",
+				"new ExtClass(); (Based on BaseClass)"
+			);
+			extObj.A();
+			equal(
+				extObj.base,
+				"",
+				".A(); .base == \"\""
+			);
+			equal(
+				extObj.ext,
+				"-ExtA",
+				".A(); .ext == \"-ExtA\""
+			);
+			extObj.B();
+			equal(
+				extObj.base,
+				"-BaseB",
+				".B(); .base == \"-BaseB\""
+			);
+			equal(
+				extObj.ext,
+				"-ExtA-ExtB",
+				".B(); .ext == \"-ExtA-ExtB\""
+			);
+
+
+			equal(
+				multiObj.base,
+				"",
+				"new MultiClass(); (Based on BaseClass and ExtClass)"
+			);
+			multiObj.A();
+			equal(
+				multiObj.base,
+				"",
+				".A(); .base == \"\""
+			);
+			equal(
+				multiObj.ext,
+				"-MultiA",
+				".A(); .ext == \"-MultiA\""
+			);
+			multiObj.B();
+			equal(
+				multiObj.base,
+				"-BaseB",
+				".B(); .base == \"-BaseB\""
+			);
+			equal(
+				multiObj.ext,
+				"-MultiA-ExtB-MultiB",
+				".B(); .ext == \"-MultiA-ExtB-MultiB\""
+			);
+
+			ok(multiObj instanceof BaseClass , "Multiple extended class is instance of BaseClass");
+
+			start();
+		});
+	});
+
+	asyncTest(".isClass()", function() {
+
+		require([moduleName], function (mod) {
+
+			var fn = function(){};
+
+			mod("Tester", {});
+
+			ok(!mod.isClass(fn), "Just a function is not a class.");
+
+			fn.prototype = new (function(){ this.x = ""; })();
+
+			ok(mod.isClass(fn), "Function with inherited prototype is a class.")
+
+			ok(!mod.isClass(fn,true), "Function with inherited prototype is not a class created with Class().");
+
+			ok(mod.isClass(Tester), "Class(\"Tester\",...) is a class.")
+
+			ok(mod.isClass(Tester, true), "Class(\"Tester\",...) is a class created with Class().")
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

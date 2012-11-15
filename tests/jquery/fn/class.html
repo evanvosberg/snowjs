@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div class="alpha-test beta-test beta-ok test-alpha test-beta test"></div>
+		<div class="alpha-test test-alpha beta-ok test-beta test"></div>
+		<div class="alpha-test beta-test test-alpha  test-beta"></div>
+		<div class="alpha-test beta-test test"></div>
+	</div>
+	<script>
+	var moduleName = "jquery/fn/class";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$().class()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			equal(
+				$('#qunit-fixture div:eq(1)').hasClass(/test-/),
+				true,
+				"$('#qunit-fixture div:eq(1)').hasClass(/test-/)"
+			);
+
+			equal(
+				$('#qunit-fixture div:eq(3)').hasClass(/test-/),
+				false,
+				"$('#qunit-fixture div:eq(3)').hasClass(/test-/)"
+			);
+
+			equal(
+				$('#qunit-fixture div:eq(1)').hasClass(/-test/),
+				true,
+				"$('#qunit-fixture div:eq(1)').hasClass(/-test/)"
+			);
+
+			equal(
+				$('#qunit-fixture div:eq(3)').hasClass(/-ok/),
+				false,
+				"$('#qunit-fixture div:eq(3)').hasClass(/-ok/)"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.test').length,
+				3,
+				"$('#qunit-fixture div').filter('.test').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.test-alpha').length,
+				3,
+				"$('#qunit-fixture div').filter('.test-alpha').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.test-beta').length,
+				3,
+				"$('#qunit-fixture div').filter('.test-beta').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.alpha-test').length,
+				4,
+				"$('#qunit-fixture div').filter('.alpha-test').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.beta-test').length,
+				3,
+				"$('#qunit-fixture div').filter('.beta-test').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.beta-ok').length,
+				2,
+				"$('#qunit-fixture div').filter('.beta-ok').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.beta-test, .beta-ok').length,
+				4,
+				"$('#qunit-fixture div').filter('.beta-test, .beta-ok').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').removeClass(/beta-/).filter('.beta-test, .beta-ok').length,
+				0,
+				"$('#qunit-fixture div').removeClass(/beta-/).filter('.beta-test, .beta-ok').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').removeClass(/alpha-/).filter('.alpha-test').length,
+				0,
+				"$('#qunit-fixture div').removeClass(/alpha-/).filter('.alpha-test').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').filter('.alpha-test, .beta-test, .beta-ok, .test-alpha, .test-beta, .test').length,
+				4,
+				"$('#qunit-fixture div').filter('.alpha-test, .beta-test, .beta-ok, .test-alpha, .test-beta, .test').length"
+			);
+
+			equal(
+				$('#qunit-fixture div').removeClass(/test/).filter('.alpha-test, .beta-test, .beta-ok, .test-alpha, .test-beta, .test').length,
+				0,
+				"$('#qunit-fixture div').removeClass(/test/).filter('.alpha-test, .beta-test, .beta-ok, .test-alpha, .test-beta, .test').length"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

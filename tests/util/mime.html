@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+			config: {
+				"util/mime": {
+					groups:{
+						"custom/*":		"application/json,application/zip,application/xml"
+					}
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "util/mime";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest(".mime()", function() {
+		require([moduleName], function(mod){
+
+			equal(
+				mod.mime("previewable/*"),
+				"image/png,image/jpeg,image/jpg,image/gif,image/vnd.microsoft.icon",
+				".mime(\"previewable/*\")"
+			);
+			equal(
+				mod.mime("application/json,previewable/*,text/html"),
+				"application/json,image/png,image/jpeg,image/jpg,image/gif,image/vnd.microsoft.icon,text/html",
+				".mime(\"application/json,previewable/*,text/html\")"
+			);
+			equal(
+				mod.mime("custom/*"),
+				"application/json,application/zip,application/xml",
+				".mime(\"custom/*\")"
+			);
+
+			equal(
+				mod.mime("jpeg"),
+				"image/jpeg",
+				".mime(\"jpeg\")"
+			);
+			equal(
+				mod.mime("zip"),
+				"application/zip",
+				".mime(\"zip\")"
+			);
+
+			equal(
+				mod.mime("image/jpeg","previewable/*"),
+				true,
+				".mime(\"image/jpeg\",\"previewable/*\")"
+			);
+			equal(
+				mod.mime("application/zip","previewable/*"),
+				false,
+				".mime(\"application/zip\",\"previewable/*\")"
+			);
+			equal(
+				mod.mime("application/xml","custom/*"),
+				true,
+				".mime(\"application/xml\",\"custom/*\")"
+			);
+
+			equal(
+				mod.mime("png","previewable/*"),
+				true,
+				".mime(\"png\",\"previewable/*\")"
+			);
+			equal(
+				mod.mime("xml","previewable/*"),
+				false,
+				".mime(\"xml\",\"previewable/*\")"
+			);
+			equal(
+				mod.mime("xml","custom/*"),
+				true,
+				".mime(\"xml\",\"custom/*\")"
+			);
+
+			equal(
+				mod.mime("png","custom/*,image/*"),
+				true,
+				".mime(\"png\",\"custom/*,image/*\")"
+			);
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>

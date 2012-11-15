@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "util/base64";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest(".encode()", function() {
+
+		require([moduleName], function(mod){
+
+			var obj	= { A:1, B:2, C:3 },
+				arr	= [ "A", "B", "C" ],
+				str	= "A B C",
+				int	= 123;
+
+			equal(
+				mod.encode(obj),
+				"eyJBIjoxLCJCIjoyLCJDIjozfQ==",
+				".encode({ A:1, B:2, C:3 })"
+			);
+			equal(
+				mod.encode(arr),
+				"WyJBIiwiQiIsIkMiXQ==",
+				".encode([ \"A\", \"B\", \"C\" ])"
+			);
+			equal(
+				mod.encode(str),
+				"IkEgQiBDIg==",
+				".encode(\"A B C\")"
+			);
+			equal(
+				mod.encode(str,true),
+				"QSBCIEM=",
+				".encode(\"A B C\",true)"
+			);
+			equal(
+				mod.encode(int),
+				"MTIz",
+				".encode(123)"
+			);
+			equal(
+				mod.encode(int,true),
+				"MTIz",
+				".encode(123,true)"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest(".decode()", function() {
+
+		require([moduleName], function(mod){
+
+			var obj	= { A:1, B:2, C:3 },
+				arr	= [ "A", "B", "C" ],
+				str	= "A B C",
+				int	= 123;
+
+			deepEqual(
+				mod.decode("eyJBIjoxLCJCIjoyLCJDIjozfQ=="),
+				obj,
+				".decode(\"eyJBIjoxLCJCIjoyLCJDIjozfQ==\")"
+			);
+			deepEqual(
+				mod.decode("WyJBIiwiQiIsIkMiXQ=="),
+				arr,
+				".decode(\"WyJBIiwiQiIsIkMiXQ==\")"
+			);
+			equal(
+				mod.decode("IkEgQiBDIg=="),
+				str,
+				".decode(\"IkEgQiBDIg==\")"
+			);
+			equal(
+				mod.decode("QSBCIEM=",true),
+				str,
+				".decode(\"QSBCIEM=\",true)"
+			);
+			equal(
+				mod.decode("MTIz"),
+				123,
+				".decode(\"MTIz\")"
+			);
+			equal(
+				mod.decode("MTIz",true),
+				123,
+				".decode(\"MTIz\",true)"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

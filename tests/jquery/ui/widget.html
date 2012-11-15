@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script type="text/javascript">function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script type="text/javascript">
+	base("../../../");
+
+	var require = {
+			baseUrl: "src/script"
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div id="widget01"></div>
+		<div id="widget02"></div>
+		<div id="widget03"></div>
+		<div id="widgetExt"></div>
+	</div>
+	<script type="text/javascript">
+	var moduleName = "jquery/ui/widget";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$.widget()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			// Define a subclass
+			jQuerySub = $.sub();
+
+			$.widget('ui.widget01',{
+
+			});
+
+			$.widget('jQuery.ui.widget02',{
+
+			});
+
+			$.widget('jQuerySub.ui.widget03',{
+
+			});
+
+			$.widget('jQuerySub.ui.widgetExt',{
+
+			});
+
+			$('#widget01').widget01();
+			$('#widget02').widget02();
+			jQuerySub('#widget03').widget03();
+			jQuerySub('#widgetExt').widgetExt();
+
+			// classes
+			equal(
+				$.isFunction(jQuery.ui.widget01),
+				true,
+				"$.isFunction(jQuery.ui.widget01)"
+			);
+
+			equal(
+				$.isFunction(jQuery.ui.widget02),
+				true,
+				"$.isFunction(jQuery.ui.widget02)"
+			);
+
+			equal(
+				jQuery.ui.widget03 === undefined,
+				true,
+				"jQuery.ui.widget03 === undefined"
+			);
+
+			equal(
+				$.isFunction(jQuerySub.ui.widget03),
+				true,
+				"$.isFunction(jQuerySub.ui.widget03)"
+			);
+
+			equal(
+				$.isFunction(jQuerySub.ui.widgetExt),
+				true,
+				"$.isFunction(jQuerySub.ui.widgetExt)"
+			);
+
+			// bridged calls
+			equal(
+				$.isFunction(jQuery.fn.widget01),
+				true,
+				"$.isFunction(jQuery.fn.widget01)"
+			);
+
+			equal(
+				$.isFunction(jQuery.fn.widget02),
+				true,
+				"$.isFunction(jQuery.fn.widget02)"
+			);
+
+			equal(
+				jQuery.fn.widget03 === undefined,
+				true,
+				"jQuery.fn.widget03 === undefined"
+			);
+
+			equal(
+				$.isFunction(jQuerySub.fn.widget01),
+				true,
+				"$.isFunction(jQuerySub.fn.widget01)"
+			);
+
+			equal(
+				$.isFunction(jQuerySub.fn.widget02),
+				true,
+				"$.isFunction(jQuerySub.fn.widget02)"
+			);
+
+			equal(
+				$.isFunction(jQuerySub.fn.widget03),
+				true,
+				"$.isFunction(jQuerySub.fn.widget03)"
+			);
+
+			equal(
+				$.isFunction(jQuerySub.fn.widgetExt),
+				true,
+				"$.isFunction(jQuerySub.fn.widgetExt)"
+			);
+
+			// instances
+			equal(
+				$('#widget01').data('widget01') instanceof jQuery.ui.widget01,
+				true,
+				"$('#widget01').data('widget01') instanceof jQuery.ui.widget01"
+			);
+
+			equal(
+				$('#widget02').data('widget02') instanceof jQuery.ui.widget02,
+				true,
+				"$('#widget02').data('widget02') instanceof jQuery.ui.widget02"
+			);
+
+			equal(
+				$('#widget03').data('jQuerySub-ui-widget03') instanceof jQuerySub.ui.widget03,
+				true,
+				"$('#widget03').data('jQuerySub-ui-widget03') instanceof jQuerySub.ui.widget03"
+			);
+
+			equal(
+				$('#widget03').data('jQuerySubUiWidget03') instanceof jQuerySub.ui.widget03,
+				true,
+				"CamelCase data access: $('#widget03').data('jQuerySubUiWidget03') instanceof jQuerySub.ui.widget03"
+			);
+
+			equal(
+				$('#widgetExt').data('jQuerySub-ui-widgetExt') instanceof jQuerySub.ui.widgetExt,
+				true,
+				"$('#widgetExt').data('jQuerySub-ui-widgetExt') instanceof jQuerySub.ui.widgetExt"
+			);
+
+			equal(
+				$('#widgetExt').data('jQuerySubUiWidgetExt') instanceof jQuerySub.ui.widgetExt,
+				true,
+				"CamelCase data access: $('#widgetExt').data('jQuerySubUiWidgetExt') instanceof jQuerySub.ui.widgetExt"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script",
+			config: {
+				"jquery/i18n": {
+					region: ["de-DE","en-US"]
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "jquery/i18n";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	asyncTest("method", function() {
+
+		require(["jquery", moduleName, "$i18n!USD", "$i18n!EUR"], function ($) {
+
+				var fNumber = 123456.7890,
+					fDate = new Date(2011,05,15,12,30,20);
+					
+				// shortHandle
+				equal(
+					$.i18n( 'n', fNumber ),
+					'123.456,79',
+					"$.i18n( 'n', fNumber ) == '123.456,79'"
+				);	
+				equal(
+					$.i18n( 'c', fNumber ),
+					'123.456,79 €',
+					"$.i18n( 'c', fNumber ) == '123.456,79 €'"
+				);
+				equal(
+					$.i18n( 'c', fNumber, {region:'de-DE',currency:'USD'} ),
+					'123.456,79 $',
+					"$.i18n( 'c', fNumber, {region:'de-DE',currency:'USD'} ) == '123.456,79 $'"
+				);
+				equal(
+					$.i18n( 'c', fNumber, {region:'en-US'} ),
+					'$123,456.79',
+					"$.i18n( 'c', fNumber, {region:'en-US'} ) == '$123,456.79'"
+				);
+				equal(
+					$.i18n( 'c', fNumber, {region:'en-US',currency:'EUR'} ),
+					'€123,456.79',
+					"$.i18n( 'c', fNumber, {region:'en-US',currency:'EUR'} ) == '€123,456.79'"
+				);
+				equal(
+					$.i18n( 'p', fNumber ),
+					'123.456,79%',
+					"$.i18n( 'p', fNumber ) == '123.456,79%'"
+				);
+				// formatNumber --> de-DE
+				equal(
+					$.i18n.formatNumber( fNumber, 'n' ),
+					'123.456,79',
+					"$.i18n.formatNumber( fNumber, 'n' ) == '123.456,79'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n0' ),
+					'123.457',
+					"$.i18n.formatNumber( fNumber, 'n0' ) == '123.457'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n1' ),
+					'123.456,8',
+					"$.i18n.formatNumber( fNumber, 'n1' ) == '123.456,8'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n2' ),
+					'123.456,79',
+					"$.i18n.formatNumber( fNumber, 'n2' ) == '123.456,79'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n3' ),
+					'123.456,789',
+					"$.i18n.formatNumber( fNumber, 'n3' ) == '123.456,789'"
+				);
+				// formatNumber --> en-US
+				equal(
+					$.i18n.formatNumber( fNumber, 'n', {region:'en-US'} ),
+					'123,456.79',
+					"$.i18n.formatNumber( fNumber, 'n', {region:'en-US'} ) == '123,456.79'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n0', {region:'en-US'} ),
+					'123,457',
+					"$.i18n.formatNumber( fNumber, 'n0', {region:'en-US'} ) == '123,457'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n1', {region:'en-US'} ),
+					'123,456.8',
+					"$.i18n.formatNumber( fNumber, 'n1', {region:'en-US'} ) == '123,456.8'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n2', {region:'en-US'} ),
+					'123,456.79',
+					"$.i18n.formatNumber( fNumber, 'n2', {region:'en-US'} ) == '123,456.79'"
+				);
+				equal(
+					$.i18n.formatNumber( fNumber, 'n3', {region:'en-US'} ),
+					'123,456.789',
+					"$.i18n.formatNumber( fNumber, 'n3', {region:'en-US'} ) == '123,456.789'"
+				);
+				// parseNumber --> de-DE
+				equal(
+					$.i18n.parseNumber( '123.456' ),
+					123456,
+					"$.i18n.parseNumber( '123.456' ) == 123456"
+				);
+				equal(
+					$.i18n.parseNumber( '123.456,8' ),
+					123456.8,
+					"$.i18n.parseNumber( '123.456,8' ) == 123456.8"
+				);
+				equal(
+					$.i18n.parseNumber( '123.456,79' ),
+					123456.79,
+					"$.i18n.parseNumber( '123.456,79' ) == 123456.79"
+				);
+				equal(
+					$.i18n.parseNumber( '123.456,789' ),
+					123456.789,
+					"$.i18n.parseNumber( '123.456,789' ) == 123456.789"
+				);
+				// parseNumber --> en-US
+				equal(
+					$.i18n.parseNumber( '123,456', {region:'en-US'} ),
+					123456,
+					"$.i18n.parseNumber( '123,456', {region:'en-US'} ) == 123456"
+				);
+				equal(
+					$.i18n.parseNumber( '123,456.8', {region:'en-US'} ),
+					123456.8,
+					"$.i18n.parseNumber( '123,456.8', {region:'en-US'} ) == 123456.8"
+				);
+				equal(
+					$.i18n.parseNumber( '123,456.79', {region:'en-US'} ),
+					123456.79,
+					"$.i18n.parseNumber( '123,456.79', {region:'en-US'} ) == 123456.79"
+				);
+				equal(
+					$.i18n.parseNumber( '123,456.789', {region:'en-US'} ),
+					123456.789,
+					"$.i18n.parseNumber( '123,456.789', {region:'en-US'} ) == 123456.789"
+				);
+				// formatDate --> de-DE
+				equal(
+					$.i18n.formatDate( fDate, 'd' ),
+					'15.06.2011',
+					"$.i18n.parseDate( fDate, 'd' ) == '15.06.2011'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'D' ),
+					'Mittwoch, 15. Juni 2011',
+					"$.i18n.parseDate( fDate, 'D' ) == 'Mittwoch, 15. Juni 2011'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'l' ),
+					'15.06.2011 12:30',
+					"$.i18n.parseDate( fDate, 'l' ) == '15.06.2011 12:30'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'L' ),
+					'15.06.2011 12:30:20',
+					"$.i18n.parseDate( fDate, 'L' ) == '15.06.2011 12:30:20'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'f' ),
+					'Mittwoch, 15. Juni 2011 12:30',
+					"$.i18n.parseDate( fDate, 'f' ) == 'Mittwoch, 15. Juni 2011 12:30'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'F' ),
+					'Mittwoch, 15. Juni 2011 12:30:20',
+					"$.i18n.parseDate( fDate, 'F' ) == 'Mittwoch, 15. Juni 2011 12:30:20'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 't' ),
+					'12:30',
+					"$.i18n.parseDate( fDate, 't' ) == '12:30'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'T' ),
+					'12:30:20',
+					"$.i18n.parseDate( fDate, 'T' ) == '12:30:20'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'Y' ),
+					'Juni 2011',
+					"$.i18n.parseDate( fDate, 'Y' ) == 'Juni 2011'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'M' ),
+					'15 Juni',
+					"$.i18n.parseDate( fDate, 'M' ) == '15 Juni'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'S' ),
+					'2011/06/15 12:30:20',
+					"$.i18n.parseDate( fDate, 'S' ) == '2011/06/15 12:30:20'"
+				);
+				// formatDate --> en-US
+				equal(
+					$.i18n.formatDate( fDate, 'd', {region:'en-US'} ),
+					'6/15/2011',
+					"$.i18n.parseDate( fDate, 'd', {region:'en-US'} ) == '6/15/2011'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'D', {region:'en-US'} ),
+					'Wednesday, June 15, 2011',
+					"$.i18n.parseDate( fDate, 'D', {region:'en-US'} ) == 'Wednesday, June 15, 2011'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'l', {region:'en-US'} ),
+					'6/15/2011 12:30 PM',
+					"$.i18n.parseDate( fDate, 'l', {region:'en-US'} ) == '6/15/2011 12:30 PM'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'L', {region:'en-US'} ),
+					'6/15/2011 12:30:20 PM',
+					"$.i18n.parseDate( fDate, 'L', {region:'en-US'} ) == '6/15/2011 12:30:20 PM'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'f', {region:'en-US'} ),
+					'Wednesday, June 15, 2011 12:30 PM',
+					"$.i18n.parseDate( fDate, 'f', {region:'en-US'} ) == 'Wednesday, June 15, 2011 12:30 PM'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'F', {region:'en-US'} ),
+					'Wednesday, June 15, 2011 12:30:20 PM',
+					"$.i18n.parseDate( fDate, 'F', {region:'en-US'} ) == 'Wednesday, June 15, 2011 12:30:20 PM'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 't', {region:'en-US'} ),
+					'12:30 PM',
+					"$.i18n.parseDate( fDate, 't', {region:'en-US'} ) == '12:30 PM'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'T', {region:'en-US'} ),
+					'12:30:20 PM',
+					"$.i18n.parseDate( fDate, 'T', {region:'en-US'} ) == '12:30:20 PM'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'Y', {region:'en-US'} ),
+					'2011 June',
+					"$.i18n.parseDate( fDate, 'Y', {region:'en-US'} ) == '2011 June'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'M', {region:'en-US'} ),
+					'June 15',
+					"$.i18n.parseDate( fDate, 'M', {region:'en-US'} ) == 'June 15'"
+				);
+				equal(
+					$.i18n.formatDate( fDate, 'S', {region:'en-US'} ),
+					'2011/06/15 12:30:20',
+					"$.i18n.parseDate( fDate, 'S', {region:'en-US'} ) == '2011/06/15 12:30:20'"
+				);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<style>
+	.box_1 {
+		position:    absolute;
+		margin:      15px;
+		border:      solid 5px;
+		padding:     10px;
+		width:       100px;
+		height:      100px
+	}
+	.box_2 {
+		position:    absolute;
+		margin:      30px;
+		border:      solid 10px;
+		padding:     20px;
+		width:       200px;
+		height:      200px
+	}
+	.box_3 {
+		position:    absolute;
+		margin:      45px;
+		border:      solid 15px;
+		padding:     30px;
+		width:       300px;
+		height:      300px
+	}
+	</style>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div class="box box_1"></div>
+		<div class="box box_2"></div>
+		<div class="box box_3"></div>
+	</div>
+	<script>
+	var moduleName = "jquery/fn/equalsize";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest("$().width()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			// WIDTH
+			equal(
+				$('.box_1').width(),
+				100,
+				"$('.box_1').width()"
+			);
+			equal(
+				$('.box_2').width(),
+				200,
+				"$('.box_2').width()"
+			);
+			equal(
+				$('.box_3').width(),
+				300,
+				"$('.box_3').width()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalWidth()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("width","").equalWidth()
+			equal(
+				$('.box_1').width(),
+				300,
+				"$('.box_1').width()"
+			);
+			equal(
+				$('.box_2').width(),
+				300,
+				"$('.box_2').width()"
+			);
+			equal(
+				$('.box_3').width(),
+				300,
+				"$('.box_3').width()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalInnerWidth()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("width","").equalInnerWidth()
+			equal(
+				$('.box_1').width(),
+				340,
+				"$('.box_1').width()"
+			);
+			equal(
+				$('.box_2').width(),
+				320,
+				"$('.box_2').width()"
+			);
+			equal(
+				$('.box_3').width(),
+				300,
+				"$('.box_3').width()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalOuterWidth()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("width","").equalOuterWidth()
+			equal(
+				$('.box_1').width(),
+				360,
+				"$('.box_1').width()"
+			);
+			equal(
+				$('.box_2').width(),
+				330,
+				"$('.box_2').width()"
+			);
+			equal(
+				$('.box_3').width(),
+				300,
+				"$('.box_3').width()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalOuterWidth(true)", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("width","").equalOuterWidth(true)
+			equal(
+				$('.box_1').width(),
+				420,
+				"$('.box_1').width()"
+			);
+			equal(
+				$('.box_2').width(),
+				360,
+				"$('.box_2').width()"
+			);
+			equal(
+				$('.box_3').width(),
+				300,
+				"$('.box_3').width()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().height()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			// HEIGHT
+			equal(
+				$('.box_1').height(),
+				100,
+				"$('.box_1').height()"
+			);
+			equal(
+				$('.box_2').height(),
+				200,
+				"$('.box_2').height()"
+			);
+			equal(
+				$('.box_3').height(),
+				300,
+				"$('.box_3').height()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalHeight()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("height","").equalHeight()
+			equal(
+				$('.box_1').height(),
+				300,
+				"$('.box_1').height()"
+			);
+			equal(
+				$('.box_2').height(),
+				300,
+				"$('.box_2').height()"
+			);
+			equal(
+				$('.box_3').height(),
+				300,
+				"$('.box_3').height()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalInnerHeight()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("height","").equalInnerHeight()
+			equal(
+				$('.box_1').height(),
+				340,
+				"$('.box_1').height()"
+			);
+			equal(
+				$('.box_2').height(),
+				320,
+				"$('.box_2').height()"
+			);
+			equal(
+				$('.box_3').height(),
+				300,
+				"$('.box_3').height()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalOuterHeight()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("height","").equalOuterHeight()
+			equal(
+				$('.box_1').height(),
+				360,
+				"$('.box_1').height()"
+			);
+			equal(
+				$('.box_2').height(),
+				330,
+				"$('.box_2').height()"
+			);
+			equal(
+				$('.box_3').height(),
+				300,
+				"$('.box_3').height()"
+			);
+
+			start();
+		});
+	});
+
+	asyncTest("$().equalOuterHeight(true)", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			$('.box').css("height","").equalOuterHeight(true)
+			equal(
+				$('.box_1').height(),
+				420,
+				"$('.box_1').height()"
+			);
+			equal(
+				$('.box_2').height(),
+				360,
+				"$('.box_2').height()"
+			);
+			equal(
+				$('.box_3').height(),
+				300,
+				"$('.box_3').height()"
+			);
+
+			start();
+		});
+
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl	: "src/script",
+			config: {
+				"jquery/dict": {
+					region:		'de-DE'
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div class="dict">
+			<span>{Ok}</span>
+			<span>{Cancel}</span>
+			{Close}
+		</div>
+		<div class="dict">
+			<span><strong>{Apply}</strong> {Cancel}</span>
+			{Close}
+			{{Apply}}
+				<span>${Close}</span>
+			{{/Apply}}
+		</div>
+	</div>
+	<script>
+	var moduleName = "jquery/dict";
+
+	module(moduleName);
+
+	// Test block 1
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+
+	var dictDataDE = {
+			A: {"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+			B: {"Hello":"Hallo","Mr":"Herr","Mrs":"Frau"}
+		},
+		dictDataEN = {
+			A: {"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"},
+			B: {"Hello":"Hello","Mr":"Sir","Mrs":"Madam"}
+		};
+
+	// Test block 2
+	asyncTest("$.dictionary()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var dictMapDE,
+				dictMapEN;
+
+			dictMapDE = $.dictionary("test/jquery/dict-2-A", [dictDataDE.A]).dict;
+			deepEqual(
+				dictMapDE,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+				"Define dictionary \"test/jquery/dict-2-A\" with data and default options."
+			);
+
+			dictMapDE = $.dictionary("test/jquery/dict-2-A", [dictDataDE.A], {region: "de-DE"}).dict;
+			deepEqual(
+				dictMapDE,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+				"Define dictionary \"test/jquery/dict-2-A\" with data and region \"de-DE\" option."
+			);
+
+			dictMapEN = $.dictionary("test/jquery/dict-2-A", [dictDataEN.A], {region: "en-US"}).dict;
+			deepEqual(
+				dictMapEN,
+				{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"},
+				"Define dictionary \"test/jquery/dict-2-A\" with data and region \"en-US\" option."
+			);
+
+			dictMapDE = $.dictionary("test/jquery/dict-2-B", ["test/jquery/dict-2-A", dictDataDE.B]).dict;
+			deepEqual(
+				dictMapDE,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen","Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
+				"Define dictionary \"test/jquery/dict-2-B\" with \"test/jquery/dict-2-A\" + data and default options."
+			);
+
+			dictMapDE = $.dictionary("test/jquery/dict-2-B", ["test/jquery/dict-2-A", dictDataDE.B], {region: "de-DE"}).dict;
+			deepEqual(
+				dictMapDE,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen","Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
+				"Define dictionary \"test/jquery/dict-2-B\" with \"test/jquery/dict-2-A\" + data and region \"de-DE\" option."
+			);
+
+			dictMapEN = $.dictionary("test/jquery/dict-2-B", ["test/jquery/dict-2-A", dictDataEN.B], {region: "en-US"}).dict;
+			deepEqual(
+				dictMapEN,
+				{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close","Hello":"Hello","Mr":"Sir","Mrs":"Madam"},
+				"Define dictionary \"test/jquery/dict-2-B\" with \"test/jquery/dict-2-A\" + data and region \"en-US\" option."
+			);
+
+			dictMapDE = $.dictionary("test/jquery/dict-2-A", [dictDataDE.B]).dict;
+			deepEqual(
+				dictMapDE,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen","Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
+				"Re-define (extend) dict \"test/jquery/dict-2-A\" with data and default options."
+			);
+
+			dictMapEN = $.dictionary("test/jquery/dict-2-A", [dictDataEN.B], {region: "en-US"}).dict;
+			deepEqual(
+				dictMapEN,
+				{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close","Hello":"Hello","Mr":"Sir","Mrs":"Madam"},
+				"Re-define (extend) dict \"test/jquery/dict-2-A\" with data and region \"en-US\" option."
+			);
+			
+			dictMapDE = $.dictionary([dictDataDE.A, dictDataDE.B]).dict;
+			deepEqual(
+				dictMapDE,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen","Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
+				"Define anonymous dictionary with data + data and default options."
+			);
+
+			dictMapDE = $.dictionary([dictDataEN.A, dictDataEN.B]).dict;
+			deepEqual(
+				dictMapEN,
+				{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close","Hello":"Hello","Mr":"Sir","Mrs":"Madam"},
+				"Define anonymous dictionary with data + data and region \"en-US\" option."
+			);
+
+			start();
+		});
+	});
+
+	// Test block 3
+	asyncTest("$.dict()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+				$.dictionary("test/jquery/dict-3-A", [dictDataDE.A]);
+			deepEqual(
+				$.dict("test/jquery/dict-3-A").dict,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+				"Access previous defined dictionary \"test/jquery/dict-3-A\" by default options."
+			);
+
+			deepEqual(
+				$.dict("test/jquery/dict-3-A", {region: "de-DE"}).dict,
+				{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
+				"Access previous defined dictionary \"test/jquery/dict-3-A\" by region \"de-DE\" option."
+			);
+
+			$.dictionary("test/jquery/dict-3-A", [dictDataEN.A], {region: "en-US"});
+			deepEqual(
+				$.dict("test/jquery/dict-3-A", {region: "en-US"}).dict,
+				{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"},
+				"Access previous defined dictionary \"test/jquery/dict-3-A\" by region \"en-US\" option."
+			);
+
+			start();
+		});
+	});
+
+	// Test block 4
+	asyncTest("$.dict().translate()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var dictDE = $.dictionary("test/jquery/dict-4-A", [dictDataDE.A]),
+				dictEN = $.dictionary("test/jquery/dict-4-A", [dictDataEN.A], {region: "en-US"});
+
+			// translate --> de-DE
+			equal(
+				dictDE.translate('Apply'),
+				'Übernehmen',
+				"dictDE.translate('Apply') == 'Übernehmen'"
+			);
+			equal(
+				dictDE.translate('Close'),
+				'Schließen',
+				"dictDE.translate('Close') == 'Schließen'"
+			);
+			equal(
+				dictDE.translate('{Apply}'),
+				'Übernehmen',
+				"dictDE.translate('{Apply}') == 'Übernehmen'"
+			);
+			equal(
+				dictDE.translate('{Close}'),
+				'Schließen',
+				"dictDE.translate('{Close}') == 'Schließen'"
+			);
+			// translate --> en-US
+			equal(
+				dictEN.translate('Apply'),
+				'Apply',
+				"dictEN.translate('Apply') == 'Apply'"
+			);
+			equal(
+				dictEN.translate('Close'),
+				'Close',
+				"dictEN.translate('Close') == 'Close'"
+			);
+			equal(
+				dictEN.translate('{Apply}'),
+				'Apply',
+				"dictEN.translate('{Apply}') == 'Apply'"
+			);
+			equal(
+				dictEN.translate('{Close}'),
+				'Close',
+				"dictEN.translate('{Close}') == 'Close'"
+			);
+
+			start();
+		});
+	});
+
+	// Test block 5
+	asyncTest("$.dict().parse()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var dictDE = $.dictionary("test/jquery/dict-5-A", [dictDataDE.A]),
+				dictEN = $.dictionary("test/jquery/dict-5-A", [dictDataEN.A], {region: "en-US"});
+
+			// parse --> de-DE
+			equal(
+				dictDE.parse('{Apply} {Cancel}'),
+				'Übernehmen Abbrechen',
+				"dictDE.parse('{Apply} {Cancel}') == 'Übernehmen Abbrechen'"
+			);
+			equal(
+				dictDE.parse('{Ok} {Close}'),
+				'Ok Schließen',
+				"dictDE.parse('{Ok} {Close}') == 'Ok Schließen'"
+			);
+			// parse --> en-US
+			equal(
+				dictEN.parse('{Apply} {Cancel}'),
+				'Apply Cancel',
+				"dictEN.parse('{Apply} {Cancel}') == 'Apply Cancel'"
+			);
+			equal(
+				dictEN.parse('{Ok} {Close}'),
+				'Ok Close',
+				"dictEN.parse('{Ok} {Close}') == 'Ok Close'"
+			);
+
+			start();
+		});
+	});
+
+	// Test block 6
+	asyncTest("$().dictParse()", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var dictDE = $.dictionary("test/jquery/dict-6-A", [dictDataDE.A]),
+				dictEN = $.dictionary("test/jquery/dict-6-A", [dictDataEN.A], {region: "en-US"});
+
+			// .dictParse --> de-DE
+			equal(
+				$('.dict').clone().dictParse('test/jquery/dict-6-A').text(),
+				'\n			{Ok}\n			{Cancel}\n			Schließen\n		\n			{Apply} {Cancel}\n			Schließen\n			{{Apply}}\n				${Close}\n			{{/Apply}}\n		',
+				"$('.dict').clone().dictParse('test/jquery/dict-6-A').text()"
+			);
+			equal(
+				$('.dict').clone().dictParse('test/jquery/dict-6-A',true).text(),
+				'\n			Ok\n			Abbrechen\n			Schließen\n		\n			Übernehmen Abbrechen\n			Schließen\n			{{Apply}}\n				${Close}\n			{{/Apply}}\n		',
+				"$('.dict').clone().dictParse('test/jquery/dict-6-A',true).text()"
+			);
+			equal(
+				$('.dict').clone().dictParse(dictDE,true).text(),
+				'\n			Ok\n			Abbrechen\n			Schließen\n		\n			Übernehmen Abbrechen\n			Schließen\n			{{Apply}}\n				${Close}\n			{{/Apply}}\n		',
+				"$('.dict').clone().dictParse(dictDE,true).text()"
+			);
+			// .dictParse --> en-US
+			equal(
+				$('.dict').clone().dictParse('test/jquery/dict-6-A', {region: 'en-US'}).text(),
+				'\n			{Ok}\n			{Cancel}\n			Close\n		\n			{Apply} {Cancel}\n			Close\n			{{Apply}}\n				${Close}\n			{{/Apply}}\n		',
+				"$('.dict').clone().dictParse('test/jquery/dict-6-A', {region: 'en-US'}).text()"
+			);
+			equal(
+				$('.dict').clone().dictParse('test/jquery/dict-6-A', true, {region: 'en-US'}).text(),
+				'\n			Ok\n			Cancel\n			Close\n		\n			Apply Cancel\n			Close\n			{{Apply}}\n				${Close}\n			{{/Apply}}\n		',
+				"$('.dict').clone().dictParse('test/jquery/dict-6-A', true, {region: 'en-US'}).text()"
+			);
+			equal(
+				$('.dict').clone().dictParse(dictEN,true).text(),
+				'\n			Ok\n			Cancel\n			Close\n		\n			Apply Cancel\n			Close\n			{{Apply}}\n				${Close}\n			{{/Apply}}\n		',
+				"$('.dict').clone().dictParse(dictEN,true).text()"
+			);
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>

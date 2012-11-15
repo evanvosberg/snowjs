@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../../../");
+
+	var require = {
+			baseUrl	: "src/script",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div class="emchange"></div>
+		<div class="resize"></div>
+		<div class="show"></div>
+		<div class="hide"></div>
+		<div class="toggle"></div>
+	</div>
+	<script>
+	var moduleName = "jquery/event/special/dom";
+
+	module(moduleName);
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(!mod, moduleName + " has no module object.");
+
+			start();
+		});
+	});
+
+	asyncTest(".on(...)", function() {
+
+		require(["jquery", moduleName], function ($) {
+
+			var t = {
+					emchange:	0,
+					resize:		0,
+					show:		0,
+					hide:		0,
+					toggle:		0
+				},
+				emchange = $('.emchange')
+					.on( 'emchange', function( event ){
+						t.emchange += 1;
+					}),
+				resize = $('.resize')
+					.on( 'resize', function( event ){
+						t.resize += 1;
+					}),
+				show = $('.show')
+					.hide()
+					.on( 'show', function( event ){
+						t.show += 1;
+					}),
+				hide = $('.hide')
+					.on( 'hide', function( event ){
+						t.hide += 1;
+					}),
+				toggle = $('.toggle')
+					.on( 'toggle', function( event ){
+						t.toggle += 1;
+					});
+
+			setTimeout(function(){
+
+				$('html').css('font-size','8px');
+
+				resize.width(200);
+
+				show.show();
+
+				hide.hide();
+
+				toggle.hide();
+
+    		},100);
+
+			setTimeout(function(){
+
+				$('html').css('font-size','10px');
+
+				resize.width(300);
+
+				show.hide();
+
+				hide.show();
+
+				toggle.show();
+
+    		},200);
+
+			setTimeout(function(){
+
+				equal(
+					t.emchange,
+					2,
+					".on('emchange')"
+				);
+
+				equal(
+					t.resize,
+					2,
+					".on('resize')"
+				);
+
+				equal(
+					t.show,
+					1,
+					".on('show')"
+				);
+
+				equal(
+					t.hide,
+					1,
+					".on('hide')"
+				);
+
+				equal(
+					t.toggle,
+					2,
+					".on('toggle')"
+				);
+
+				$('#qunit-fixture *').off();
+
+				start();
+
+    		},300);
+		});
+
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src/script",
+			config: {
+				"jquery/metaparse": {
+					autoparse:	true,
+					trigger:	false
+				}
+			}
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/script/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<div id="metaparseA" class="metaparse .hide()"></div>
+		<div id="metaparseB" class="jQuerySub.width(300).xTest()"></div>
+		<div id="metaparseC" class="metaparse .height(50)"></div>
+		<div id="metaparseD" class="metaparse .text('Hello world!')"></div>
+		<div id="metaparseE" class="metaparse .fadeOut(0).css({'background-color':'rgb(255, 0, 0)'})"></div>
+		<div id="metaparseF" class="metaparse .appendTo('#metaparseA')"></div>
+
+		<div id="metaparseG" metaparse=".height(100)"></div>
+		<div id="metaparseH" data-metaparse=".height(200)"></div>
+		<div id="metaparseI"><var>.height(300)</var></div>
+		<div id="metaparseJ" class="metaparse jQuerySub.require(['jquery/fn/equalsize']).innerWidth(400)"></div>
+		<div id="metaparseK" data-metaparse=".require(['jquery/fn/equalsize']).innerHeight(600)"></div>
+	</div>
+	<script>
+	var moduleName = "jquery/metaparse";
+
+	module(moduleName);
+
+	asyncTest("$().metaparse()", function() {
+
+		require(["jquery", moduleName], function ($) {
+			jQuerySub = $.sub();
+			jQuerySub.fn.xTest = function(){
+				return this.each(function(){
+					$(this).text('jQuerySubclass Test');
+				});
+			};
+
+			$(document)
+				.on("metaparse", function () {
+
+					$('#metaparseB').metaparse();
+					$('#metaparseG').metaparse({type:'attr',name:'metaparse'});
+					$('#metaparseH').metaparse({type:'html5',name:'metaparse'});
+					$('#metaparseI').metaparse({type:'elem',name:'var'});
+
+					equal(
+						$('#metaparseA').children('#metaparseF').length,
+						1,
+						"$('#metaparseA').children('#metaparseF').length"
+					);
+					equal(
+						$('#metaparseA').css('display'),
+						'none',
+						"$('#metaparseA').css('display')"
+					);
+					equal(
+						$('#metaparseB').width(),
+						300,
+						"$('#metaparseB').width()"
+					);
+					equal(
+						$('#metaparseB').text(),
+						'jQuerySubclass Test',
+						"$('#metaparseB').text()"
+					);
+					equal(
+						$('#metaparseC').height(),
+						50,
+						"$('#metaparseC').height()"
+					);
+					equal(
+						$('#metaparseD').text(),
+						'Hello world!',
+						"$('#metaparseD').text()"
+					);
+					equal(
+						$('#metaparseE').css('background-color'),
+						'rgb(255, 0, 0)',
+						"$('#metaparseE').css('background-color')"
+					);
+					equal(
+						$('#metaparseE').css('display'),
+						'none',
+						"$('#metaparseE').css('display')"
+					);
+
+					equal(
+						$('#metaparseG').height(),
+						100,
+						"$('#metaparseG').height()"
+					);
+					equal(
+						$('#metaparseH').height(),
+						200,
+						"$('#metaparseH').height()"
+					);
+					equal(
+						$('#metaparseI').height(),
+						300,
+						"$('#metaparseI').height()"
+					);
+
+					$('#metaparseK')
+						.on("metaparse",function(){
+							// wait for metaparse ready (load module async)
+							equal(
+								$('#metaparseJ').innerWidth(),
+								400,
+								"$('#metaparseJ').innerWidth()"
+							);
+							equal(
+								$('#metaparseK').innerHeight(),
+								600,
+								"$('#metaparseK').innerHeight()"
+							);
+
+							start();
+						})
+						.metaparse({
+							type:'data',
+							name:'metaparse',
+							trigger:true
+						});
+				});
+		});
+
+	});
+
+	asyncTest("require", function() {
+		require([moduleName], function(mod){
+			ok(true, moduleName + " loaded via require.");
+
+			ok(mod, moduleName + " module object exists.");
+
+			start();
+		});
+	});
+	</script>
+</body>
+</html>
