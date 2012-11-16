@@ -8,7 +8,7 @@ node_modules
 dist
 submodule-bridge
 research
-#Symlinks 'source' begin
+#Symlinks 'submodule' begin
 src/jquery/color/svg-names.js
 src/jquery/color.js
 src/jquery/cookie.js
@@ -44,7 +44,19 @@ src/jquery/ui/dialog.css
 src/jquery/ui/dialog.js
 src/jquery/ui/draggable.js
 src/jquery/ui/droppable.js
-src/jquery/ui/images
+src/jquery/ui/images/ui-bg_flat_0_aaaaaa_40x100.png
+src/jquery/ui/images/ui-bg_flat_75_ffffff_40x100.png
+src/jquery/ui/images/ui-bg_glass_55_fbf9ee_1x400.png
+src/jquery/ui/images/ui-bg_glass_65_ffffff_1x400.png
+src/jquery/ui/images/ui-bg_glass_75_dadada_1x400.png
+src/jquery/ui/images/ui-bg_glass_75_e6e6e6_1x400.png
+src/jquery/ui/images/ui-bg_glass_95_fef1ec_1x400.png
+src/jquery/ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+src/jquery/ui/images/ui-icons_222222_256x240.png
+src/jquery/ui/images/ui-icons_2e83ff_256x240.png
+src/jquery/ui/images/ui-icons_454545_256x240.png
+src/jquery/ui/images/ui-icons_888888_256x240.png
+src/jquery/ui/images/ui-icons_cd0a0a_256x240.png
 src/jquery/ui/menu.css
 src/jquery/ui/menu.js
 src/jquery/ui/mouse.js
@@ -69,4 +81,4 @@ src/jquery/ui/widget.js
 src/jquery.js
 src/require.js
 src/util/json.js
-#Symlinks 'source' end
+#Symlinks 'submodule' end

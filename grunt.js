@@ -96,16 +96,17 @@ module.exports = function (grunt) {
 			}
 		},
 
-		bridgelink: {
+		link: {
 			"submodule": {
-				dest: "<%= paths.src %>-bridgelinks",
+				dest: "<%= paths.src %>",
 				strip: /^[^\/]+\//,
 				src: "<%= paths.submodule %>-bridge/**/*"
 			}
 		},
 
 		clean: {
-			"dist": "<%= paths.dest %>/**/*"
+			"dist": "<%= paths.dest %>/**/*",
+			"submodule": "<%= paths.submodule %>-bridge/**/*"
 		},
 
 		copy: {
@@ -125,8 +126,7 @@ module.exports = function (grunt) {
 		},
 
 		qunit: {
-			"source": "<%= paths.test %>/**/*.html",
-			"dev": "<%= paths.test %>/require/script.html"
+			"source": "<%= paths.test %>/**/*.html"
 		},
 
 		lint: {
@@ -217,209 +217,6 @@ module.exports = function (grunt) {
 				passfail: false,
 				white: false
 			}
-		},
-
-		linkignore: {
-			"source": {
-				src: "<%= paths.src %>/**/*"
-			}
-		},
-
-		link: {
-			// {
-			//  link: "path/reletive/to/this/file",
-			//  to: "path/reletive/to/this/file"
-			// }
-			"Require-JS": [{
-				link: "<%= paths.src %>/require.js",
-				to: "submodule/requirejs/require.js"
-			}],
-			"jQuery": [{
-				link: "<%= paths.src %>/jquery.js",
-				to: "submodule/jquery/dist/jquery.js"
-			}],
-			"jQuery-UI": [{
-				link: "<%= paths.src %>/jquery/effects.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/blind.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-blind.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/bounce.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-bounce.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/clip.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-clip.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/drop.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-drop.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/explode.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-explode.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/fade.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-fade.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/fold.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-fold.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/highlight.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-highlight.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/pulsate.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-pulsate.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/scale.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-scale.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/shake.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-shake.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/slide.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-slide.js"
-			}, {
-				link: "<%= paths.src %>/jquery/effects/transfer.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-transfer.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/accordion.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.accordion.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/autocomplete.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.autocomplete.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/button.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.button.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/core.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.core.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/datepicker.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.datepicker.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/dialog.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.dialog.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/draggable.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.draggable.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/droppable.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.droppable.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/menu.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.menu.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/mouse.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.mouse.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/position.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.position.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/progressbar.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.progressbar.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/resizable.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.resizable.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/selectable.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.selectable.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/slider.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.slider.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/sortable.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.sortable.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/spinner.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.spinner.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/tabs.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.tabs.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/tooltip.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.tooltip.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/widget.js",
-				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.widget.js"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/images",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/images"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/accordion.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.accordion.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/autocomplete.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.autocomplete.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/button.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.button.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/core.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.core.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/datepicker.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.datepicker.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/dialog.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.dialog.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/menu.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.menu.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/progressbar.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.progressbar.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/resizable.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.resizable.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/selectable.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.selectable.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/slider.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.slider.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/spinner.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.spinner.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/tabs.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.tabs.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/theme.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.theme.css"
-			}, {
-				link: "<%= paths.src %>/jquery/ui/tooltip.css",
-				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.tooltip.css"
-			}],
-			"jQuery-Color": [{
-				link: "<%= paths.src %>/jquery/color.js",
-				to: "submodule/jquery-color/dist/jquery.color.js"
-			}, {
-				link: "<%= paths.src %>/jquery/color/svg-names.js",
-				to: "submodule/jquery-color/dist/jquery.color.svg-names.js"
-			}],
-			"jQuery-Datalink": [{
-				link: "<%= paths.src %>/jquery/fn/datalink.js",
-				to: "submodule/jquery-datalink/jquery.datalink.js"
-			}],
-			"jQuery-Template": [{
-				link: "<%= paths.src %>/jquery/tmpl.js",
-				to: "submodule/jquery-tmpl/jquery.tmpl.js"
-			}],
-			"jQuery-Metadata": [{
-				link: "<%= paths.src %>/jquery/metadata.js",
-				to: "submodule/jquery-metadata/jquery.metadata.js"
-			}],
-			"jQuery-Cookie": [{
-				link: "<%= paths.src %>/jquery/cookie.js",
-				to: "submodule/jquery-cookie/jquery.cookie.js"
-			}],
-			"jQuery-scrollTo": [{
-				link: "<%= paths.src %>/jquery/fn/scrollto.js",
-				to: "submodule/jquery.scrollTo/jquery.scrollTo.js"
-			}],
-			"JSON-js": [{
-				link: "<%= paths.src %>/util/json.js",
-				to: "submodule/JSON-js/json2.js"
-			}]
 		}
 	});
 
@@ -427,8 +224,8 @@ module.exports = function (grunt) {
 		var copyExp = /^\/\*\s*copy\(["|'](.*?)["|']\)\s*\*\/$/,
 			importExp = /\/\*\s*import\(["|'](.*?)["|']\)\s*\*\//g,
 
+			// Copy helper
 			srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
-
 			files = file.expandFiles(this.file.src);
 
 		// Walk files
@@ -450,15 +247,19 @@ module.exports = function (grunt) {
 						.forEach(function (abspath) {
 							var targetFile = abspath.replace(abspathExp, target);
 
+							// Copy file
 							file.copy(abspath, targetFile);
 
+							// Log success
 							log.ok("Copied: " + targetFile);
 						});
 				}
 				// Copy file
 				else {
+					// Copy file
 					file.copy(abspath, target);
 
+					// Log success
 					log.ok("Copied: " + target);
 				}
 			}
@@ -469,17 +270,28 @@ module.exports = function (grunt) {
 					return file.read($1);
 				});
 
+				// Write merged file
 				file.write(target, content);
 
+				// Log success
 				log.ok("Merged: " + target);
 			}
 		});
 	});
 
-	grunt.registerMultiTask("bridgelink", "Link bridged files.", function () {
-		var srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
+	grunt.registerMultiTask("link", "Link bridged files.", function () {
+		var ignoreList = [],
+			ignoreName = this.target,
+			ignoreBegin = "#Symlinks '" + ignoreName + "' begin",
+			ignoreEnd = "#Symlinks '" + ignoreName + "' end",
+			ignoreReplace = new RegExp("(^|\\n\\r?)(" + helper.escapeRegExp(ignoreBegin) + ")([^]*?)(" + helper.escapeRegExp(ignoreEnd) + ")", ""),
 
+			srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
 			files = file.expandFiles(this.file.src);
+
+		// Init ignore list of symlinks
+		ignoreList.push("");
+		ignoreList.push(ignoreBegin);
 
 		// Walk links in group
 		files.forEach(function (abspath) {
@@ -502,73 +314,20 @@ module.exports = function (grunt) {
 			// Create symlink
 			fs.symlinkSync(helper.backpath(target) + abspath, target);
 
+			// Add to ignore list
+			ignoreList.push(target);
+
 			// Log link
 			log.ok(msg + target);
 		});
 
-	});
-
-	grunt.registerMultiTask("link", "Link files from other sources.", function () {
-		var links = this.file.src;
-
-		// Walk links in group
-		links.forEach(function (ln) {
-			var lg = {
-					type: "fail",
-					msg: "Link failed"
-				};
-
-			if (fs.existsSync(ln.to)) {
-				var lnDir = ln.link.replace(/\/[^\/]*$/, "");
-
-				lg.type = "ok";
-				lg.msg = "Link";
-
-				// Create directory path if not exists
-				if (!fs.existsSync(lnDir)) {
-					file.mkdir(lnDir);
-				}
-
-				// Unlink first if already exists
-				if (fs.existsSync(ln.link)) {
-					fs.unlinkSync(ln.link);
-					lg.msg = "Relink";
-				}
-
-				// Create symlink
-				fs.symlinkSync(helper.backpath(ln.link) + ln.to, ln.link, ln.type || "file");
-			}
-
-			// Log link
-			log[lg.type](lg.msg + ": " + ln.link);
-		});
-	});
-
-	grunt.registerMultiTask("linkignore", "Add symlinks to git ignore list.", function () {
-		var paths = file.expand(this.file.src),
-			ignoreList = [],
-			ignoreName = this.target,
-			ignoreBegin = "#Symlinks '" + ignoreName + "' begin",
-			ignoreEnd = "#Symlinks '" + ignoreName + "' end",
-			ignoreReplace = new RegExp("(^|\\n\\r?)(" + helper.escapeRegExp(ignoreBegin) + ")([^]*?)(" + helper.escapeRegExp(ignoreEnd) + ")", "");
-
-		// Create ignore list of symlinks
-		ignoreList.push("");
-		ignoreList.push(ignoreBegin);
-		paths.forEach(function (abspath) {
-			abspath = abspath.replace(/\/$/, "");
-
-			if (fs.lstatSync(abspath)
-				.isSymbolicLink()) {
-				ignoreList.push(abspath);
-				log.ok("Ignore: " + abspath);
-			}
-		});
+		// Finish ignore list
 		ignoreList.push(ignoreEnd);
 
 		// Write new .gitignore
+		ignoreList = ignoreList.join("\n");
 		file.write(".gitignore", file.read(".gitignore")
-			.replace(ignoreReplace, "") + ignoreList.join("\n"));
+			.replace(ignoreReplace, "") + ignoreList);
 	});
 
 	grunt.registerMultiTask("clean", "Clean directory.", function () {
@@ -632,7 +391,7 @@ module.exports = function (grunt) {
 	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* jsmin:dist:* cssmin:dist:*");
 
 	// Initialize
-	grunt.registerTask("setup", "link:*:* linkignore:*:*");
+	grunt.registerTask("setup", "clean:*:* bridge:*:* link:*:*");
 
 	// Run development tests
 	grunt.registerTask("test", "lint:*:* qunit:*:*");

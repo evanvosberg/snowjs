@@ -12,22 +12,22 @@
 	url = https://github.com/evanvosberg/jquery-tmpl.git
 [submodule "submodule/jquery-color"]
 	path = submodule/jquery-color
-	url = https://github.com/evanvosberg/jquery-color.git
+	url = https://github.com/jquery/jquery-color.git
 [submodule "submodule/jquery-datalink"]
 	path = submodule/jquery-datalink
-	url = https://github.com/evanvosberg/jquery-datalink.git
+	url = https://github.com/jquery/jquery-datalink.git
 [submodule "submodule/jquery-metadata"]
 	path = submodule/jquery-metadata
-	url = https://github.com/evanvosberg/jquery-metadata.git
+	url = https://github.com/jquery/jquery-metadata.git
 [submodule "submodule/jquery-cookie"]
 	path = submodule/jquery-cookie
-	url = https://github.com/evanvosberg/jquery-cookie.git
+	url = https://github.com/carhartl/jquery-cookie.git
 [submodule "submodule/jquery.scrollTo"]
 	path = submodule/jquery.scrollTo
-	url = https://github.com/evanvosberg/jquery.scrollTo.git
+	url = https://github.com/flesler/jquery.scrollTo.git
 [submodule "submodule/JSON-js"]
 	path = submodule/JSON-js
-	url = https://github.com/evanvosberg/JSON-js.git
+	url = https://github.com/douglascrockford/JSON-js.git
 [submodule "submodule/qunit"]
 	path = submodule/qunit
 	url = https://github.com/jquery/qunit.git
