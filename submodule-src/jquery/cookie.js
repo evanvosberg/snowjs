@@ -1,4 +1,4 @@
-define("jquery/cookie", ["jquery"], function ($) {
+define("jquery/cookie", ["jquery"], function (jQuery) {
 
 /*import("submodule/jquery-cookie/jquery.cookie.js")*/
 

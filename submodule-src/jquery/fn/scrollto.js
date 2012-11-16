@@ -1,4 +1,4 @@
-define("jquery/scrollto", ["jquery"], function ($) {
+define("jquery/fn/scrollto", ["jquery"], function (jQuery) {
 
 /*import("submodule/jquery.scrollTo/jquery.scrollTo.js")*/
 
