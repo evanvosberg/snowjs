@@ -8,7 +8,7 @@
 	base("../../");
 
 	var require = {
-			baseUrl: "src/script",
+			baseUrl: "src",
 			config: {
 				"jquery/dict": {
 					region: "de-DE"
@@ -18,7 +18,7 @@
 	</script>
 	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
 	<script src="external/qunit/qunit/qunit.js"></script>
-	<script src="src/script/require.js"></script>
+	<script src="src/require.js"></script>
 </head>
 <body>
 	<h1 id="qunit-header">QUnit</h1>
@@ -45,23 +45,23 @@
 					data;
 
 				switch (s.url) {
-					case "src/script/jquery/dict/A-1.de-DE.json":
+					case "src/jquery/dict/A-1.de-DE.json":
 						data = {"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"};
 						break;
-					case "src/script/jquery/dict/A-1.en-US.json":
+					case "src/jquery/dict/A-1.en-US.json":
 						data = {"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"};
 						break;
 					case "http://github.com/evanvosberg/appdk.json?region=de-DE":
 						data = {"Hello":"Hallo","Mr":"Herr","Mrs":"Frau"};
 						break;
 
-					case "src/script/base.de-DE.json":
+					case "src/base.de-DE.json":
 						data = {"Apply":"Übernehmen", "Cancel":"Abbrechen", "Close":"Schließen", "Delete":"Löschen", "Ok":"Ok", "Save":"Speichern"};
 						break;
-					case "src/script/base/app.de-DE.json":
+					case "src/base/app.de-DE.json":
 						data = ["base", {"View":"Ansicht", "Welcome to MyApp":"Willkommen bei MyApp"}];
 						break;
-					case "src/script/base/app/toolbar.de-DE.json":
+					case "src/base/app/toolbar.de-DE.json":
 						data = ["base/app", {"Preview":"Vorschau", "Redo":"Wiederholen", "Undo":"Rückgängig"}];
 						break;
 				}

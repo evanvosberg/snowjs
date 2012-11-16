@@ -8,7 +8,7 @@
 	base("../../../../");
 
 	var require = {
-			baseUrl	: "src/script",
+			baseUrl: "src",
 		};
 	</script>
 	<style>
@@ -23,7 +23,7 @@
 	</style>
 	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
 	<script src="external/qunit/qunit/qunit.js"></script>
-	<script src="src/script/require.js"></script>
+	<script src="src/require.js"></script>
 </head>
 <body>
 	<h1 id="qunit-header">QUnit</h1>
@@ -97,7 +97,7 @@
 			t = $._data($('html')[0], 'events').mousemove;
 			equal(
 				t.length,
-				4,
+				1,
 				"$._data($('html')[0], 'events').mousemove.length"
 			);
 			equal(
@@ -109,8 +109,8 @@
 			t = $._data($('html')[0], 'events').mouseup;
 			equal(
 				t.length,
-				4,
-				"$._data($('html')[0], 'events').mouseupn.length"
+				1,
+				"$._data($('html')[0], 'events').mouseup.length"
 			);
 			equal(
 				t[0].namespace,
