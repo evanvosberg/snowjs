@@ -1,0 +1,1 @@
+/*import("submodule/requirejs/require.js")*/

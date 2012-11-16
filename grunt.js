@@ -41,6 +41,24 @@ module.exports = function (grunt) {
 			// Escape string for regular expression
 			escapeRegExp: function (str) {
 				return str.replace(/([\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|])/g, "\\$1");
+			},
+			// Get handle to convert source to destination
+			srcDestHandle: function (dest, stripExpr) {
+				dest = dest.replace(/\/$/, "") + "/";
+				stripExpr = stripExpr || (/^$/);
+
+				var handle = function (str) {
+						return dest + str.replace(stripExpr, "");
+					};
+
+				if (typeof stripExpr === "string") {
+					stripExpr = new RegExp("^" + helper.escapeRegExp(stripExpr));
+				}
+				else if (typeof stripExpr === "function") {
+					handle = stripExpr;
+				}
+
+				return handle;
 			}
 		},
 
@@ -50,6 +68,8 @@ module.exports = function (grunt) {
 			dest: "dist",
 			// Development source
 			src: "src",
+			// git sub modules
+			submodule: "submodule",
 			// Test cases
 			test: "tests"
 		};
@@ -66,6 +86,22 @@ module.exports = function (grunt) {
 
 		meta: {
 			banner: "/*! AppDK v@<%= pkg.version %> http://github.com/evanvosberg/appdk */"
+		},
+
+		bridge: {
+			"submodule": {
+				dest: "<%= paths.submodule %>-bridge",
+				strip: /^[^\/]+\//,
+				src: "<%= paths.submodule %>-src/**/*"
+			}
+		},
+
+		bridgelink: {
+			"submodule": {
+				dest: "<%= paths.src %>-bridgelinks",
+				strip: /^[^\/]+\//,
+				src: "<%= paths.submodule %>-bridge/**/*"
+			}
 		},
 
 		clean: {
@@ -387,11 +423,90 @@ module.exports = function (grunt) {
 		}
 	});
 
+	grunt.registerMultiTask("bridge", "Copy / merge files from other sources as temporarily bridge.", function () {
+		var copyExp = /^\/\*\s*copy\(["|'](.*?)["|']\)\s*\*\/$/,
+			importExp = /\/\*\s*import\(["|'](.*?)["|']\)\s*\*\//g,
 
-	//
-	// Tasks
-	//
+			srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
 
+			files = file.expandFiles(this.file.src);
+
+		// Walk files
+		files.forEach(function (abspath) {
+			var target = srcDest(abspath),
+				content = file.read(abspath);
+
+			// Copy files or directories
+			if (copyExp.test(content)) {
+				// Set path to copy expression
+				abspath = copyExp.exec(content)[1].replace(/\/$/, "");
+
+				// Copy directory recursive
+				if (fs.lstatSync(abspath)
+					.isDirectory()) {
+					var abspathExp = new RegExp("^" + helper.escapeRegExp(abspath), "");
+
+					file.expandFiles(abspath + "/**/*")
+						.forEach(function (abspath) {
+							var targetFile = abspath.replace(abspathExp, target);
+
+							file.copy(abspath, targetFile);
+
+							log.ok("Copied: " + targetFile);
+						});
+				}
+				// Copy file
+				else {
+					file.copy(abspath, target);
+
+					log.ok("Copied: " + target);
+				}
+			}
+			// Merge files
+			else {
+				// Replace content parts by other file content
+				content = content.replace(importExp, function (all, $1) {
+					return file.read($1);
+				});
+
+				file.write(target, content);
+
+				log.ok("Merged: " + target);
+			}
+		});
+	});
+
+	grunt.registerMultiTask("bridgelink", "Link bridged files.", function () {
+		var srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
+
+			files = file.expandFiles(this.file.src);
+
+		// Walk links in group
+		files.forEach(function (abspath) {
+			var target = srcDest(abspath),
+				targetDir = target.replace(/\/[^\/]*$/, ""),
+
+				msg = "Linked: ";
+
+			// Create directory path if not exists
+			if (!fs.existsSync(targetDir)) {
+				file.mkdir(targetDir);
+			}
+
+			// Unlink first if already exists
+			if (fs.existsSync(target)) {
+				fs.unlinkSync(target);
+				msg = "Relinked: ";
+			}
+
+			// Create symlink
+			fs.symlinkSync(helper.backpath(target) + abspath, target);
+
+			// Log link
+			log.ok(msg + target);
+		});
+
+	});
 
 	grunt.registerMultiTask("link", "Link files from other sources.", function () {
 		var links = this.file.src;
@@ -442,7 +557,7 @@ module.exports = function (grunt) {
 		ignoreList.push(ignoreBegin);
 		paths.forEach(function (abspath) {
 			abspath = abspath.replace(/\/$/, "");
-			
+
 			if (fs.lstatSync(abspath)
 				.isSymbolicLink()) {
 				ignoreList.push(abspath);
@@ -460,7 +575,7 @@ module.exports = function (grunt) {
 		file.expandDirs(this.file.src)
 			.forEach(function (abspath) {
 				abspath = abspath.replace(/\/$/, "");
-				
+
 				if (fs.lstatSync(abspath)
 					.isSymbolicLink()) {
 					fs.unlinkSync(abspath);
@@ -481,23 +596,12 @@ module.exports = function (grunt) {
 
 	// Task: copy
 	grunt.registerMultiTask("copy", "Copy files to distribution.", function () {
-		var dest = this.file.dest.replace(/\/$/, "") + "/",
-			files = file.expandFiles(this.file.src),
+		var srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
 
-			stripExpr = this.data.strip || (/^$/),
-			strip = function (str) {
-				return str.replace(stripExpr, "");
-			};
-
-		if (typeof stripExpr === "string") {
-			stripExpr = new RegExp("^" + helper.escapeRegExp(stripExpr));
-		}
-		else if (typeof stripExpr === "function") {
-			strip = this.file.strip;
-		}
+			files = file.expandFiles(this.file.src);
 
 		files.forEach(function (abspath) {
-			file.copy(abspath, dest + strip(abspath));
+			file.copy(abspath, srcDest(abspath));
 		});
 	});
 

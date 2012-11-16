@@ -6,6 +6,7 @@
 .DS_Store
 node_modules
 dist
+submodule-bridge
 research
 #Symlinks 'source' begin
 src/jquery/color/svg-names.js
