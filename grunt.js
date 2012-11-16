@@ -331,29 +331,39 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerMultiTask("clean", "Clean directory.", function () {
-		file.expandDirs(this.file.src)
-			.forEach(function (abspath) {
-				abspath = abspath.replace(/\/$/, "");
+		var patterns = this.file.src;
 
-				if (fs.lstatSync(abspath)
-					.isSymbolicLink()) {
+		// Remove symlinks first (prevent delete in linked directories)
+		file.expandDirs(patterns)
+			.forEach(function (abspath) {
+				var lstat = fs.lstatSync(abspath = abspath.replace(/\/$/, ""));
+
+				if (lstat.isSymbolicLink()) {
 					fs.unlinkSync(abspath);
 				}
 			});
 
-		file.expandFiles(this.file.src)
-			.forEach(function (abspath) {
-				fs.unlinkSync(abspath);
-			});
+		// Remove files (hidden files included)
+		file.recurse(".", function (abspath, rootdir, subdir, filename) {
+			var testpath = ([])
+					.concat(rootdir && rootdir !== "." ? [rootdir] : [])
+					.concat(subdir ? [subdir] : [])
+					.concat([filename.replace(/^\.+/, "")])
+					.join("/");
 
-		file.expandDirs(this.file.src)
+			if (file.isMatch(patterns, testpath)) {
+				fs.unlinkSync(abspath);
+			}
+		});
+
+		// Remove directories
+		file.expandDirs(patterns)
 			.reverse()
 			.forEach(function (abspath) {
 				fs.rmdirSync(abspath);
 			});
 	});
 
-	// Task: copy
 	grunt.registerMultiTask("copy", "Copy files to distribution.", function () {
 		var srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
 
@@ -387,12 +397,15 @@ module.exports = function (grunt) {
 	// Grouped tasks
 	//
 
-	// Build distribution
+	// default: Distribute after tests run 
 	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* jsmin:dist:* cssmin:dist:*");
 
-	// Initialize
+	// setup: Initialize
 	grunt.registerTask("setup", "clean:*:* bridge:*:* link:*:*");
 
-	// Run development tests
+	// test: Run all tests
 	grunt.registerTask("test", "lint:*:* qunit:*:*");
+
+	// build: Distribute
+	grunt.registerTask("build", "clean:dist:* copy:dist:* jsmin:dist:* cssmin:dist:*");
 };
