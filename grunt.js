@@ -196,193 +196,193 @@ module.exports = function (grunt) {
 			// }
 			"Require-JS": [{
 				link: "<%= paths.src %>/require.js",
-				to: "external/requirejs/require.js"
+				to: "submodule/requirejs/require.js"
 			}],
 			"jQuery": [{
 				link: "<%= paths.src %>/jquery.js",
-				to: "external/jquery/dist/jquery.js"
+				to: "submodule/jquery/dist/jquery.js"
 			}],
 			"jQuery-UI": [{
 				link: "<%= paths.src %>/jquery/effects.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/blind.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-blind.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-blind.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/bounce.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-bounce.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-bounce.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/clip.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-clip.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-clip.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/drop.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-drop.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-drop.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/explode.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-explode.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-explode.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/fade.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-fade.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-fade.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/fold.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-fold.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-fold.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/highlight.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-highlight.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-highlight.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/pulsate.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-pulsate.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-pulsate.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/scale.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-scale.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-scale.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/shake.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-shake.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-shake.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/slide.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-slide.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-slide.js"
 			}, {
 				link: "<%= paths.src %>/jquery/effects/transfer.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-transfer.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.effect-transfer.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/accordion.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.accordion.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.accordion.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/autocomplete.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.autocomplete.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.autocomplete.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/button.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.button.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.button.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/core.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.core.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.core.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/datepicker.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.datepicker.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.datepicker.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/dialog.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.dialog.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.dialog.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/draggable.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.draggable.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.draggable.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/droppable.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.droppable.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.droppable.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/menu.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.menu.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.menu.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/mouse.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.mouse.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.mouse.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/position.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.position.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.position.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/progressbar.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.progressbar.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.progressbar.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/resizable.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.resizable.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.resizable.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/selectable.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.selectable.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.selectable.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/slider.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.slider.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.slider.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/sortable.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.sortable.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.sortable.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/spinner.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.spinner.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.spinner.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/tabs.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.tabs.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.tabs.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/tooltip.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.tooltip.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.tooltip.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/widget.js",
-				to: "external/jquery-ui/dist/jquery-ui/ui/jquery.ui.widget.js"
+				to: "submodule/jquery-ui/dist/jquery-ui/ui/jquery.ui.widget.js"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/images",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/images"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/images"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/accordion.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.accordion.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.accordion.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/autocomplete.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.autocomplete.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.autocomplete.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/button.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.button.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.button.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/core.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.core.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.core.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/datepicker.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.datepicker.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.datepicker.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/dialog.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.dialog.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.dialog.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/menu.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.menu.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.menu.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/progressbar.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.progressbar.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.progressbar.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/resizable.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.resizable.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.resizable.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/selectable.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.selectable.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.selectable.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/slider.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.slider.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.slider.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/spinner.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.spinner.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.spinner.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/tabs.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.tabs.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.tabs.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/theme.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.theme.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.theme.css"
 			}, {
 				link: "<%= paths.src %>/jquery/ui/tooltip.css",
-				to: "external/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.tooltip.css"
+				to: "submodule/jquery-ui/dist/jquery-ui/themes/base/jquery.ui.tooltip.css"
 			}],
 			"jQuery-Color": [{
 				link: "<%= paths.src %>/jquery/color.js",
-				to: "external/jquery-color/dist/jquery.color.js"
+				to: "submodule/jquery-color/dist/jquery.color.js"
 			}, {
 				link: "<%= paths.src %>/jquery/color/svg-names.js",
-				to: "external/jquery-color/dist/jquery.color.svg-names.js"
+				to: "submodule/jquery-color/dist/jquery.color.svg-names.js"
 			}],
 			"jQuery-Datalink": [{
 				link: "<%= paths.src %>/jquery/fn/datalink.js",
-				to: "external/jquery-datalink/jquery.datalink.js"
+				to: "submodule/jquery-datalink/jquery.datalink.js"
 			}],
 			"jQuery-Template": [{
 				link: "<%= paths.src %>/jquery/tmpl.js",
-				to: "external/jquery-tmpl/jquery.tmpl.js"
+				to: "submodule/jquery-tmpl/jquery.tmpl.js"
 			}],
 			"jQuery-Metadata": [{
 				link: "<%= paths.src %>/jquery/metadata.js",
-				to: "external/jquery-metadata/jquery.metadata.js"
+				to: "submodule/jquery-metadata/jquery.metadata.js"
 			}],
 			"jQuery-Cookie": [{
 				link: "<%= paths.src %>/jquery/cookie.js",
-				to: "external/jquery-cookie/jquery.cookie.js"
+				to: "submodule/jquery-cookie/jquery.cookie.js"
 			}],
 			"jQuery-scrollTo": [{
 				link: "<%= paths.src %>/jquery/fn/scrollto.js",
-				to: "external/jquery.scrollTo/jquery.scrollTo.js"
+				to: "submodule/jquery.scrollTo/jquery.scrollTo.js"
 			}],
 			"JSON-js": [{
 				link: "<%= paths.src %>/util/json.js",
-				to: "external/JSON-js/json2.js"
+				to: "submodule/JSON-js/json2.js"
 			}]
 		}
 	});
