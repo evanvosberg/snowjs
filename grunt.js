@@ -362,6 +362,16 @@ module.exports = function (grunt) {
 			.forEach(function (abspath) {
 				fs.rmdirSync(abspath);
 			});
+
+		// Remove broken symlinks
+		file.expand("**/*")
+			.forEach(function (abspath) {
+				var lstat = fs.lstatSync(abspath = abspath.replace(/\/$/, ""));
+
+				if (lstat.isSymbolicLink() && !fs.existsSync(abspath)) {
+					fs.unlinkSync(abspath);
+				}
+			});
 	});
 
 	grunt.registerMultiTask("copy", "Copy files to distribution.", function () {
