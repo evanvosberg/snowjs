@@ -137,6 +137,7 @@ module.exports = function (grunt) {
 						.test(abspath) && !fs.lstatSync(abspath)
 						.isSymbolicLink();
 				}),
+			"external": "<%= paths.external %>-src/**/*.js",
 			"grunt": "grunt.js"
 		},
 
@@ -151,6 +152,15 @@ module.exports = function (grunt) {
 					setTimeout: true,
 					define: true,
 					require: true
+				}
+			},
+			"external": {
+				globals: {
+					define: true,
+					require: true
+				},
+				options: {
+					unused: false
 				}
 			},
 			"grunt": {
