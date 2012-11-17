@@ -3,7 +3,7 @@ A module based Javascript library
 
 ## Library
 
-- [AppDK modules](http://evanvosberg/appdk)
+- [AppDK modules](http://github.com/evanvosberg/appdk)
 - [RequireJS](http://github.com/jrburke/requirejs)
 - [jQuery](http://github.com/jquery/jquery)
 - [jQuery UI](http://github.com/jquery/jquery-ui)
