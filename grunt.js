@@ -69,7 +69,7 @@ module.exports = function (grunt) {
 			// Development source
 			src: "src",
 			// git sub modules
-			submodule: "submodule",
+			external: "external",
 			// Test cases
 			test: "tests"
 		};
@@ -89,24 +89,24 @@ module.exports = function (grunt) {
 		},
 
 		bridge: {
-			"submodule": {
-				dest: "<%= paths.submodule %>-bridge",
+			"external": {
+				dest: "<%= paths.external %>-bridge",
 				strip: /^[^\/]+\//,
-				src: "<%= paths.submodule %>-src/**/*"
+				src: "<%= paths.external %>-src/**/*"
 			}
 		},
 
 		link: {
-			"submodule": {
+			"external": {
 				dest: "<%= paths.src %>",
 				strip: /^[^\/]+\//,
-				src: "<%= paths.submodule %>-bridge/**/*"
+				src: "<%= paths.external %>-bridge/**/*"
 			}
 		},
 
 		clean: {
 			"dist": "<%= paths.dest %>/**/*",
-			"submodule": "<%= paths.submodule %>-bridge/**/*"
+			"external": "<%= paths.external %>-bridge/**/*"
 		},
 
 		copy: {
@@ -407,7 +407,7 @@ module.exports = function (grunt) {
 	// Grouped tasks
 	//
 
-	// default: Distribute after tests run 
+	// default: Distribute after tests run
 	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* jsmin:dist:* cssmin:dist:*");
 
 	// setup: Initialize

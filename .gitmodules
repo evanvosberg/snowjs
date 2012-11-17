@@ -1,33 +1,33 @@
-[submodule "submodule/requirejs"]
-	path = submodule/requirejs
+[submodule "external/requirejs"]
+	path = external/requirejs
 	url = https://github.com/evanvosberg/requirejs.git
-[submodule "submodule/jquery"]
-	path = submodule/jquery
-	url = https://github.com/jquery/jquery
-[submodule "submodule/jquery-ui"]
-	path = submodule/jquery-ui
+[submodule "external/jquery"]
+	path = external/jquery
+	url = https://github.com/jquery/jquery.git
+[submodule "external/jquery-ui"]
+	path = external/jquery-ui
 	url = https://github.com/evanvosberg/jquery-ui.git
-[submodule "submodule/jquery-tmpl"]
-	path = submodule/jquery-tmpl
+[submodule "external/jquery-tmpl"]
+	path = external/jquery-tmpl
 	url = https://github.com/evanvosberg/jquery-tmpl.git
-[submodule "submodule/jquery-color"]
-	path = submodule/jquery-color
+[submodule "external/jquery-color"]
+	path = external/jquery-color
 	url = https://github.com/jquery/jquery-color.git
-[submodule "submodule/jquery-datalink"]
-	path = submodule/jquery-datalink
+[submodule "external/jquery-datalink"]
+	path = external/jquery-datalink
 	url = https://github.com/jquery/jquery-datalink.git
-[submodule "submodule/jquery-metadata"]
-	path = submodule/jquery-metadata
+[submodule "external/jquery-metadata"]
+	path = external/jquery-metadata
 	url = https://github.com/jquery/jquery-metadata.git
-[submodule "submodule/jquery-cookie"]
-	path = submodule/jquery-cookie
+[submodule "external/jquery-cookie"]
+	path = external/jquery-cookie
 	url = https://github.com/carhartl/jquery-cookie.git
-[submodule "submodule/jquery.scrollTo"]
-	path = submodule/jquery.scrollTo
+[submodule "external/jquery.scrollTo"]
+	path = external/jquery.scrollTo
 	url = https://github.com/flesler/jquery.scrollTo.git
-[submodule "submodule/JSON-js"]
-	path = submodule/JSON-js
+[submodule "external/JSON-js"]
+	path = external/JSON-js
 	url = https://github.com/douglascrockford/JSON-js.git
-[submodule "submodule/qunit"]
-	path = submodule/qunit
+[submodule "external/qunit"]
+	path = external/qunit
 	url = https://github.com/jquery/qunit.git
