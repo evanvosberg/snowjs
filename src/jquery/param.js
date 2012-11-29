@@ -70,4 +70,5 @@ define("jquery/param", ["jquery"], function ($) {
 		}
 	});
 
+	return $;
 });

@@ -25,4 +25,5 @@ define("jquery/uid", ["jquery"], function ($) {
 		}
 	});
 
+	return $;
 });

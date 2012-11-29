@@ -8,12 +8,12 @@
  * @module			require/jquery-i18n
  */
 
-define("require/jquery-i18n", ["jquery", "jquery/i18n"], function ($, i18n) {
+define("require/jquery-i18n", ["jquery/i18n"], function ($) {
 
 	var
 		// add path location
 		add = function (name) {
-			return i18n.config.path + "/" + remove(name);
+			return $.i18n.settings.path + "/" + remove(name);
 		},
 
 		// remove path location
@@ -44,8 +44,8 @@ define("require/jquery-i18n", ["jquery", "jquery/i18n"], function ($, i18n) {
 					};
 				}
 
-				if (i18n[type][name]) {
-					load(i18n(options));
+				if ($.i18n[type][name]) {
+					load($.i18n(options));
 				}
 				else {
 					$.ajax({
@@ -60,7 +60,7 @@ define("require/jquery-i18n", ["jquery", "jquery/i18n"], function ($, i18n) {
 
 					})
 						.done(function () {
-							load(i18n(options));
+							load($.i18n(options));
 						});
 				}
 			}

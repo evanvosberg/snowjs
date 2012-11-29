@@ -80,9 +80,24 @@
 				}
 			});
 
-			var baseObj = new BaseClass(),
+			var LocalClass = mod( [BaseClass, ExtClass], {
+					constructor: function(){
+						this._superApply(arguments);
+						this.ext = "";
+					},
+					A: function(){
+						this.ext += "-LocalA";
+					},
+					B: function(){
+						this._superApply(arguments);
+						this.ext += "-LocalB";
+					}
+				}),
+
+				baseObj = new BaseClass(),
 				extObj = new ExtClass(),
-				multiObj = new MultiClass();
+				multiObj = new MultiClass(),
+				localObj = new LocalClass();
 
 			equal(
 				baseObj.base,
@@ -161,6 +176,35 @@
 			);
 
 			ok(multiObj instanceof BaseClass , "Multiple extended class is instance of BaseClass");
+
+			equal(
+				localObj.base,
+				"",
+				"new NonGlobalClass(); (Based on BaseClass and ExtClass)"
+			);
+			localObj.A();
+			equal(
+				localObj.base,
+				"",
+				".A(); .base == \"\""
+			);
+			equal(
+				localObj.ext,
+				"-LocalA",
+				".A(); .ext == \"-LocalA\""
+			);
+			localObj.B();
+			equal(
+				localObj.base,
+				"-BaseB",
+				".B(); .base == \"-BaseB\""
+			);
+			equal(
+				localObj.ext,
+				"-LocalA-ExtB-LocalB",
+				".B(); .ext == \"-LocalA-ExtB-LocalB\""
+			);
+
 
 			start();
 		});

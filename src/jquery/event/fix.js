@@ -47,4 +47,5 @@ define("jquery/event/fix", ["jquery"], function ($) {
 		}
 	});
 
+	return $;
 });

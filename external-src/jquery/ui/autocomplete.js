@@ -2,4 +2,5 @@ define("jquery/ui/autocomplete", ["jquery","jquery/ui/core","jquery/ui/widget","
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.autocomplete.js")*/
 
+	return jQuery;
 });

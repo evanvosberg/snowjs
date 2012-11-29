@@ -49,26 +49,23 @@
 					.metaparsed = set);
 			},
 
-			module = {
-				config: $.extend({
-					type: "class",
-					name: "metaparse"
-				}, mod.config())
-			};
+			config = $.metaparseSettings = $.extend({
+				type: "class",
+				name: "metaparse"
+			}, mod.config());
 
 		// >>>> DEPRECATED >>>> //
 		if ($.config && $.config.metaparse) {
 			$.debug.warn("DEPRECATED: use 'module config of requirejs' instead of 'jQuery.config.metaparse'.");
-			$.extend(module.config, $.config.metaparse);
+			$.extend(config, $.config.metaparse);
 		}
-		$.metaparseSettings = module.config;
 		// <<<< DEPRECATED <<<< //
 
 		$.extend({
 			metaparse: function (elem, settings /*internal*/ , isEach) {
 				// Check whether elem is already parsed
 				if (!isMetaparsed(elem)) {
-					var s = isEach ? settings : $.extend({}, module.config, settings),
+					var s = isEach ? settings : $.extend({}, config, settings),
 						type = s.type,
 						name = s.name,
 						meta = {},
@@ -113,7 +110,7 @@
 								deferred.resolve();
 							}
 						};
-						
+
 						depend = (depend = meta.depend);
 						if ((depend = depend && requireExp.test(depend) && depend.replace(requireExp, ""))) {
 							deferred = $.Deferred();
@@ -140,7 +137,7 @@
 
 		$.fn.extend({
 			metaparse: function (settings /*internal*/ , isAutoparse) {
-				var s = $.extend({}, module.config, settings),
+				var s = $.extend({}, config, settings),
 					self = this,
 					stack = [],
 					depend;
@@ -182,25 +179,26 @@
 			}
 		};
 
-		// Expose module object
-		return module;
+		return $;
 	});
 
 	// Execute module callback for triggering autoparse if module is part of a package
 	var autoparse;
 
-	if ((autoparse = require().config().config) && (autoparse = autoparse["jquery/metaparse"]) && (autoparse = autoparse.autoparse)) {
-		require(["jquery", "jquery/metaparse"], function ($, metaparse) {
+	if ((autoparse = require()
+		.config()
+		.config) && (autoparse = autoparse["jquery/metaparse"]) && (autoparse = autoparse.autoparse)) {
+		require(["jquery/metaparse"], function ($) {
 
 			// Run metaparse automatically on dom ready if defined in config
-			var runAutoparse = function () {
-					$(function () {
-						$(autoparse.selector || (typeof autoparse === "string" ? autoparse : ".metaparse"))
-							.metaparse({}, true);
-					});
-				};
+			function runAutoparse() {
+				$(function () {
+					$(autoparse.selector || (typeof autoparse === "string" ? autoparse : ".metaparse"))
+						.metaparse({}, true);
+				});
+			}
 
-			if ((autoparse = metaparse.config.autoparse)) {
+			if ((autoparse = $.metaparseSettings.autoparse)) {
 				if (autoparse.require) {
 					require(autoparse.require, runAutoparse);
 				}
@@ -213,7 +211,7 @@
 					runAutoparse();
 				}
 
-				delete metaparse.config.autoparse;
+				delete $.metaparseSettings.autoparse;
 			}
 		});
 	}

@@ -33,4 +33,5 @@ define("jquery/fn/attr", ["jquery"], function ($) {
 		}
 	});
 
+	return $;
 });

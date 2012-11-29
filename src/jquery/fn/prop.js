@@ -33,4 +33,5 @@ define("jquery/fn/prop", ["jquery"], function ($, undefined) {
 		}
 	});
 
+	return $;
 });

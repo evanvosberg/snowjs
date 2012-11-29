@@ -123,11 +123,12 @@ define("jquery/event/special/dom", ["jquery"], function ($, undefined) {
 	$(function () {
 		emhelper.node = $("<div />")
 			.css({
-				left: "-100em",
-				position: "absolute",
-				width: "100em"
-			})
+			left: "-100em",
+			position: "absolute",
+			width: "100em"
+		})
 			.prependTo("body")[0];
 	});
 
+	return $;
 });

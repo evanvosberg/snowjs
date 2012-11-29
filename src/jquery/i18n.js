@@ -32,8 +32,8 @@
 
 		// Define the module
 		moduleDefine = function () {
-			define("jquery/i18n", [helperId], function () {
-				return module;
+			define("jquery/i18n", ["jquery", helperId], function ($) {
+				return $;
 			});
 		},
 
@@ -141,7 +141,7 @@
 
 			// Build region data object
 			regionBuild = function (self, options) {
-				var o = $.extend({}, self.config, options),
+				var o = $.extend({}, self.settings, options),
 					region = module.regions[o.region] || module.regions.en,
 					currencies = region.numberFormat.currencies;
 
@@ -243,8 +243,8 @@
 					return ret;
 				},
 
-				// module.config
-				config: (moduleConfig = $.extend({
+				// module.settings
+				settings: (moduleConfig = $.extend({
 					path: "jquery/i18n", // path to load regions and currencies
 					region: "en", // default region
 					currency: "", // default currency
@@ -258,7 +258,7 @@
 				var context = $.extend(true, function () {
 						return quick.apply(context, arguments);
 					}, extended, {
-						config: options
+						settings: options
 					});
 
 				return context;
@@ -273,13 +273,13 @@
 
 		// Handle defaults and dependencies
 		$.each({
-			region: module.config.region,
-			currency: module.config.currency
+			region: module.settings.region,
+			currency: module.settings.currency
 		}, function (type, depends) {
 			if (depends) {
 				// Set dafaults
 				if ($.type(depends) === "array") {
-					module.config[type] = depends[0];
+					module.settings[type] = depends[0];
 				}
 				else {
 					depends = [depends];

@@ -105,4 +105,5 @@ define("jquery/fn/form", ["jquery", "jquery/expr"], function ($) {
 		}
 	});
 
+	return $;
 });

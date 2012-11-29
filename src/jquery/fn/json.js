@@ -183,4 +183,5 @@ define("jquery/fn/json", ["util/json", "jquery", "jquery/xml"], function (json, 
 			return obj;
 		};
 
+	return $;
 });

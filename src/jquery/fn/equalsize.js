@@ -40,4 +40,6 @@ define("jquery/fn/equalsize", ["jquery"], function ($, undefined) {
 			};
 		});
 	});
+
+	return $;
 });

@@ -43,7 +43,7 @@
 		require([moduleName], function(mod){
 			ok(true, moduleName + " loaded via require.");
 
-			ok(!mod, moduleName + " has no module object.");
+			ok(mod, moduleName + " module object exists.");
 
 			start();
 		});

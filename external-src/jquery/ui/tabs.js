@@ -2,4 +2,5 @@ define("jquery/ui/tabs", ["jquery","jquery/ui/core","jquery/ui/widget"], functio
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.tabs.js")*/
 
+	return jQuery;
 });

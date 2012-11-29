@@ -2,4 +2,5 @@ define("jquery/ui/dialog", ["jquery","jquery/ui/core","jquery/ui/widget","jquery
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.dialog.js")*/
 
+	return jQuery;
 });

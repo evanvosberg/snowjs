@@ -86,4 +86,5 @@ define("jquery/each", ["jquery"], function ($, undefined) {
 		}
 	});
 
+	return $;
 });

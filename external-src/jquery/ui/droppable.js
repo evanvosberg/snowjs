@@ -2,4 +2,5 @@ define("jquery/ui/droppable", ["jquery","jquery/ui/core","jquery/ui/widget","jqu
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.droppable.js")*/
 
+	return jQuery;
 });

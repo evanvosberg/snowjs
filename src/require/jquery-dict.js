@@ -8,7 +8,7 @@
  * @module			require/jquery-dict
  */
 
-define("require/jquery-dict", ["jquery", "jquery/dict"], function ($, $dict) {
+define("require/jquery-dict", ["jquery/dict"], function ($) {
 
 	// Register special pre filter for x-domain requests with alternative data type
 	$.ajaxPrefilter(function (options) {
@@ -46,12 +46,12 @@ define("require/jquery-dict", ["jquery", "jquery/dict"], function ($, $dict) {
 			if (!result) {
 				if (require.jsExtRegExp.test(id)) {
 					region = (region = regionUrlExp.exec(id)) && region[1];
-					url = (id += (region ? "" : (id.indexOf("?") === -1 ? "?" : "&") + "region=" + (region = $dict.config.region)));
+					url = (id += (region ? "" : (id.indexOf("?") === -1 ? "?" : "&") + "region=" + (region = $.dictSettings.region)));
 					name = id.replace(regionUrlExp, "");
 				}
 				else {
 					region = (region = regionModuleExp.exec(id)) && region[1];
-					url = (id += (region ? "" : "." + (region = $dict.config.region))) + ".json";
+					url = (id += (region ? "" : "." + (region = $.dictSettings.region))) + ".json";
 					name = id.replace(regionModuleExp, "");
 				}
 

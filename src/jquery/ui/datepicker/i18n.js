@@ -60,4 +60,5 @@ define("jquery/ui/datepicker/i18n", ["jquery", "jquery/i18n", "jquery/ui/datepic
 		return _fnDatepicker.apply(this, args);
 	};
 
+	return $;
 });

@@ -2,4 +2,5 @@ define("jquery/ui/resizable", ["jquery","jquery/ui/core","jquery/ui/mouse","jque
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.resizable.js")*/
 
+	return jQuery;
 });

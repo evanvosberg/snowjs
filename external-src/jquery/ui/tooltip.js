@@ -2,4 +2,5 @@ define("jquery/ui/tooltip", ["jquery","jquery/ui/core","jquery/ui/widget","jquer
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.tooltip.js")*/
 
+	return jQuery;
 });

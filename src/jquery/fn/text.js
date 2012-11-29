@@ -34,4 +34,5 @@ define("jquery/fn/text", ["jquery"], function ($, undefined) {
 		}
 	});
 
+	return $;
 });

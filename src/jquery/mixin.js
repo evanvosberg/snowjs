@@ -76,4 +76,5 @@ define("jquery/mixin", ["jquery"], function ($, undefined) {
 		}
 	});
 
+	return $;
 });

@@ -45,4 +45,5 @@ define("jquery/fn/class", ["jquery"], function ($) {
 		}
 	});
 
+	return $;
 });

@@ -38,4 +38,5 @@ define("jquery/fn/bound", ["jquery"], function ($, undefined) {
 		});
 	};
 
+	return $;
 });

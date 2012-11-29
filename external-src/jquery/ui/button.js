@@ -2,4 +2,5 @@ define("jquery/ui/button", ["jquery","jquery/ui/core","jquery/ui/widget"], funct
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.button.js")*/
 
+	return jQuery;
 });

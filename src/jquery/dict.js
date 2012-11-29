@@ -25,20 +25,17 @@ define("jquery/dict", ["module", "jquery"], function (mod, $, undefined) {
 				});
 			}
 		},
-
-		// Module object
-		module = {
-			config: $.extend({
-				parser: /(?:^|[^\{\$])(\{(.*?[^\\])\})/g,
-				region: "en"
-			}, mod.config())
-		};
+		
+		config = $.dictSettings = $.extend({
+			parser: /(?:^|[^\{\$])(\{(.*?[^\\])\})/g,
+			region: "en"
+		}, mod.config());
 
 	$.extend({
 		// Get already defined dictionary
 		dict: function (dict, options) {
 			// Merge given options with defaults
-			var o = $.extend({}, module.config, typeof options === "string" ? {
+			var o = $.extend({}, config, typeof options === "string" ? {
 					region: options
 				} : options),
 				// Regional dictionaries scope
@@ -71,7 +68,7 @@ define("jquery/dict", ["module", "jquery"], function (mod, $, undefined) {
 			}
 
 			// Merge given options with defaults
-			var o = $.extend({}, module.config, typeof options === "string" ? {
+			var o = $.extend({}, config, typeof options === "string" ? {
 					region: options
 				} : options),
 				// Regional dictionaries scope
@@ -148,6 +145,5 @@ define("jquery/dict", ["module", "jquery"], function (mod, $, undefined) {
 		}
 	});
 
-	// Expose module
-	return module;
+	return $;
 });

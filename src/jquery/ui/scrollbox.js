@@ -452,4 +452,6 @@ define("jquery/ui/scrollbox", ["util/support", "jquery", "jquery/event/special/d
 			self._superApply(arguments);
 		}
 	});
+
+	return $;
 });

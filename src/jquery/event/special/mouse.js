@@ -150,4 +150,5 @@ define("jquery/event/special/mouse", ["jquery"], function ($, undefined) {
 		}
 	});
 
+	return $;
 });

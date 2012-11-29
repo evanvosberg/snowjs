@@ -1,16 +1,43 @@
-/*
- * @author			Evan Vosberg
- * @copyright		© 2012 by Evan Vosberg
- * @info			http://github.com/evanvosberg
+/**
+ *	@module			{Class}	class
  *
- * @license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
+ *	@author			Evan Vosberg
+ *	@copyright		© 2012 by Evan Vosberg
+ *	@info			http://github.com/evanvosberg
  *
- * @module			class
+ *	@license		Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  */
 
 define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
-	// Base class, all classes based on this
+	/**
+	 *	@class				Class			Create a class object.
+	 *	@category			Utilities
+	 *	@category			Example
+	 *
+	 *	@signature
+	 *		@since			1.0
+	 *		@param			{String}		classname		A scope name in dot natation to define the class global.
+	 *		@optional
+	 *		@param			{Array, Class}	superclass		A class object or an array of class objects.
+	 *		@optional
+	 *		@param			{Object}		properties		An object of methods and properties for the speciefied class.
+	 *			@option		{Function}		constructor		The class constructer which will be called on instantiate.
+	 *			@since		1.0
+	 *			@optional
+	 *		@return			{Class}
+	 *
+	 *	@description		Javascript doesn't have a Class system like Java, ```Class()``` simulates this.
+	 *
+	 *						#### Setup a constuctor for the class
+	 *						If a method of the properties named *constructor*, it will be interpreted as the constructor method on
+	 *						calling a new instance of the class. Also all constuctors of superclasses will be exectuted on calling a
+	 *						new instance of the class.
+	 *
+	 *						#### Call overwritten inherited methods
+	 *						If a class overwrites a method of a superclass with an own method, you can call the original method inside
+	 *						of the new method in the following way ```this._super(arg1, argN)``` or ```this._superApply(args)```.
+	 */
 	function _clss() {
 
 	}
@@ -20,6 +47,17 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 		constructor: function () {
 
 		},
+
+		/**
+		 *	@method				_proxy				This method is most useful for attaching event handlers to an element where the context is the current class instance.
+		 *
+		 *	@signature
+		 *		@since			1.0
+		 *		@param			{String,Function}	function	The function or the name of a function (from current instance) whose context will be changed to the current instance.
+		 *		@return			{Function}
+		 *
+		 *	@description		{md}	Additionally, ```._proxy()``` makes sure that even if you bind ```jQuery.on()``` the function with returned from ```._proxy()``` it will still unbind ```jQuery.off()``` the correct function, if passed the original.
+		 */
 		_proxy: function (fn) {
 			return typeof fn === "string" ? $.proxy(this, fn) : $.proxy(fn, this);
 		}
@@ -71,7 +109,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 			return classPrototype;
 		},
 
-		classCreator = function (classname, base, prototype, multiple) {
+		classCreator = function (classname, base, prototype, classscope) {
 
 			/* DEPRECATED: Backward compatible API */
 			if (prototype.Constructor) {
@@ -89,7 +127,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 				namespace = parts.join("."),
 
 				// All construction is actually done in the init method
-				clss = scope(namespace, multiple ? context : undefined)[shortName] = function () {
+				clss = scope(namespace, classscope)[shortName] = function () {
 					if (initializing) {
 						return;
 					}
@@ -126,6 +164,16 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 		// Create a new class
 		module = function (classname, bases, prototype) {
+			var classscope = window;
+
+			// Without classname no global definition
+			if (typeof classname !== "string") {
+				prototype = bases;
+				bases = classname;
+				classname = "local" + (uid++) + ".Class";
+				classscope = context;
+			}
+			
 			if (!prototype) {
 				return classCreator(classname, _clss, bases);
 			}
@@ -135,21 +183,36 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 					baseClassname;
 
 				for (var i = 0, l = bases.length; i < l; i++) {
-					baseClassname = "_" + (uid++);
+					baseClassname =  "multi" + (uid++) + ".Class";
 					basePrototype = bases.shift()
 						.prototype;
 
-					base = classCreator(baseClassname, base, basePrototype, true);
+					base = classCreator(baseClassname, base, basePrototype, context);
 					base.fullName = basePrototype[".class"].fullName;
 					base.shortName = basePrototype[".class"].shortName;
 				}
 
-				return classCreator(classname, base, prototype);
+				return classCreator(classname, base, prototype, classscope);
 			}
 			else {
-				return classCreator(classname, bases, prototype);
+				return classCreator(classname, bases, prototype, classscope);
 			}
 		};
+
+	/**
+	 *	@function			Class.isClass	Determine whether the given argument is an class object.
+	 *
+	 *	@category			Utilities
+	 *
+	 *	@signature
+	 *		@since			1.0
+	 *		@param			{Function}		function	Object to test whether or not it is a function.
+	 *		@param			{Boolean}		strict		A boolean indication whether the class was created with Class().
+	 *		@optional
+	 *		@return			{Boolean}
+	 *
+	 *	@description		{md}	This method determines whether the argument is an class object.
+	 */
 
 	// check is object a class, strict sure it was build with Class.define
 	module.isClass = function (obj, strict) {

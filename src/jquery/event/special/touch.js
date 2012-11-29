@@ -342,4 +342,5 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 		}
 	};
 
+	return $;
 });

@@ -107,4 +107,5 @@ define("jquery/xml", ["jquery"], function ($, undefined) {
 		}
 	});
 
+	return $;
 });

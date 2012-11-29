@@ -2,4 +2,5 @@ define("jquery/ui/draggable", ["jquery","jquery/ui/core","jquery/ui/mouse","jque
 
 /*import("external/jquery-ui/dist/jquery-ui/ui/jquery.ui.draggable.js")*/
 
+	return jQuery;
 });
