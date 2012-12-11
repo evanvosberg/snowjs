@@ -116,24 +116,23 @@ module.exports = function (grunt) {
 				dest: "<%= paths.dest %>/lib",
 				strip: /^[^\/]+\//,
 				src: "<%= paths.src %>/**/*"
+			},
+			"dist-min": {
+				dest: "<%= paths.dest %>/lib-min",
+				strip: /^[^\/]+\//,
+				src: "<%= paths.src %>/**/*"
 			}
 		},
 
 		jsmin: {
-			"dist": {
-				src: "<%= paths.dest %>/lib/**/*.js",
-				rename: function (abspath) {
-					return abspath.replace(/^[^\/]+\/lib\//, paths.dest + "/lib-min/");
-				}
+			"dist-min": {
+				src: "<%= paths.dest %>/lib-min/**/*.js"
 			}
 		},
 
 		cssmin: {
-			"dist": {
-				src: "<%= paths.dest %>/lib/**/*.js",
-				rename: function (abspath) {
-					return abspath.replace(/^[^\/]+\/lib\//, paths.dest + "/lib-min/");
-				}
+			"dist-min": {
+				src: "<%= paths.dest %>/lib-min/**/*.js"
 			}
 		},
 
@@ -413,7 +412,7 @@ module.exports = function (grunt) {
 	//
 
 	// default: Distribute after tests run
-	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* jsmin:dist:* cssmin:dist:*");
+	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* copy:dist-min:* jsmin:dist-min:* cssmin:dist-min:*");
 
 	// setup: Initialize
 	grunt.registerTask("setup", "clean:*:* bridge:*:* link:*:*");
@@ -422,5 +421,5 @@ module.exports = function (grunt) {
 	grunt.registerTask("test", "lint:*:* qunit:*:*");
 
 	// build: Distribute
-	grunt.registerTask("build", "clean:dist:* copy:dist:* jsmin:dist:* cssmin:dist:*");
+	grunt.registerTask("build", "clean:dist:* copy:dist:* copy:dist-min:* jsmin:dist-min:* cssmin:dist-min:*");
 };

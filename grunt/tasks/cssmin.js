@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 				return renameMap[abspath] || abspath;
 			};
 		
-		if (typeof rename === "function") {
+		if (typeof this.data.rename === "function") {
 			rename = this.data.rename;
 		}
 	
