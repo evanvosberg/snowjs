@@ -1,11 +1,11 @@
 /**
- *	@module			{Class}	class
+ *	@module				class			{Class}
  *
- *	@author			Evan Vosberg
- *	@copyright		© 2012 by Evan Vosberg
- *	@info			http://github.com/evanvosberg
+ *	@author				Evan Vosberg
+ *	@copyright			© 2012 by Evan Vosberg
+ *	@info				http://github.com/evanvosberg
  *
- *	@license		Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
+ *	@license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  */
 
 define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
@@ -13,7 +13,6 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 	/**
 	 *	@class				Class			Create a class object.
 	 *	@category			Utilities
-	 *	@category			Example
 	 *
 	 *	@signature
 	 *		@since			1.0
