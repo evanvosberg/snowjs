@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
 
+	"use strict";
+
 	var
 		// Load modules
 		fs = require("fs"),
@@ -111,18 +113,28 @@ module.exports = function (grunt) {
 
 		copy: {
 			"dist": {
-				dest: "<%= paths.dest %>",
+				dest: "<%= paths.dest %>/lib",
 				strip: /^[^\/]+\//,
 				src: "<%= paths.src %>/**/*"
 			}
 		},
 
 		jsmin: {
-			"dist": "<%= paths.dest %>/**/*.js"
+			"dist": {
+				src: "<%= paths.dest %>/lib/**/*.js",
+				rename: function (abspath) {
+					return abspath.replace(/^[^\/]+\/lib\//, paths.dest + "/lib-min/");
+				}
+			}
 		},
 
 		cssmin: {
-			"dist": "<%= paths.dest %>/**/*.css"
+			"dist": {
+				src: "<%= paths.dest %>/lib/**/*.js",
+				rename: function (abspath) {
+					return abspath.replace(/^[^\/]+\/lib\//, paths.dest + "/lib-min/");
+				}
+			}
 		},
 
 		qunit: {
@@ -138,7 +150,7 @@ module.exports = function (grunt) {
 						.isSymbolicLink();
 				}),
 			"external": "<%= paths.external %>-src/**/*.js",
-			"grunt": "grunt.js"
+			"grunt": ["grunt.js", "grunt/**/*.js"]
 		},
 
 		jshint: {
@@ -229,6 +241,8 @@ module.exports = function (grunt) {
 			}
 		}
 	});
+
+	grunt.loadTasks("grunt/tasks");
 
 	grunt.registerMultiTask("bridge", "Copy / merge files from other sources as temporarily bridge.", function () {
 		var copyExp = /^\/\*\s*copy\(["|'](.*?)["|']\)\s*\*\/$/,
@@ -393,25 +407,6 @@ module.exports = function (grunt) {
 			file.copy(abspath, srcDest(abspath));
 		});
 	});
-
-	grunt.registerMultiTask("jsmin", "Minify javascript files in distribution.", function () {
-		var uglify = require("uglify-js"),
-			files = file.expandFiles(this.file.src);
-
-		files.forEach(function (abspath) {
-			file.write(abspath.replace(/\.(.+)$/, ".min.$1"), uglify(file.read(abspath)));
-		});
-	});
-
-	grunt.registerMultiTask("cssmin", "Minify css files in distribution.", function () {
-		var sqwish = require("sqwish"),
-			files = file.expandFiles(this.file.src);
-
-		files.forEach(function (abspath) {
-			file.write(abspath.replace(/\.(.+)$/, ".min.$1"), sqwish.minify(file.read(abspath)));
-		});
-	});
-
 
 	//
 	// Grouped tasks
