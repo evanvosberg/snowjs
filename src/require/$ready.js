@@ -5,10 +5,10 @@
  *
  * @license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
- * @module			require/jquery-ready
+ * @module			$ready
  */
 
-define("require/jquery-ready", ["jquery"], function ($) {
+define("$ready", ["jquery"], function ($) {
 
 	// loader plugin/module
 	var module = {

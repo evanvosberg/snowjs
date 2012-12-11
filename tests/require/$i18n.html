@@ -41,19 +41,6 @@
 		});
 	});
 
-	asyncTest("require/jquery-i18n!...", function() {
-
-		require(["jquery"], function($){
-
-			require(["require/jquery-i18n!EUR", "require/jquery-i18n!en-GB"], function () {
-				
-				ok(true, "Loaded \"require/jquery-i18n!EUR\", \"require/jquery-i18n!en-GB\".");
-
-				start();
-			});
-		});
-	});
-
 	asyncTest("$i18n!...", function() {
 
 		require(["jquery"], function($){

@@ -15,7 +15,7 @@
 	<script src="external/qunit/qunit/qunit.js"></script>
 	<script src="src/require.js"></script>
 	<script>
-	var moduleName = "require/jquery-ready";
+	var moduleName = "$ready";
 
 	module(moduleName);
 
@@ -29,14 +29,6 @@
 		
 		test("document.body", function(){
 			ok(!t, "DOM isn't ready.");
-		});
-
-		asyncTest("require/jquery-ready!", function() {
-			require(["require/jquery-ready!"], function(ready){
-				ok(isBody(), "DOM is ready.");
-
-				start();
-			});
 		});
 
 		asyncTest("$ready!", function() {

@@ -27,7 +27,7 @@
 	<ol id="qunit-tests"></ol>
 	<div id="qunit-fixture">test markup, will be hidden</div>
 	<script>
-	var moduleName = "require/jquery-tmpl";
+	var moduleName = "$tmpl";
 
 	module(moduleName);
 
@@ -70,33 +70,6 @@
 				ok(mod, moduleName + " module object exists.");
 
 				start();
-			});
-		});
-
-		asyncTest("require/jquery-tmpl!...", function() {
-
-			require(["jquery"], function($){
-
-				// Over load jQuery AJAX requests
-				ajaxOverload($);
-
-				require(["require/jquery-tmpl!jquery/tmpl/example"], function (tmplExample) {
-
-					ok(tmplExample, "Loaded \"require/jquery-tmpl!jquery/tmpl/example\".");
-
-					equal(
-						tmplExample.toString().replace(/\s/g,""), // To string has different results in different engines
-						"functionanonymous(jQuery,$item){var$=jQuery,call,__=[],$data=$item.data;with($data){__.push('<div><div/>');}return__;}",
-						"Converted template is equal to test for \"require/jquery-tmpl!jquery/tmpl/example\"."
-					);
-
-					ok(
-						require("require/jquery-tmpl!jquery/tmpl/example"),
-						"Loadable via require(\"require/jquery-tmpl!jquery/tmpl/example\") if it's already loaded. (Don't load again)"
-					);
-
-					start();
-				});
 			});
 		});
 

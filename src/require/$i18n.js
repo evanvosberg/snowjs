@@ -5,10 +5,10 @@
  *
  * @license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
- * @module			require/jquery-i18n
+ * @module			$i18n
  */
 
-define("require/jquery-i18n", ["jquery/i18n"], function ($) {
+define("$i18n", ["jquery/i18n"], function ($) {
 
 	var
 		// add path location

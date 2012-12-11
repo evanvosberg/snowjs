@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>QUnit</title>
+	<script>function base(level){document.write("<base href=\""+location.href.replace(/\/[^\/]*$/,"/")+level+"\"/>")}</script>
+	<script>
+	base("../../");
+
+	var require = {
+			baseUrl: "src",
+		};
+	</script>
+	<link  href="external/qunit/qunit/qunit.css" rel="stylesheet"/>
+	<script src="external/qunit/qunit/qunit.js"></script>
+	<script src="src/require.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<script>
+	var moduleName = "$pub";
+
+	module(moduleName);
+
+	(function(){
+
+		var t = {};
+
+		define("$pub!A", [], function(){
+			t.definedA = "DEFINED: $pub!A";
+			return "SCRIPT MODULE A";
+		});
+
+
+		define("$pub!B", [], function(){
+			t.definedB = "DEFINED: $pub!B";
+			return "SCRIPT MODULE B";
+		});
+
+		asyncTest("define(\"$pub!\"); require(\"$pub!\")", function() {
+			require(["$pub!A"], function(moduleA){
+				t.loadedA = "LOADED: $pub!A > " + moduleA;
+
+				equal(
+					t.definedA,
+					"DEFINED: $pub!A",
+					"define(\"$pub!A\", ... ); --> $pub!A was defined"
+				);
+
+				equal(
+					t.loadedA,
+					"LOADED: $pub!A > SCRIPT MODULE A",
+					"define(\"$pub!A\", ... ); --> $pub!A was loaded as module object"
+				);
+
+				start();
+			});
+		});
+
+		asyncTest("define(\"$pub!\"); require(\"$pub!\")", function() {
+			require(["$pub!B"], function(moduleB){
+				t.loadedB = "LOADED: $pub!B > " + moduleB;
+
+				equal(
+					t.definedB,
+					"DEFINED: $pub!B",
+					"define(\"$pub!B\", ... ); --> $pub!B was defined"
+				);
+
+				equal(
+					t.loadedB,
+					"LOADED: $pub!B > SCRIPT MODULE B",
+					"define(\"$pub!B\", ... ); --> $pub!B was loaded as module object"
+				);
+
+				start();
+			});
+		});
+
+		asyncTest("require(\"$pub!\"); define(\"$pub!\")", function() {
+			require(["$pub!C"], function(moduleC){
+				t.loadedC = "LOADED: $pub!C > " + moduleC;
+
+				equal(
+					t.definedC,
+					"DEFINED: $pub!C",
+					"define(\"$pub!C\", ... ); --> $pub!C was defined"
+				);
+
+				equal(
+					t.loadedC,
+					"LOADED: $pub!C > SCRIPT MODULE C",
+					"define(\"$pub!C\", ... ); --> $pub!C was loaded as module object"
+				);
+
+				start();
+			});
+		});
+
+		setTimeout(function(){
+			define("$pub!C", [], function(){
+				t.definedC = "DEFINED: $pub!C";
+				return "SCRIPT MODULE C";
+			});
+		},300);
+
+		asyncTest("require", function() {
+			require([moduleName], function(mod){
+				ok(true, moduleName + " loaded via require.");
+
+				ok(mod, moduleName + " module object exists.");
+
+				start();
+			});
+		});
+	}());
+	</script>
+</body>
+</html>

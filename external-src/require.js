@@ -1,13 +1,11 @@
 /*import("external/requirejs/require.js")*/
 
 require({
-	map: {
-		"*": {
-			"script": "require/script",
-			"$dict": "require/jquery-dict",
-			"$i18n": "require/jquery-i18n",
-			"$ready": "require/jquery-ready",
-			"$tmpl": "require/jquery-tmpl"
-		}
+	paths: {
+		"$dict": "require/$dict",
+		"$i18n": "require/$i18n",
+		"$pub": "require/$pub",
+		"$ready": "require/$ready",
+		"$tmpl": "require/$tmpl"
 	}
 });

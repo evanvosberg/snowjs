@@ -5,10 +5,10 @@
  *
  * @license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
- * @module			require/script
+ * @module			$pub
  */
 
-define("require/script", [], function () {
+define("$pub", [], function () {
 
 	// Loader plugin/module
 	var module = {
@@ -59,7 +59,7 @@ define("require/script", [], function () {
 	define = function (name, deps, callback) {
 		var load;
 
-		if (/!/.test(name) && _normalize && _normalize(name.split("!")[0], name, true) === "require/script" && (load = module.pending(name, false))) {
+		if (/!/.test(name) && _normalize && _normalize(name.split("!")[0], name, true) === "$pub" && (load = module.pending(name, false))) {
 			// Module may not have dependencies
 			if (toString.call(deps) !== "[object Array]") {
 				callback = deps;

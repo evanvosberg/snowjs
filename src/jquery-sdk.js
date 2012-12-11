@@ -71,7 +71,7 @@
 
 		dependMap = {
 			"plugin": "",
-			"script": "script!",
+			"script": "$pub!",
 			"dict": "$dict!",
 			"DOM": "$ready!",
 			"i18n": "$i18n!",

@@ -5,10 +5,10 @@
  *
  * @license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
- * @module			require/jquery-dict
+ * @module			$dict
  */
 
-define("require/jquery-dict", ["jquery/dict"], function ($) {
+define("$dict", ["jquery/dict"], function ($) {
 
 	// Register special pre filter for x-domain requests with alternative data type
 	$.ajaxPrefilter(function (options) {
@@ -108,7 +108,7 @@ define("require/jquery-dict", ["jquery/dict"], function ($) {
 									var subDict = self.info(subName + "." + dict.region);
 
 									if (!defined(subDict) && !req.defined(subDict.id) && !req.specified(subDict.id)) {
-										depends.push("require/jquery-dict!" + subDict.id);
+										depends.push("$dict!" + subDict.id);
 									}
 								}
 							});

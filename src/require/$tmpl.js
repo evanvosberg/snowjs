@@ -5,10 +5,10 @@
  *
  * @license			Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
- * @module			require/jquery-tmpl
+ * @module			$tmpl
  */
 
-define("require/jquery-tmpl", ["jquery", "jquery/tmpl"], function ($) {
+define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 
 	// Register special pre filter for x-domain requests with alternative data type
 	$.ajaxPrefilter(function (options) {

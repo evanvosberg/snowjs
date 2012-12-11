@@ -27,7 +27,7 @@
 	<ol id="qunit-tests"></ol>
 	<div id="qunit-fixture">test markup, will be hidden</div>
 	<script>
-	var moduleName = "require/jquery-dict";
+	var moduleName = "$dict";
 
 	module(moduleName);
 
@@ -89,59 +89,6 @@
 			});
 		});
 
-		asyncTest("require/jquery-dict!...", function() {
-
-			require(["jquery"], function($){
-
-				// Over load jQuery AJAX requests
-				ajaxOverload($);
-
-				require(["require/jquery-dict!jquery/dict/A-1", "require/jquery-dict!jquery/dict/A-1.en-US", "require/jquery-dict!http://github.com/evanvosberg/appdk.json"], function (dictA1_deDE, dictA1_enUS, dictExtern_deDE) {
-
-					equal(
-						dictA1_deDE instanceof $.Dictionary,
-						true,
-						"Module result \"require/jquery-dict!jquery/dict/A-1\" is a $.Dictionary instance."
-					);
-					deepEqual(
-						dictA1_deDE.dict,
-						{"Ok":"Ok","Cancel":"Abbrechen","Apply":"Übernehmen","Close":"Schließen"},
-						"Translation map of required and loaded dictionary \"require/jquery-dict!jquery/dict/A-1\"."
-					);
-
-					equal(
-						dictA1_enUS instanceof $.Dictionary,
-						true,
-						"Module result \"require/jquery-dict!jquery/dict/A-1.en-US\" is a $.Dictionary instance."
-					);
-					deepEqual(
-						dictA1_enUS.dict,
-						{"Ok":"Ok","Cancel":"Cancel","Apply":"Apply","Close":"Close"},
-						"Translation map of required and loaded dictionary \"require/jquery-dict!jquery/dict/A-1.en-US\"."
-					);
-
-					equal(
-						dictExtern_deDE instanceof $.Dictionary,
-						true,
-						"Module result \"require/jquery-dict!http://github.com/evanvosberg/appdk.json\" is a $.Dictionary instance."
-					);
-					deepEqual(
-						dictExtern_deDE.dict,
-						{"Hello":"Hallo","Mr":"Herr","Mrs":"Frau"},
-						"Translation map of required and loaded dictionary \"require/jquery-dict!http://github.com/evanvosberg/appdk.json\"."
-					);
-
-					equal(
-						require("require/jquery-dict!jquery/dict/A-1") instanceof $.Dictionary,
-						true,
-						"Loadable via require(\"require/jquery-dict!jquery/dict/A-1\") if it's already loaded. (Don't load again)"
-					);
-
-					start();
-				});
-			});
-		});
-
 		asyncTest("$dict!...", function() {
 
 			require(["jquery"], function($){
@@ -188,31 +135,6 @@
 						require("$dict!jquery/dict/A-1") instanceof $.Dictionary,
 						true,
 						"Loadable via require(\"$dict!jquery/dict/A-1\") if it's already loaded. (Don't load again)"
-					);
-
-					start();
-				});
-			});
-		});
-
-		asyncTest("require/jquery-dict!...", function() {
-
-			require(["jquery"], function($){
-
-				// Over load jQuery AJAX requests
-				ajaxOverload($);
-
-				require(["require/jquery-dict!base/app/toolbar"], function (dictBaseAppToolbar_deDE) {
-
-					equal(
-						dictBaseAppToolbar_deDE instanceof $.Dictionary,
-						true,
-						"Module result \"require/jquery-dict!base/app/toolbar\" is a $.Dictionary instance."
-					);
-					deepEqual(
-						dictBaseAppToolbar_deDE.dict,
-						{"Apply":"Übernehmen","Cancel":"Abbrechen","Close":"Schließen","Delete":"Löschen","Ok":"Ok","Save":"Speichern","View":"Ansicht","Welcome to MyApp":"Willkommen bei MyApp","Preview":"Vorschau","Redo":"Wiederholen","Undo":"Rückgängig"},
-						"Translation map of required and loaded dictionary \"require/jquery-dict!base/app/toolbar\" includes also \"require/jquery-dict!base/app\" and \"require/jquery-dict!base\"."
 					);
 
 					start();

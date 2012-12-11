@@ -18,7 +18,7 @@
 		module,
 
 		// Helper script id
-		helperId = "script!__i18n__",
+		helperId = "$pub!__i18n__",
 
 		// Define the helper
 		helperDefine = function () {
