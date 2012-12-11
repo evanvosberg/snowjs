@@ -92,7 +92,7 @@ module.exports = function (grunt) {
 
 		bridge: {
 			"external": {
-				dest: "<%= paths.external %>-bridge",
+				dest: ".<%= paths.external %>-src",
 				strip: /^[^\/]+\//,
 				src: "<%= paths.external %>-src/**/*"
 			}
@@ -102,13 +102,13 @@ module.exports = function (grunt) {
 			"external": {
 				dest: "<%= paths.src %>",
 				strip: /^[^\/]+\//,
-				src: "<%= paths.external %>-bridge/**/*"
+				src: ".<%= paths.external %>-src/**/*"
 			}
 		},
 
 		clean: {
 			"dist": "<%= paths.dest %>/**/*",
-			"external": "<%= paths.external %>-bridge/**/*"
+			"external": ".<%= paths.external %>-src/**/*"
 		},
 
 		copy: {
