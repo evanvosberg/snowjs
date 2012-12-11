@@ -26,4 +26,5 @@ define("jquery/expr", ["jquery"], function ($) {
 		}
 	});
 
+	return $;
 });
