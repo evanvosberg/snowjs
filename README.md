@@ -1,9 +1,9 @@
-# [AppDK](http://github.com/evanvosberg/appdk) - (Application Development Kit)
-A module based Javascript library
+# [Snow JS](http://github.com/evanvosberb/snowjs)
+A snowflake (module) based Javascript library.
 
 ## Library
 
-- [AppDK modules](http://github.com/evanvosberg/appdk)
+- [Snow modules](http://github.com/evanvosberg/snowjs)
 - [RequireJS](http://github.com/jrburke/requirejs)
 - [jQuery](http://github.com/jquery/jquery)
 - [jQuery UI](http://github.com/jquery/jquery-ui)
@@ -18,27 +18,13 @@ A module based Javascript library
 
 ### Clone repository
 
-First, clone a copy of the main AppDK git repo by running:
+First, clone a copy of the main Snow JS git repo by running:
 
 ```bash
-git clone git://github.com/evanvosberg/appdk.git
+git clone git://github.com/evanvosberg/snowjs.git
 ```
 
 ### Initialize sub modules
-
-#### jQuery
-
-Enter the directory and install the Node dependencies:
-
-```bash
-cd appdk/external/jquery && npm install
-```
-
-Then, build a complete, version of jQuery, type the following:
-
-```bash
-grunt
-```
 
 #### jQuery UI
 
@@ -54,29 +40,21 @@ Then, build a complete, version of jQuery UI, type the following:
 grunt release
 ```
 
-#### jQuery Color
+### Initialize Snow JS
 
 Enter the directory and install the Node dependencies:
 
 ```bash
-cd appdk/external/jquery-color && npm install
-```
-
-Then, build a complete, version of jQuery Color, type the following:
-
-```bash
-grunt build
-```
-
-### Initialize AppDK
-
-Enter the directory and install the Node dependencies:
-
-```bash
-cd appdk && npm install
+cd snowjs && npm install
 ```
 
 Make sure you have `grunt` installed by testing:
+
+```bash
+grunt -version
+```
+
+Run the setup task by this command:
 
 ```bash
 grunt setup
