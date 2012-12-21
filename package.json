@@ -1,19 +1,19 @@
 {
-  "name": "appdk",
-  "title": "AppDK",
-  "description": "AppDK (Application Development Kit) a module based Javascript library",
+  "name": "snowjs",
+  "title": "Snow JS",
+  "description": "A snowflake (module) based Javascript library",
   "version": "1.0.0pre",
-  "homepage": "http://github.com/evanvosberg/appdk",
+  "homepage": "http://github.com/evanvosberg/snowjs",
   "author": {
     "name": "Evan Vosberg",
     "url": "http://github.com/evanvosberg"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/evanvosberg/appdk.git"
+    "url": "http://github.com/evanvosberg/snowjs.git"
   },
   "bugs": {
-    "url": "http://github.com/evanvosberg/appdk/issues"
+    "url": "http://github.com/evanvosberg/snowjs/issues"
   },
   "licenses": [
     {
@@ -23,6 +23,9 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "fibers": ">=0.6.9",
+    "common-node": ">=0.2.6",
+    "requirejs": ">=2.1.2",
     "sqwish": ">=0.2.0",
     "uglify-js": ">=1.0.7",
     "grunt": "~0.3.9"

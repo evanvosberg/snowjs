@@ -90,19 +90,11 @@ module.exports = function (grunt) {
 			banner: "/*! AppDK v@<%= pkg.version %> http://github.com/evanvosberg/appdk */"
 		},
 
-		bridge: {
-			"external": {
-				dest: ".<%= paths.external %>-src",
-				strip: /^[^\/]+\//,
-				src: "<%= paths.external %>-src/**/*"
-			}
-		},
-
 		link: {
 			"external": {
 				dest: "<%= paths.src %>",
 				strip: /^[^\/]+\//,
-				src: ".<%= paths.external %>-src/**/*"
+				src: ".<%= paths.external %>/**/*"
 			}
 		},
 
@@ -135,6 +127,13 @@ module.exports = function (grunt) {
 				src: "<%= paths.dest %>/lib-min/**/*.js"
 			}
 		},
+		
+		snow: {
+			"external": {
+				dest: ".<%= paths.external %>",
+				src: "<%= paths.external %>/*.js"
+			}
+		},
 
 		qunit: {
 			"source": "<%= paths.test %>/**/*.html"
@@ -148,7 +147,7 @@ module.exports = function (grunt) {
 						.test(abspath) && !fs.lstatSync(abspath)
 						.isSymbolicLink();
 				}),
-			"external": "<%= paths.external %>-src/**/*.js",
+			"external": "<%= paths.external %>/*.js",
 			"grunt": ["grunt.js", "grunt/**/*.js"]
 		},
 
@@ -167,8 +166,8 @@ module.exports = function (grunt) {
 			},
 			"external": {
 				globals: {
-					define: true,
-					require: true
+					require: true,
+					snow: true
 				},
 				options: {
 					unused: false
@@ -242,65 +241,6 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadTasks("grunt/tasks");
-
-	grunt.registerMultiTask("bridge", "Copy / merge files from other sources as temporarily bridge.", function () {
-		var copyExp = /^\/\*\s*copy\(["|'](.*?)["|']\)\s*\*\/$/,
-			importExp = /\/\*\s*import\(["|'](.*?)["|']\)\s*\*\//g,
-
-			// Copy helper
-			srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
-			files = file.expandFiles(this.file.src);
-
-		// Walk files
-		files.forEach(function (abspath) {
-			var target = srcDest(abspath),
-				content = file.read(abspath);
-
-			// Copy files or directories
-			if (copyExp.test(content)) {
-				// Set path to copy expression
-				abspath = copyExp.exec(content)[1].replace(/\/$/, "");
-
-				// Copy directory recursive
-				if (fs.lstatSync(abspath)
-					.isDirectory()) {
-					var abspathExp = new RegExp("^" + helper.escapeRegExp(abspath), "");
-
-					file.expandFiles(abspath + "/**/*")
-						.forEach(function (abspath) {
-							var targetFile = abspath.replace(abspathExp, target);
-
-							// Copy file
-							file.copy(abspath, targetFile);
-
-							// Log success
-							log.ok("Copied: " + targetFile);
-						});
-				}
-				// Copy file
-				else {
-					// Copy file
-					file.copy(abspath, target);
-
-					// Log success
-					log.ok("Copied: " + target);
-				}
-			}
-			// Merge files
-			else {
-				// Replace content parts by other file content
-				content = content.replace(importExp, function (all, $1) {
-					return file.read($1);
-				});
-
-				// Write merged file
-				file.write(target, content);
-
-				// Log success
-				log.ok("Merged: " + target);
-			}
-		});
-	});
 
 	grunt.registerMultiTask("link", "Link bridged files.", function () {
 		var ignoreList = [],
@@ -415,7 +355,7 @@ module.exports = function (grunt) {
 	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* copy:dist-min:* jsmin:dist-min:* cssmin:dist-min:*");
 
 	// setup: Initialize
-	grunt.registerTask("setup", "clean:*:* bridge:*:* link:*:*");
+	grunt.registerTask("setup", "clean:*:* snow:*:* link:*:*");
 
 	// test: Run all tests
 	grunt.registerTask("test", "lint:*:* qunit:*:*");

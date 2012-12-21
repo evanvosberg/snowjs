@@ -6,7 +6,7 @@
 .DS_Store
 node_modules
 dist
-.external-src
+.external
 research
 #Symlinks 'external' begin
 src/jquery/color/svg-names.js
@@ -79,6 +79,8 @@ src/jquery/ui/tooltip.css
 src/jquery/ui/tooltip.js
 src/jquery/ui/widget.js
 src/jquery.js
+src/qunit.css
+src/qunit.js
 src/require.js
 src/util/json.js
 #Symlinks 'external' end
