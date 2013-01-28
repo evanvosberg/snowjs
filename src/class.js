@@ -12,6 +12,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 	/**
 	 *	@class				Class			Create a class object.
+	 *
 	 *	@category			Utilities
 	 *
 	 *	@signature
@@ -36,6 +37,65 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 	 *						#### Call overwritten inherited methods
 	 *						If a class overwrites a method of a superclass with an own method, you can call the original method inside
 	 *						of the new method in the following way ```this._super(arg1, argN)``` or ```this._superApply(args)```.
+	 *
+	 *	@example			Working with the class system.
+	 *
+	 *						<script>
+	 *						require("class", function (Class) {
+	 *
+	 *							Class("example.Controller", {
+	 *								contructor: function(){
+	 *									this.handles = {};
+	 *								},
+	 *								addHandle: function( name, fn ){
+	 *									this.handles[ name ] = fn;
+	 *								},
+	 *								removeHandle: function( name ){
+	 *									delete( this.handles[ name ] );
+	 *								}
+	 *							});
+	 *
+	 *							// define a class object and inherit properties from a superclass
+	 *							Class( "advanced.Controller", example.Controller, {
+	 *								contructor: function( rsort ){
+	 *									// The inherited constructor method will run automatically
+	 *									this.handlesSort = [];
+	 *									this.rsort = rsort;
+	 *								},
+	 *								addHandle: function( name, fn ){
+	 *									// Call the inherited method
+	 *									this._superApply(arguments);
+	 *
+	 *									// More functionallity
+	 *								},
+	 *								getSorted: function(){
+	 *									var result = {};
+	 *
+	 *									// Sort handles
+	 *
+	 *									return result;
+	 *								}
+	 *							});
+	 *
+	 *							// Get a instance on a class
+	 *							var test = new advanced.Controller();
+	 *
+	 *							// Add handles to this instance
+	 *							test.addHandle( "C", function(){} );
+	 *							test.addHandle( "B", function(){} );
+	 *							test.addHandle( "A", function(){} );
+	 *
+	 *							// Remove a handle
+	 *							test.removeHandle( "B" );
+	 *
+	 *							// Set the rsort property to true, to reverse order on call .getSorted()
+	 *							test.rsort = true;
+	 *
+	 *							// Get all handles
+	 *							test.getSorted();
+	 *
+	 *						});
+	 *						</script>
 	 */
 	function _clss() {
 
@@ -55,15 +115,16 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 		 *		@param			{String,Function}	function	The function or the name of a function (from current instance) whose context will be changed to the current instance.
 		 *		@return			{Function}
 		 *
-		 *	@description		{md}	Additionally, ```._proxy()``` makes sure that even if you bind ```jQuery.on()``` the function with returned from ```._proxy()``` it will still unbind ```jQuery.off()``` the correct function, if passed the original.
+		 *	@description		Additionally, ```._proxy()``` makes sure that even if you bind ```jQuery.on()``` the function with returned from ```._proxy()``` it will still unbind ```jQuery.off()``` the correct function, if passed the original.
 		 */
 		_proxy: function (fn) {
 			return typeof fn === "string" ? $.proxy(this, fn) : $.proxy(fn, this);
 		}
 	};
 
-	/* DEPRECATED: Backward compatible API */
+	// >>>> DEPRECATED >>>> //
 	_clss.prototype.Proxy = _clss.prototype._proxy;
+	// <<<< DEPRECATED <<<< //
 
 	// while initializing a new class
 	var initializing = false,
@@ -86,15 +147,17 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 							this._super = _super;
 							this._superApply = _superApply;
-							/* DEPRECATED: Backward compatible API */
+							// >>>> DEPRECATED >>>> //
 							this.Inherited = _superApply;
+							// <<<< DEPRECATED <<<< //
 
 							returnValue = value.apply(this, arguments);
 
 							this._super = __super;
 							this._superApply = __superApply;
-							/* DEPRECATED: Backward compatible API */
+							// >>>> DEPRECATED >>>> //
 							this.Inherited = __superApply;
+							// <<<< DEPRECATED <<<< //
 
 							return returnValue;
 						};
@@ -110,7 +173,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 		classCreator = function (classname, base, prototype, classscope) {
 
-			/* DEPRECATED: Backward compatible API */
+			// >>>> DEPRECATED >>>> //
 			if (prototype.Constructor) {
 				var constructor = prototype.Constructor;
 				prototype.constructor = function () {
@@ -119,6 +182,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 				};
 				prototype.Constructor = undefined;
 			}
+			// <<<< DEPRECATED <<<< //
 
 			var parts = classname.split(/\./),
 				fullName = classname,
@@ -172,7 +236,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 				classname = "local" + (uid++) + ".Class";
 				classscope = context;
 			}
-			
+
 			if (!prototype) {
 				return classCreator(classname, _clss, bases);
 			}
@@ -182,7 +246,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 					baseClassname;
 
 				for (var i = 0, l = bases.length; i < l; i++) {
-					baseClassname =  "multi" + (uid++) + ".Class";
+					baseClassname = "multi" + (uid++) + ".Class";
 					basePrototype = bases.shift()
 						.prototype;
 
@@ -210,10 +274,49 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 	 *		@optional
 	 *		@return			{Boolean}
 	 *
-	 *	@description		{md}	This method determines whether the argument is an class object.
+	 *	@description		This method determines whether the argument is an class object.
+	 *
+	 *	@example			Check whether the given object is a class.
+	 *
+	 *						<script>
+	 *						require("class", function (Class) {
+	 *
+	 *							var foo = {};
+	 *
+	 *							foo.Controller = function( data ){
+	 *								this.data = data || {};
+	 *							}
+	 *
+	 *							foo.prototype.getData = function(){
+	 *								return this.data;
+	 *							}
+	 *
+	 *							Class( "bar.Controller", {
+	 *								contructor: function( data ){
+	 *									this.data = data || {};
+	 *								},
+	 *								getData: function(){
+	 *									return this.data;
+	 *								}
+	 *							});
+	 *
+	 *							Class.isClass( bar );
+	 *							// Result is: true
+	 *
+	 *							Class.isClass( foo );
+	 *							// Result is: true
+	 *
+	 *							Class.isClass( bar, true );
+	 *							// Result is: true
+	 *
+	 *							Class.isClass( foo, true );
+	 *							// Result is: false
+	 *
+	 *						});
+	 *						</script>
 	 */
 
-	// check is object a class, strict sure it was build with Class.define
+	// Check is object a class, strict sure it was build with Class()
 	module.isClass = function (obj, strict) {
 		return $.isFunction(obj) && !$.isEmptyObject(obj.prototype) && (strict ? !! obj.prototype[".class"] : true);
 	};
