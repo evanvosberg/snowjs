@@ -456,7 +456,7 @@
 						// year greater than this year (in the appropriate era for the region)
 						// Set it as a full year (e.g. 2031) or use an offset format starting from
 						// the current year: "+19" would correspond to 2031 if the current year 2012.
-						twoDigitYearMax: 2031,
+						twoDigitYearMax: 2032,
 						// set of predefined date and time patterns used by the region
 						// these represent the format someone in this region would expect
 						// to see given the portions of the date that are shown.
