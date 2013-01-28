@@ -267,8 +267,21 @@
 
 	// Setup backward compatible modules
 	$.each({
-		"jquery/array": [messageReplacedBy, "util/array", function ($, array) {
-			$.unsplice = array.unsplice;
+		"jquery/array": ["jQuery.array' was canceled entirely.", undefined, function ($) {
+			var arrayProto = Array.prototype,
+
+				splice = arrayProto.splice,
+
+				push = arrayProto.push,
+
+				add;
+
+			$.unsplice = function (target, insert, i) {
+				push.apply(add = [isNaN(i) ? target.length : i, 0], !$.isArray(insert) ? $.merge([], insert) : insert);
+				splice.apply(target, add);
+
+				return target;
+			};
 		}],
 
 		"jquery/base64": [messageReplacedBy, "util/base64", function ($, base64) {
@@ -278,9 +291,7 @@
 
 		"jquery/base64/fix": [undefined, "jquery/base64"],
 
-		"jquery/core": [undefined, undefined, function ($) {
-			return $;
-		}],
+		"jquery/core": [undefined, undefined],
 
 		"jquery/class": [messageReplacedBy, "class", function ($, Class) {
 			$.Class = Class;
@@ -363,12 +374,16 @@
 			moduleCallback = moduleData[2];
 
 		define(moduleId, ["jquery-sdk"].concat(moduleDepend ? [moduleDepend] : []), function ($) {
+
 			if (moduleMessage) {
 				$.debug.warn("DEPRECATED: " + ($.isFunction(moduleMessage) ? moduleMessage(moduleId, moduleDepend) : moduleMessage));
 			}
+
 			if (moduleCallback) {
-				return moduleCallback.apply(moduleCallback, arguments);
+				moduleCallback.apply(moduleCallback, arguments);
 			}
+
+			return $;
 		});
 	});
 
