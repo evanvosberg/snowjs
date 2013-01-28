@@ -56,7 +56,11 @@
 
 		// >>>> DEPRECATED >>>> //
 		if ($.config && $.config.metaparse) {
-			$.debug.warn("DEPRECATED: use 'module config of requirejs' instead of 'jQuery.config.metaparse'.");
+			/*global console*/
+			if (typeof console !== "undefined" && console.warn) {
+				console.warn("DEPRECATED: use 'module config of requirejs' instead of 'jQuery.config.metaparse'.");
+			}
+
 			$.extend(config, $.config.metaparse);
 		}
 		// <<<< DEPRECATED <<<< //
