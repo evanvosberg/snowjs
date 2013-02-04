@@ -85,7 +85,7 @@
 				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
 			);
 			equal(
-				$('form').formInput().filter('[value=text]').length,
+				$('form').formInput().filter(function () { return this.value === 'text'; }).length,
 				1,
 				"$('form').formInput().filter('[value=text]').length"
 			);
@@ -119,7 +119,7 @@
 			cloneB.find('#f6').val('text');
 			cloneC.find('#f6').val('text');
 			equal(
-				$('form').formInput().filter('[value=text]').length,
+				$('form').formInput().filter(function () { return this.value === 'text'; }).length,
 				2,
 				"$('form').formInput().filter('[value=text]').length"
 			);
@@ -137,7 +137,7 @@
 				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
 			);
 			equal(
-				cloneA.formInput().filter('[value=text]').length,
+				cloneA.formInput().filter(function () { return this.value === 'text'; }).length,
 				1,
 				"$('form').formInput().filter('[value=text]').length"
 			);
@@ -155,7 +155,7 @@
 				"$('form').formInput().filter(':radio:eq(1)').filter(':checked').length"
 			);
 			equal(
-				cloneB.formInput().filter('[value=text]').length,
+				cloneB.formInput().filter(function () { return this.value === 'text'; }).length,
 				1,
 				"$('form').formInput().filter('[value=text]').length"
 			);
@@ -185,7 +185,7 @@
 				"$('form').formInput().filter(':radio:eq(0)').filter(':checked').length"
 			);
 			equal(
-				cloneC.formInput().filter('[value=text]').length,
+				cloneC.formInput().filter(function () { return this.value === 'text'; }).length,
 				0,
 				"$('form').formInput().filter('[value=text]').length"
 			);
