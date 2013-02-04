@@ -35,32 +35,6 @@
 			start();
 		});
 	});
-
-	asyncTest(".config()", function() {
-		require([moduleName], function(mod){
-			deepEqual(
-				mod.config(),
-				{
-					"baseUrl": "src/",
-					"config": {},
-					"map": {},
-					"paths": {
-						"$dict": "require/$dict",
-						"$i18n": "require/$i18n",
-						"$pub": "require/$pub",
-						"$ready": "require/$ready",
-						"$tmpl": "require/$tmpl"
-					},
-					"pkgs": {},
-					"shim": {},
-					"waitSeconds": 7
-				},
-				"Access contextual config."
-			);
-
-			start();
-		});
-	});
 	</script>
 </body>
 </html>

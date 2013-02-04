@@ -66,13 +66,16 @@
 		moduleConfig;
 
 	// Initialize i18n for jQuery
-	require(["jquery", "require"], function (jQuery, req) {
+	require(["jquery"], function (jQuery) {
 
 		// Expose local alias of jQuery
 		$ = jQuery;
 
 		// Read module config
-		moduleConfig = req.config("config")[moduleId] || {};
+		// - Hack to access the module config
+		// - In future hopefully it's possible to get access via a global .config method
+		// - Example: moduleConfig =  req.config("config")[moduleId] || {}
+		moduleConfig = require.s.contexts._.config.config[moduleId] || {};
 
 		var
 			// Default regions and currencies are dependencies for the module
