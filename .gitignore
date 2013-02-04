@@ -78,6 +78,9 @@ src/jquery/ui/theme.css
 src/jquery/ui/tooltip.css
 src/jquery/ui/tooltip.js
 src/jquery/ui/widget.js
+src/jquery-migrate-sdk.js
+src/jquery-migrate.js
+src/jquery-sdk.js
 src/jquery.js
 src/qunit.css
 src/qunit.js
