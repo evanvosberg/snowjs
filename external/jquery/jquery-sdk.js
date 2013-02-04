@@ -192,7 +192,7 @@
 		}
 	});
 
-	jQuery.fn.extend({
+	$.fn.extend({
 		// .jquerysdk --> Version
 		jquerysdk: "1.4",
 
@@ -206,14 +206,9 @@
 	$.ready.promise = readyPromise;
 
 	// Define module
-	define("jquery-sdk", ["jquery"], function ($) {
+	define("jquery-sdk", [], function () {
 		return $;
 	});
-
-	// Trigger callback execution of module
-	require(["jquery-sdk"]);
-
-
 
 	//
 	// Backward compatible plugins
