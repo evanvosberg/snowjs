@@ -32,7 +32,7 @@ define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 					cache: true,
 
 					// Load as JSON
-					dataType: "json",
+					dataType: "tmpl",
 
 					// Use JSONP if this cross domain request
 					dataTypeCrossDomain: "jsonp",
