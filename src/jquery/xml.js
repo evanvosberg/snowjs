@@ -10,11 +10,11 @@
 
 define("jquery/xml", ["jquery"], function ($, undefined) {
 
-	// original jQuery.fn.html
+	// Original jQuery.fn.html
 	var _fnHtml = $.fn.html,
 
-		// original jQuery.clean
-		_clean = $.clean,
+		// Original jQuery.buildFragment
+		_buildFragment = $.buildFragment,
 
 		// map of node types
 		createMap = {
@@ -24,18 +24,37 @@ define("jquery/xml", ["jquery"], function ($, undefined) {
 			8: "createComment"
 		},
 
-		// match self closing tag
+		// Match self closing tag
 		singleExp = /^(<[^>]+?>)$/,
 
-		// match inner XML
+		// Match inner XML
 		innerExp = /^(<[^>]+?>)(.*?)(<\/[^>]+?>)$/,
 
-		// short scope
+		// Short scope
 		isXML = $.isXMLDoc,
 
-		// clean for XML
-		cleanXML = function (xmlString, context, fragment) {
-			var xmlDoc = $.parseXML("<root>" + xmlString + "</root>"),
+		// Copy of save fragment method from jQuery core
+		createSafeFragment = function (document) {
+			var list = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"),
+				safeFrag = document.createDocumentFragment();
+
+			if (safeFrag.createElement) {
+				while (list.length) {
+					safeFrag.createElement(
+					list.pop());
+				}
+			}
+			return safeFrag;
+		},
+
+		// Fragment builder for XML
+		buildFragmentXML = function (elems, context/*, scripts, selection*/) {
+			var safe = createSafeFragment(context),
+				
+				l = elems.length,
+				
+				i = 0,
+
 				appendNodes = function (target, copy, level) {
 					var type = copy.nodeType,
 						create = createMap[type],
@@ -58,23 +77,30 @@ define("jquery/xml", ["jquery"], function ($, undefined) {
 					$.each(copy.childNodes || [], function (i, child) {
 						appendNodes(target, child, level + 1);
 					});
-				};
+				},
 
-			// clone XML document to fragment
-			if (xmlDoc) {
-				appendNodes(fragment, xmlDoc.documentElement, 1);
+				xmlDoc,
+				
+				elem;
+
+			for (; i < l; i++) {
+				elem = elems[i];
+
+				xmlDoc = $.parseXML("<root>" + elem + "</root>");
+
+				// clone XML document to fragment
+				if (xmlDoc) {
+					appendNodes(safe, xmlDoc.documentElement, 1);
+				}
+
 			}
 
-			return fragment;
+			return safe;
 		};
 
-	// new jQuery.clean
-	$.clean = function (elems, context, fragment, scripts) {
-		return isXML(context) && elems.length === 1 && typeof elems[0] === "string" ?
-		// clean XML
-		cleanXML(elems[0], context, fragment) :
-		// clean HTML
-		_clean.call($, elems, context, fragment, scripts);
+	$.buildFragment = function () {
+		return (isXML(arguments[1]) ? buildFragmentXML : _buildFragment)
+			.apply(this, arguments);
 	};
 
 	$.fn.extend({
@@ -99,6 +125,7 @@ define("jquery/xml", ["jquery"], function ($, undefined) {
 			this.each(function (i) {
 				var elem = $(this),
 					newValue = isFunction ? value(i, elem.xml()) : value;
+
 				elem.empty()
 					.append(newValue);
 			}) :
