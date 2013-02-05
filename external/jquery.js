@@ -18,8 +18,8 @@ var version = '1.9.0',
 
 snow.add('jquery.js', jquery);
 
-snow.add('jquery-sdk.js', [jqueryNoExpose, jquerySDK, jqueryExpose]);
+snow.add('jquery-sdk.js', [jqueryNoExpose, jquerySDK, jqueryExpose.replace(/@MODULE_EXPOSE/, "jquery-sdk")]);
 
-snow.add('jquery-migrate.js', [jqueryNoExpose, jqueryMigrate, jqueryExpose]);
+snow.add('jquery-migrate.js', [jqueryNoExpose, jqueryMigrate, jqueryExpose.replace(/@MODULE_EXPOSE/, "jquery-migrate")]);
 
-snow.add('jquery-migrate-sdk.js', [jqueryNoExpose, jqueryMigrate, jquerySDK, jqueryExpose]);
+snow.add('jquery-migrate-sdk.js', [jqueryNoExpose, jqueryMigrate, jquerySDK, jqueryExpose.replace(/@MODULE_EXPOSE/, "jquery-migrate-sdk")]);
