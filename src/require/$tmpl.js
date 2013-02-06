@@ -17,7 +17,8 @@ define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 
 	return {
 		normalize: function (name, normalize) {
-			return normalize(name, "", true).replace(/(\.tmpl\.html)$/, "");
+			return normalize(name, "", true)
+				.replace(/(\.tmpl\.html)$/, "");
 		},
 		load: function (name, req, load) {
 			if ($.template[name]) {
@@ -41,7 +42,13 @@ define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 					jsonpCallback: encodeURIComponent(name)
 				})
 					.done(function (data) {
-						load($.template(name, data));
+						var tmpl = $.template(name, data);
+
+						/* >>>> DEPRECATED >>>> */
+						$.template[name.replace(/\//g, ".")] = tmpl;
+						/* <<<< DEPRECATED <<<< */
+
+						load(tmpl);
 					});
 			}
 		}
