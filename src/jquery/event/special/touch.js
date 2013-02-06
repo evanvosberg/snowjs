@@ -311,7 +311,7 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 
 	});
 
-	// >>>> DEPRECATED >>>> //
+	/* >>>> DEPRECATED >>>> */
 	var zoom = {},
 		zoomMap = "State DeltaT DeltaX DeltaY Delta".split(" ");
 	$.event.special.touchzoom = {
@@ -341,7 +341,7 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 			delete zoom[id];
 		}
 	};
-	// <<<< DEPRECATED <<<< //
+	/* <<<< DEPRECATED <<<< */
 
 	return $;
 });

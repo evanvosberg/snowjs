@@ -17,9 +17,9 @@ define("jquery/metaparse", ["jquery", "module"], function ($, mod, undefined) {
 
 		requireExp = /^\.require/,
 
-		// >>>> DEPRECATED >>>> //
+		/* >>>> DEPRECATED >>>> */
 		readyExp = /^\.ready/,
-		// <<<< DEPRECATED <<<< //
+		/* <<<< DEPRECATED <<<< */
 
 		promiseDone = $.Deferred()
 			.resolve()
@@ -57,7 +57,7 @@ define("jquery/metaparse", ["jquery", "module"], function ($, mod, undefined) {
 		// Indicates automatically run on dom ready
 		autoparse;
 
-	// >>>> DEPRECATED >>>> //
+	/* >>>> DEPRECATED >>>> */
 	if ($.config && $.config.metaparse) {
 		/*global console*/
 		if (typeof console !== "undefined" && console.warn) {
@@ -66,7 +66,7 @@ define("jquery/metaparse", ["jquery", "module"], function ($, mod, undefined) {
 
 		$.extend(config, $.config.metaparse);
 	}
-	// <<<< DEPRECATED <<<< //
+	/* <<<< DEPRECATED <<<< */
 
 	$.extend({
 		metaparse: function (elem, settings /*internal*/ , isEach) {
@@ -125,12 +125,12 @@ define("jquery/metaparse", ["jquery", "module"], function ($, mod, undefined) {
 						require(eval(depend), temp);
 						return deferred.promise();
 					}
-					// >>>> DEPRECATED >>>> //
+					/* >>>> DEPRECATED >>>> */
 					if ((depend = depend && readyExp.test(depend) && depend.replace(readyExp, ""))) {
 						/*jshint evil:true */
 						return $.ready(eval(depend), temp);
 					}
-					// <<<< DEPRECATED <<<< //
+					/* <<<< DEPRECATED <<<< */
 					else {
 						temp();
 						return promiseDone;
@@ -198,11 +198,11 @@ define("jquery/metaparse", ["jquery", "module"], function ($, mod, undefined) {
 		if (autoparse.require) {
 			require(autoparse.require, runAutoparse);
 		}
-		// >>>> DEPRECATED >>>> //
+		/* >>>> DEPRECATED >>>> */
 		else if (autoparse.ready) {
 			$.ready(autoparse.ready, runAutoparse);
 		}
-		// <<<< DEPRECATED <<<< //
+		/* <<<< DEPRECATED <<<< */
 		else {
 			runAutoparse();
 		}

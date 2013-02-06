@@ -122,9 +122,9 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 		}
 	};
 
-	// >>>> DEPRECATED >>>> //
+	/* >>>> DEPRECATED >>>> */
 	_clss.prototype.Proxy = _clss.prototype._proxy;
-	// <<<< DEPRECATED <<<< //
+	/* <<<< DEPRECATED <<<< */
 
 	// while initializing a new class
 	var initializing = false,
@@ -147,17 +147,17 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 							this._super = _super;
 							this._superApply = _superApply;
-							// >>>> DEPRECATED >>>> //
+							/* >>>> DEPRECATED >>>> */
 							this.Inherited = _superApply;
-							// <<<< DEPRECATED <<<< //
+							/* <<<< DEPRECATED <<<< */
 
 							returnValue = value.apply(this, arguments);
 
 							this._super = __super;
 							this._superApply = __superApply;
-							// >>>> DEPRECATED >>>> //
+							/* >>>> DEPRECATED >>>> */
 							this.Inherited = __superApply;
-							// <<<< DEPRECATED <<<< //
+							/* <<<< DEPRECATED <<<< */
 
 							return returnValue;
 						};
@@ -173,7 +173,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 		classCreator = function (classname, base, prototype, classscope) {
 
-			// >>>> DEPRECATED >>>> //
+			/* >>>> DEPRECATED >>>> */
 			if (prototype.Constructor) {
 				var constructor = prototype.Constructor;
 				prototype.constructor = function () {
@@ -182,7 +182,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 				};
 				prototype.Constructor = undefined;
 			}
-			// <<<< DEPRECATED <<<< //
+			/* <<<< DEPRECATED <<<< */
 
 			var parts = classname.split(/\./),
 				fullName = classname,
