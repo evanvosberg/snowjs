@@ -127,6 +127,10 @@ define("$dict", ["jquery/dict"], function ($) {
 							data = [data];
 						}
 
+						/* >>>> DEPRECATED >>>> */
+						$.dictionary(dict.name.replace(/\//g, "."), data, dict.region);
+						/* <<<< DEPRECATED <<<< */
+
 						// Expose dictionary instance as module object
 						load($.dictionary(dict.name, data, dict.region));
 					});
