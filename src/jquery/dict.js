@@ -141,7 +141,7 @@ define("jquery/dict", ["module", "jquery"], function (mod, $, undefined) {
 			return this.contents()
 				.each(function () {
 					parseNode(this, dict, deep);
-				});
+				}), this;
 		}
 	});
 
