@@ -44,6 +44,7 @@ src/jquery/ui/dialog.css
 src/jquery/ui/dialog.js
 src/jquery/ui/draggable.js
 src/jquery/ui/droppable.js
+src/jquery/ui/images/animated-overlay.gif
 src/jquery/ui/images/ui-bg_flat_0_aaaaaa_40x100.png
 src/jquery/ui/images/ui-bg_flat_75_ffffff_40x100.png
 src/jquery/ui/images/ui-bg_glass_55_fbf9ee_1x400.png

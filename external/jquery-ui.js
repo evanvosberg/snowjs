@@ -1,6 +1,6 @@
-var gversion = '1.9.1',
+var version = '1.10.2',
 	
-	base = __dirname + '/jquery-ui/dist/jquery-ui';
+	base = __dirname + '/jquery-ui/dist/jquery-ui-' + version;
 
 // JS modules
 snow.find(base + '/ui/jquery.ui.*.js')
