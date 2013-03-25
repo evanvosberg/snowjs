@@ -15,6 +15,12 @@ define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 		return options.crossDomain && options.dataTypeCrossDomain;
 	});
 
+	function wrap(name) {
+		return function (data, options) {
+			return $.tmpl(name, data, options);
+		};
+	}
+
 	return {
 		normalize: function (name, normalize) {
 			return normalize(name, "", true)
@@ -22,7 +28,7 @@ define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 		},
 		load: function (name, req, load) {
 			if ($.template[name]) {
-				load($.template[name]);
+				load(wrap(name));
 			}
 			else {
 				$.ajax({
@@ -48,7 +54,7 @@ define("$tmpl", ["jquery", "jquery/tmpl"], function ($) {
 						$.template[name.replace(/\//g, ".")] = tmpl;
 						/* <<<< DEPRECATED <<<< */
 
-						load(tmpl);
+						load(wrap(name));
 					});
 			}
 		}

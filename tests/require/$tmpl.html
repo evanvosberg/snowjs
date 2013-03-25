@@ -86,8 +86,14 @@
 
 					equal(
 						tmplExample.toString().replace(/\s/g,""), // To string has different results in different engines
+						"function(data,options){return$.tmpl(name,data,options);}",
+						"Received method is equal to test for \"$tmpl!jquery/tmpl/example\"."
+					);
+
+					equal(
+						$.template["jquery/tmpl/example"].toString().replace(/\s/g,""), // To string has different results in different engines
 						"functionanonymous(jQuery,$item){var$=jQuery,call,__=[],$data=$item.data;with($data){__.push('<div><div/>');}return__;}",
-						"Converted template is equal to test for \"$tmpl!jquery/tmpl/example\"."
+						"Converted template is equal to test for '$.template[\"jquery/tmpl/example\"]'."
 					);
 
 					ok(
