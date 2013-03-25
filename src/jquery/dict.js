@@ -25,7 +25,7 @@ define("jquery/dict", ["module", "jquery"], function (mod, $, undefined) {
 				});
 			}
 		},
-		
+
 		config = $.dictSettings = $.extend({
 			parser: /(?:^|[^\{\$])(\{(.*?[^\\])\})/g,
 			region: "en"
@@ -138,10 +138,12 @@ define("jquery/dict", ["module", "jquery"], function (mod, $, undefined) {
 			dict = dict instanceof $.Dictionary ? dict : $.dict(dict, options);
 
 			// Parse DOM content
-			return this.contents()
+			this.contents()
 				.each(function () {
 					parseNode(this, dict, deep);
-				}), this;
+				});
+
+			return this;
 		}
 	});
 
