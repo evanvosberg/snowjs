@@ -2,22 +2,28 @@ module.exports = function (grunt) {
 
 	"use strict";
 
-	var sqwish = require("sqwish"),
-		file = grunt.file;
+	var fs = require("fs"),
+		sqwish = require("sqwish");
 
-	grunt.registerMultiTask("cssmin", "Minify css files in distribution.", function () {
+	grunt.task.registerMultiTask("cssmin", "Minify css files in distribution.", function () {
 		var renameMap = this.data.rename || {},
 			rename = function (abspath) {
 				return renameMap[abspath] || abspath;
 			};
-		
+
 		if (typeof this.data.rename === "function") {
 			rename = this.data.rename;
 		}
-	
-		file.expandFiles(this.file.src)
+
+		(grunt.file)
+			.expand(this.data.src)
+			.filter(function (abspath) {
+				return !(fs)
+					.lstatSync(abspath)
+					.isDirectory();
+			})
 			.forEach(function (abspath) {
-				file.write(rename(abspath), sqwish.minify(file.read(abspath)));
+				grunt.file.write(rename(abspath), sqwish.minify(grunt.file.read(abspath)));
 			});
 	});
 };

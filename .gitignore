@@ -9,9 +9,14 @@ dist
 .external
 research
 #Symlinks 'external' begin
-src/jquery/color/svg-names.js
+src/jquery-migrate-sdk.js
+src/jquery-migrate.js
+src/jquery-sdk.js
+src/jquery.js
 src/jquery/color.js
+src/jquery/color/svg-names.js
 src/jquery/cookie.js
+src/jquery/effects.js
 src/jquery/effects/blind.js
 src/jquery/effects/bounce.js
 src/jquery/effects/clip.js
@@ -25,7 +30,6 @@ src/jquery/effects/scale.js
 src/jquery/effects/shake.js
 src/jquery/effects/slide.js
 src/jquery/effects/transfer.js
-src/jquery/effects.js
 src/jquery/fn/datalink.js
 src/jquery/fn/scrollto.js
 src/jquery/metadata.js
@@ -79,10 +83,6 @@ src/jquery/ui/theme.css
 src/jquery/ui/tooltip.css
 src/jquery/ui/tooltip.js
 src/jquery/ui/widget.js
-src/jquery-migrate-sdk.js
-src/jquery-migrate.js
-src/jquery-sdk.js
-src/jquery.js
 src/qunit.css
 src/qunit.js
 src/require.js

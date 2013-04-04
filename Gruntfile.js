@@ -99,8 +99,12 @@ module.exports = function (grunt) {
 		},
 
 		clean: {
-			"dist": "<%= paths.dest %>/**/*",
-			"external": ".<%= paths.external %>-src/**/*"
+			"dist": {
+				src: "<%= paths.dest %>/**/*"
+			},
+			"external": {
+				src: ".<%= paths.external %>-src/**/*"
+			}
 		},
 
 		copy: {
@@ -127,7 +131,7 @@ module.exports = function (grunt) {
 				src: "<%= paths.dest %>/lib-min/**/*.js"
 			}
 		},
-		
+
 		snow: {
 			"external": {
 				dest: ".<%= paths.external %>",
@@ -136,48 +140,60 @@ module.exports = function (grunt) {
 		},
 
 		qunit: {
-			"source": "<%= paths.test %>/**/*.html"
-		},
-
-		lint: {
-			"source": grunt.file.expandFiles(paths.src + "/**/*.js")
-				.filter(function (abspath) {
-					// Exclude external file and i18n definitions
-					return !(/jquery\/i18n\//)
-						.test(abspath) && !fs.lstatSync(abspath)
-						.isSymbolicLink();
-				}),
-			"external": "<%= paths.external %>/*.js",
-			"grunt": ["grunt.js", "grunt/**/*.js"]
+			"source": {
+				src: "<%= paths.test %>/**/*.html"
+			}
 		},
 
 		jshint: {
 			"source": {
-				globals: {
-					window: true,
-					document: true,
-					clearInterval: true,
-					clearTimeout: true,
-					setInterval: true,
-					setTimeout: true,
-					define: true,
-					require: true
+				files: {
+					src: (grunt.file)
+						.expand(paths.src + "/**/*.js")
+						.filter(function (abspath) {
+							var stat = fs.lstatSync(abspath);
+
+							// Exclude external file and i18n definitions
+							return !(/jquery\/i18n\//.test(abspath) || stat.isDirectory() || stat.isSymbolicLink());
+						})
+				},
+				options: {
+					globals: {
+						window: true,
+						document: true,
+						clearInterval: true,
+						clearTimeout: true,
+						setInterval: true,
+						setTimeout: true,
+						define: true,
+						require: true
+					}
 				}
 			},
 			"external": {
-				globals: {
-					require: true,
-					snow: true
+				files: {
+					src: "<%= paths.external %>/*.js",
 				},
 				options: {
+					globals: {
+						require: true,
+						snow: true,
+						__dirname: true,
+						__filename: true
+					},
 					unused: false
 				}
 			},
 			"grunt": {
-				globals: {
-					module: true,
-					define: true,
-					require: true
+				files: {
+					src: ["grunt.js", "grunt/**/*.js"]
+				},
+				options: {
+					globals: {
+						module: true,
+						define: true,
+						require: true
+					}
 				}
 			},
 			options: {
@@ -242,15 +258,24 @@ module.exports = function (grunt) {
 
 	grunt.loadTasks("grunt/tasks");
 
-	grunt.registerMultiTask("link", "Link bridged files.", function () {
+	grunt.loadNpmTasks("grunt-contrib-qunit");
+	grunt.loadNpmTasks("grunt-contrib-jshint");
+
+	grunt.task.registerMultiTask("link", "Link bridged files.", function () {
 		var ignoreList = [],
 			ignoreName = this.target,
 			ignoreBegin = "#Symlinks '" + ignoreName + "' begin",
 			ignoreEnd = "#Symlinks '" + ignoreName + "' end",
 			ignoreReplace = new RegExp("(^|\\n\\r?)(" + helper.escapeRegExp(ignoreBegin) + ")([^]*?)(" + helper.escapeRegExp(ignoreEnd) + ")", ""),
 
-			srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
-			files = file.expandFiles(this.file.src);
+			srcDest = helper.srcDestHandle(this.data.dest, this.data.strip),
+			files = (grunt.file)
+				.expand(this.data.src)
+				.filter(function (abspath) {
+					return !(fs)
+						.lstatSync(abspath)
+						.isDirectory();
+				});
 
 		// Init ignore list of symlinks
 		ignoreList.push("");
@@ -265,7 +290,7 @@ module.exports = function (grunt) {
 
 			// Create directory path if not exists
 			if (!fs.existsSync(targetDir)) {
-				file.mkdir(targetDir);
+				grunt.file.mkdir(targetDir);
 			}
 
 			// Unlink first if already exists
@@ -289,15 +314,21 @@ module.exports = function (grunt) {
 
 		// Write new .gitignore
 		ignoreList = ignoreList.join("\n");
-		file.write(".gitignore", file.read(".gitignore")
+		grunt.file.write(".gitignore", file.read(".gitignore")
 			.replace(ignoreReplace, "") + ignoreList);
 	});
 
-	grunt.registerMultiTask("clean", "Clean directory.", function () {
-		var patterns = this.file.src;
+	grunt.task.registerMultiTask("clean", "Clean directory.", function () {
+		var patterns = this.data.src;
 
 		// Remove symlinks first (prevent delete in linked directories)
-		file.expandDirs(patterns)
+		(grunt.file)
+			.expand(patterns)
+			.filter(function (abspath) {
+				return (fs)
+					.lstatSync(abspath)
+					.isDirectory();
+			})
 			.forEach(function (abspath) {
 				var lstat = fs.lstatSync(abspath = abspath.replace(/\/$/, ""));
 
@@ -307,27 +338,35 @@ module.exports = function (grunt) {
 			});
 
 		// Remove files (hidden files included)
-		file.recurse(".", function (abspath, rootdir, subdir, filename) {
-			var testpath = ([])
-					.concat(rootdir && rootdir !== "." ? [rootdir] : [])
-					.concat(subdir ? [subdir] : [])
-					.concat([filename.replace(/^\.+/, "")])
-					.join("/");
+		(grunt.file)
+			.recurse(".", function (abspath, rootdir, subdir, filename) {
+				var testpath = ([])
+						.concat(rootdir && rootdir !== "." ? [rootdir] : [])
+						.concat(subdir ? [subdir] : [])
+						.concat([filename.replace(/^\.+/, "")])
+						.join("/");
 
-			if (file.isMatch(patterns, testpath)) {
-				fs.unlinkSync(abspath);
-			}
-		});
+				if (grunt.file.isMatch(patterns, testpath)) {
+					fs.unlinkSync(abspath);
+				}
+			});
 
 		// Remove directories
-		file.expandDirs(patterns)
+		(grunt.file)
+			.expand(patterns)
+			.filter(function (abspath) {
+				return (fs)
+					.lstatSync(abspath)
+					.isDirectory();
+			})
 			.reverse()
 			.forEach(function (abspath) {
 				fs.rmdirSync(abspath);
 			});
 
 		// Remove broken symlinks
-		file.expand("**/*")
+		(grunt.file)
+			.expand("**/*")
 			.forEach(function (abspath) {
 				var lstat = fs.lstatSync(abspath = abspath.replace(/\/$/, ""));
 
@@ -337,13 +376,20 @@ module.exports = function (grunt) {
 			});
 	});
 
-	grunt.registerMultiTask("copy", "Copy files to distribution.", function () {
-		var srcDest = helper.srcDestHandle(this.file.dest, this.data.strip),
+	grunt.task.registerMultiTask("copy", "Copy files to distribution.", function () {
+		var srcDest = helper.srcDestHandle(this.data.dest, this.data.strip),
 
-			files = file.expandFiles(this.file.src);
+			files = (grunt.file)
+				.expand(this.data.src)
+				.filter(function (abspath) {
+					return !(fs)
+						.lstatSync(abspath)
+						.isDirectory();
+				});
+
 
 		files.forEach(function (abspath) {
-			file.copy(abspath, srcDest(abspath));
+			grunt.file.copy(abspath, srcDest(abspath));
 		});
 	});
 
@@ -352,14 +398,14 @@ module.exports = function (grunt) {
 	//
 
 	// default: Distribute after tests run
-	grunt.registerTask("default", "clean:dist:* lint:source:* qunit:source:* copy:dist:* copy:dist-min:* jsmin:dist-min:* cssmin:dist-min:*");
+	grunt.task.registerTask("default", ["clean:dist:*", "jshint:source:*", "qunit:source:*", "copy:dist:*", "copy:dist-min:*", "jsmin:dist-min:*", "cssmin:dist-min:*"]);
 
 	// setup: Initialize
-	grunt.registerTask("setup", "clean:*:* snow:*:* link:*:*");
+	grunt.task.registerTask("setup", ["clean:*:*", "snow:*:*", "link:*:*"]);
 
 	// test: Run all tests
-	grunt.registerTask("test", "lint:*:* qunit:*:*");
+	grunt.task.registerTask("test", ["jshint:*:*", "qunit:*:*"]);
 
 	// build: Distribute
-	grunt.registerTask("build", "clean:dist:* copy:dist:* copy:dist-min:* jsmin:dist-min:* cssmin:dist-min:*");
+	grunt.task.registerTask("build", ["clean:dist:*", "copy:dist:*", "copy:dist-min:*", "jsmin:dist-min:*", "cssmin:dist-min:*"]);
 };

@@ -5,7 +5,7 @@ var version = '1.9.1',
 		.toString(),
 
 	jqueryNoExpose = (jquery)
-		.replace(/\/\/ Expose jQuery as an AMD module.*$/, "})( window );"),
+		.replace(/\/\/ Expose jQuery as an AMD module.*$/, '})( window );'),
 
 	jqueryMigrate = snow.fetch('http://code.jquery.com/jquery-migrate-' + migrate + '.js')
 		.toString(),
@@ -18,8 +18,8 @@ var version = '1.9.1',
 
 snow.add('jquery.js', jquery);
 
-snow.add('jquery-sdk.js', [jqueryNoExpose, jquerySDK, jqueryExpose.replace(/@MODULE_EXPOSE/, "jquery-sdk")]);
+snow.add('jquery-sdk.js', [jqueryNoExpose, jquerySDK, jqueryExpose.replace(/@MODULE_EXPOSE/, 'jquery-sdk')]);
 
-snow.add('jquery-migrate.js', [jqueryNoExpose, jqueryMigrate, jqueryExpose.replace(/@MODULE_EXPOSE/, "jquery-migrate")]);
+snow.add('jquery-migrate.js', [jqueryNoExpose, jqueryMigrate, jqueryExpose.replace(/@MODULE_EXPOSE/, 'jquery-migrate')]);
 
-snow.add('jquery-migrate-sdk.js', [jqueryNoExpose, jqueryMigrate, jquerySDK, jqueryExpose.replace(/@MODULE_EXPOSE/, "jquery-migrate-sdk")]);
+snow.add('jquery-migrate-sdk.js', [jqueryNoExpose, jqueryMigrate, jquerySDK, jqueryExpose.replace(/@MODULE_EXPOSE/, 'jquery-migrate-sdk')]);

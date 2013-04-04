@@ -2,10 +2,10 @@ module.exports = function (grunt) {
 
 	"use strict";
 
-	var uglify = require("uglify-js"),
-		file = grunt.file;
+	var fs = require("fs"),
+		uglify = require("uglify-js");
 
-	grunt.registerMultiTask("jsmin", "Minify javascript files in distribution.", function () {
+	grunt.task.registerMultiTask("jsmin", "Minify javascript files in distribution.", function () {
 		var renameMap = this.data.rename || {},
 			rename = function (abspath) {
 				return renameMap[abspath] || abspath;
@@ -15,9 +15,15 @@ module.exports = function (grunt) {
 			rename = this.data.rename;
 		}
 
-		file.expandFiles(this.file.src)
+		(grunt.file)
+			.expand(this.data.src)
+			.filter(function (abspath) {
+				return !(fs)
+					.lstatSync(abspath)
+					.isDirectory();
+			})
 			.forEach(function (abspath) {
-				file.write(rename(abspath), uglify(file.read(abspath)));
+				grunt.file.write(rename(abspath), uglify(grunt.file.read(abspath)));
 			});
 	});
 
