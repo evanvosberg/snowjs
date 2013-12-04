@@ -1,4 +1,4 @@
-var version = '2.1.4';
+var version = '2.1.9';
 
 snow.add('require.js', [
 	snow.fetch('https://raw.github.com/jrburke/requirejs/' + version + '/require.js')
