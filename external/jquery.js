@@ -1,5 +1,5 @@
-var version = '1.9.1',
-	migrate = '1.1.1',
+var version = '1.10.2',
+	migrate = '1.2.1',
 
 	jquery = snow.fetch('http://code.jquery.com/jquery-' + version + '.js')
 		.toString(),
