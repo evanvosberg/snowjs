@@ -1,4 +1,4 @@
-var version = '1.4.4';
+var version = '1.4.7';
 
 snow.add('jquery/fn/scrollto.js', [
 	'define("jquery/fn/scrollto", ["jquery"], function (jQuery) {',
