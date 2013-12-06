@@ -136,7 +136,7 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 				setProp = function (prop, value) {
 					// Fix IE lte 8 constructor
-					if (prop === 'constructor') {
+					if (prop === "constructor") {
 						setConstructor = true;
 					}
 
@@ -174,13 +174,13 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 					else {
 						classPrototype[prop] = prototype[prop];
 					}
-				}
+				};
 
 			$.each(prototype, setProp);
 
 			// Fix IE lte 8 constructor
-			if (!setConstructor && prototype.hasOwnProperty('constructor')) {
-				setProp('constructor', prototype.constructor);
+			if (!setConstructor && prototype.hasOwnProperty("constructor")) {
+				setProp("constructor", prototype.constructor);
 			}
 
 			return classPrototype;
