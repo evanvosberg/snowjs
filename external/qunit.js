@@ -1,4 +1,4 @@
-var version = '1.10.0';
+var version = '1.12.0';
 
 snow.add(
 	'qunit.js',
