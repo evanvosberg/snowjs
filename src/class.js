@@ -131,42 +131,57 @@ define("class", ["jquery", "util/scope"], function ($, scope, undefined) {
 
 		// inherit from super-class, sets up the Inherited method, and extend the options hash
 		inheritProps = function (prototype, basePrototype, classPrototype) {
-			$.each(prototype, function (prop, value) {
-				if ($.isFunction(value) && $.isFunction(basePrototype[prop])) {
-					classPrototype[prop] = (function () {
-						var _super = function () {
-								return basePrototype[prop].apply(this, arguments);
-							},
-							_superApply = function (args) {
-								return basePrototype[prop].apply(this, args);
+			// Fix IE lte 8 constructor
+			var setConstructor = false,
+
+				setProp = function (prop, value) {
+					// Fix IE lte 8 constructor
+					if (prop === 'constructor') {
+						setConstructor = true;
+					}
+
+					if ($.isFunction(value) && $.isFunction(basePrototype[prop])) {
+						classPrototype[prop] = (function () {
+							var _super = function () {
+									return basePrototype[prop].apply(this, arguments);
+								},
+								_superApply = function (args) {
+									return basePrototype[prop].apply(this, args);
+								};
+							return function () {
+								var __super = this._super,
+									__superApply = this._superApply,
+									returnValue;
+
+								this._super = _super;
+								this._superApply = _superApply;
+								/* >>>> DEPRECATED >>>> */
+								this.Inherited = _superApply;
+								/* <<<< DEPRECATED <<<< */
+
+								returnValue = value.apply(this, arguments);
+
+								this._super = __super;
+								this._superApply = __superApply;
+								/* >>>> DEPRECATED >>>> */
+								this.Inherited = __superApply;
+								/* <<<< DEPRECATED <<<< */
+
+								return returnValue;
 							};
-						return function () {
-							var __super = this._super,
-								__superApply = this._superApply,
-								returnValue;
-
-							this._super = _super;
-							this._superApply = _superApply;
-							/* >>>> DEPRECATED >>>> */
-							this.Inherited = _superApply;
-							/* <<<< DEPRECATED <<<< */
-
-							returnValue = value.apply(this, arguments);
-
-							this._super = __super;
-							this._superApply = __superApply;
-							/* >>>> DEPRECATED >>>> */
-							this.Inherited = __superApply;
-							/* <<<< DEPRECATED <<<< */
-
-							return returnValue;
-						};
-					}());
+						}());
+					}
+					else {
+						classPrototype[prop] = prototype[prop];
+					}
 				}
-				else {
-					classPrototype[prop] = prototype[prop];
-				}
-			});
+
+			$.each(prototype, setProp);
+
+			// Fix IE lte 8 constructor
+			if (!setConstructor && prototype.hasOwnProperty('constructor')) {
+				setProp('constructor', prototype.constructor);
+			}
 
 			return classPrototype;
 		},
