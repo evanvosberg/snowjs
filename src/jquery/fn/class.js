@@ -28,11 +28,10 @@ define("jquery/fn/class", ["jquery"], function ($) {
 				this.each(function () {
 					var elem = $(this);
 
-					$.each((elem.attr("class") || "")
-						.split(/\s+/g), function (i, name) {
+					$.each((elem.attr("class") || "").split(/\s+/g), function (i, name) {
 						if (classes.test(name)) {
-								_removeClass.call(elem, name);
-							}
+							_removeClass.call(elem, name);
+						}
 					});
 
 				});

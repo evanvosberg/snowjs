@@ -2,7 +2,7 @@
   "name": "snowjs",
   "title": "Snow JS",
   "description": "A snowflake (module) based Javascript library",
-  "version": "1.0.0pre",
+  "version": "0.1.1",
   "homepage": "http://github.com/evanvosberg/snowjs",
   "author": {
     "name": "Evan Vosberg",
@@ -28,9 +28,9 @@
     "requirejs": ">=2.1.2",
     "sqwish": ">=0.2.0",
     "uglify-js": ">=1.0.7",
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-qunit": "~0.1.1"
+    "grunt": ">=0.4.1",
+    "grunt-contrib-jshint": ">=0.1.1",
+    "grunt-contrib-qunit": ">=0.1.1"
   },
   "keywords": []
 }
