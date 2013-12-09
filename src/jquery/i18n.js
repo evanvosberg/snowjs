@@ -443,12 +443,11 @@
 						//		null
 						AM: ["AM", "am", "AM"],
 						PM: ["PM", "pm", "PM"],
-						eras: [
+						eras: [{
 						// eras in reverse chronological order.
 						// name: the name of the era in this region (e.g. A.D., C.E.)
 						// start: when the era starts in ticks (gregorian, gmt), null if it is the earliest supported era.
 						// offset: offset in years from gregorian calendar
-						{
 							"name": "A.D.",
 							"start": null,
 							"offset": 0
@@ -1020,9 +1019,10 @@
 				upperDays = cal._upperDays;
 			if (!upperDays) {
 				cal._upperDays = upperDays = [
-				toUpperArray(days.names),
-				toUpperArray(days.namesAbbr),
-				toUpperArray(days.namesShort)];
+					toUpperArray(days.names),
+					toUpperArray(days.namesAbbr),
+					toUpperArray(days.namesShort)
+				];
 			}
 			value = toUpper(value);
 			if (abbr) {
@@ -1044,11 +1044,13 @@
 				upperMonthsGen = cal._upperMonthsGen;
 			if (!upperMonths) {
 				cal._upperMonths = upperMonths = [
-				toUpperArray(months.names),
-				toUpperArray(months.namesAbbr)];
+					toUpperArray(months.names),
+					toUpperArray(months.namesAbbr)
+				];
 				cal._upperMonthsGen = upperMonthsGen = [
-				toUpperArray(monthsGen.names),
-				toUpperArray(monthsGen.namesAbbr)];
+					toUpperArray(monthsGen.names),
+					toUpperArray(monthsGen.namesAbbr)
+				];
 			}
 			value = toUpper(value);
 			var i = $.inArray(value, abbr ? upperMonths[1] : upperMonths[0]);
