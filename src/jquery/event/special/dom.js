@@ -14,9 +14,7 @@ define("jquery/event/special/dom", ["jquery"], function ($, undefined) {
 			return (node[$.expando] || (node[$.expando] = ++$.guid)) + "." + (obj.guid || (obj.guid = ++$.guid));
 		},
 
-		emhelper = {
-
-		},
+		emhelper = {},
 
 		handleCount = 0,
 

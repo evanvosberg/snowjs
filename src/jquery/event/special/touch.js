@@ -50,7 +50,7 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 		},
 
 		touchstart = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (touchstart[id] = function (event) {
+			touchstart[id] = function (event) {
 				var touches = event.touches,
 					isDrag = originalBind.type === "touchdrag" && touches.length === 1 && isTarget(event.originalTarget, originalTarget),
 					isPinch = originalBind.type === "touchpinch" && touches.length === 2 && isTarget(touches[0].target, originalTarget) && isTarget(touches[1].target, originalTarget),
@@ -83,11 +83,13 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 					Math.pow(cache.startX = (cache.deltaX = Math.abs(touches[0].pageX - touches[1].pageX)) + 0, 2) + Math.pow(cache.startY = (cache.deltaY = Math.abs(touches[0].pageY - touches[1].pageY)) + 0, 2));
 					cache.start = cache.delta + 0;
 				}
-			});
+			};
+
+			return touchstart[id];
 		},
 
 		touchmove = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (touchmove[id] = function (event) {
+			touchmove[id] = function (event) {
 				var touches = event.touches,
 					isDrag = originalBind.type === "touchdrag",
 					isPinch = originalBind.type === "touchpinch" && touches.length >= 2,
@@ -132,11 +134,13 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 					// Doesn't work because it prevents default
 					originalHandler.apply(originalTarget, arguments);
 				}
-			});
+			};
+
+			return touchmove[id];
 		},
 
 		touchend = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (touchend[id] = function (event) {
+			touchend[id] = function (event) {
 				if (touchmove[id]) {
 					// Unbind events
 					html.off("touchmove." + namespace, touchmove[id])
@@ -219,7 +223,9 @@ define("jquery/event/special/touch", ["jquery", "jquery/event/fix"], function ($
 						}
 					}
 				}
-			});
+			};
+
+			return touchend[id];
 		},
 
 		touchcancel = touchend;

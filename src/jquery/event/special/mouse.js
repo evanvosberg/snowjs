@@ -21,7 +21,7 @@ define("jquery/event/special/mouse", ["jquery"], function ($, undefined) {
 		},
 
 		mousedown = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (mousedown[id] = function (event) {
+			mousedown[id] = function (event) {
 				var cache;
 
 				html.off("mousemove." + namespace, mousemove[id])
@@ -35,11 +35,13 @@ define("jquery/event/special/mouse", ["jquery"], function ($, undefined) {
 				cache.startT = cache.deltaT;
 				cache.startX = (cache.pageX = event.pageX) + 0;
 				cache.startY = (cache.pageY = event.pageY) + 0;
-			});
+			};
+		
+			return mousedown[id];
 		},
 
 		mousemove = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (mousemove[id] = function (event) {
+			mousemove[id] = function (event) {
 				var cache = mousemove[id];
 
 				event.type = originalBind.type;
@@ -57,11 +59,13 @@ define("jquery/event/special/mouse", ["jquery"], function ($, undefined) {
 				cache.state = "while";
 
 				return originalHandler.apply(originalTarget, arguments);
-			});
+			};
+			
+			return  mousemove[id];
 		},
 
 		mouseup = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (mouseup[id] = function (event) {
+			mouseup[id] = function (event) {
 				if (mousemove[id]) {
 					var cache = mousemove[id];
 
@@ -79,11 +83,13 @@ define("jquery/event/special/mouse", ["jquery"], function ($, undefined) {
 					delete mousemove[id];
 					delete mouseup[id];
 				}
-			});
+			};
+			
+			return mouseup[id];
 		},
 
 		mousewheel = function (originalBind, originalHandler, originalTarget, namespace, id) {
-			return (mousewheel[id] = function (event) {
+			mousewheel[id] = function (event) {
 				var originalEvent = event.originalEvent;
 
 				event.wheelDelta = originalEvent.wheelDelta ? originalEvent.wheelDelta / 120 : originalEvent.detail ? originalEvent.detail / -3 : 0;
@@ -99,7 +105,9 @@ define("jquery/event/special/mouse", ["jquery"], function ($, undefined) {
 				event.type = originalBind.type;
 
 				return originalHandler.apply(this, arguments);
-			});
+			};
+			
+			return mousewheel[id];
 		};
 
 	$.extend($.event.special, {
