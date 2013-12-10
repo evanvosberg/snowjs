@@ -2,7 +2,7 @@
   "name": "snowjs",
   "title": "Snow JS",
   "description": "A snowflake (module) based Javascript library",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "http://github.com/evanvosberg/snowjs",
   "author": {
     "name": "Evan Vosberg",
