@@ -103,7 +103,7 @@ module.exports = function (grunt) {
 				src: "<%= paths.dest %>/**/*"
 			},
 			"external": {
-				src: ".<%= paths.external %>-src/**/*"
+				src: ".<%= paths.external %>/**/*"
 			}
 		},
 
