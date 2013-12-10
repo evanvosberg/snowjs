@@ -186,7 +186,7 @@ module.exports = function (grunt) {
 			},
 			"grunt": {
 				files: {
-					src: ["grunt.js", "grunt/**/*.js"]
+					src: ["Gruntfile.js", "grunt/**/*.js"]
 				},
 				options: {
 					globals: {
