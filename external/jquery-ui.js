@@ -1,4 +1,4 @@
-var version = '1.10.2',
+var version = '1.10.3',
 	
 	base = __dirname + '/jquery-ui/dist/jquery-ui-' + version;
 
