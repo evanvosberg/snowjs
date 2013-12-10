@@ -2,7 +2,7 @@
   "name": "snowjs",
   "title": "Snow JS",
   "description": "A snowflake (module) based Javascript library",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "http://github.com/evanvosberg/snowjs",
   "author": {
     "name": "Evan Vosberg",
@@ -24,7 +24,7 @@
   "dependencies": {},
   "devDependencies": {
     "fibers": ">=0.6.9",
-    "common-node": ">=0.2.6",
+    "common-node": "~0.2.6",
     "requirejs": ">=2.1.2",
     "sqwish": ">=0.2.0",
     "uglify-js": ">=1.0.7",

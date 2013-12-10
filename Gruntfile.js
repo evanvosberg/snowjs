@@ -18,8 +18,8 @@ module.exports = function (grunt) {
 		option = grunt.option,
 		config = grunt.config,
 		template = grunt.template,
-		
-		
+
+
 		debug = function () {
 			grunt.log.writeln(Array.prototype.join.call(arguments, "; "));
 		},
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
 				src: "<%= paths.dest %>/**/*"
 			},
 			"external": {
-				src: ".<%= paths.external %>-src/**/*"
+				src: ".<%= paths.external %>/**/*"
 			}
 		},
 
@@ -186,7 +186,7 @@ module.exports = function (grunt) {
 			},
 			"grunt": {
 				files: {
-					src: ["grunt.js", "grunt/**/*.js"]
+					src: ["Gruntfile.js", "grunt/**/*.js"]
 				},
 				options: {
 					globals: {
@@ -319,9 +319,14 @@ module.exports = function (grunt) {
 	});
 
 	grunt.task.registerMultiTask("clean", "Clean directory.", function () {
-		var patterns = this.data.src;
+		var patterns = this.data.src,
 
-		// Remove symlinks first (prevent delete in linked directories)
+			listLinks = [],
+			listHiddenFiles = [],
+			listDirectories = [],
+			listBrokenLinks = [];
+
+		// Collect symlinks first (prevent delete in linked directories)
 		(grunt.file)
 			.expand(patterns)
 			.filter(function (abspath) {
@@ -333,11 +338,11 @@ module.exports = function (grunt) {
 				var lstat = fs.lstatSync(abspath = abspath.replace(/\/$/, ""));
 
 				if (lstat.isSymbolicLink()) {
-					fs.unlinkSync(abspath);
+					listLinks.push(abspath);
 				}
 			});
 
-		// Remove files (hidden files included)
+		// Collect files (hidden files included)
 		(grunt.file)
 			.recurse(".", function (abspath, rootdir, subdir, filename) {
 				var testpath = ([])
@@ -347,11 +352,11 @@ module.exports = function (grunt) {
 						.join("/");
 
 				if (grunt.file.isMatch(patterns, testpath)) {
-					fs.unlinkSync(abspath);
+					listHiddenFiles.push(abspath);
 				}
 			});
 
-		// Remove directories
+		// Collect directories
 		(grunt.file)
 			.expand(patterns)
 			.filter(function (abspath) {
@@ -361,19 +366,40 @@ module.exports = function (grunt) {
 			})
 			.reverse()
 			.forEach(function (abspath) {
-				fs.rmdirSync(abspath);
+				listDirectories.push(abspath);
 			});
 
-		// Remove broken symlinks
+		// Remove symlinks
+		listLinks.forEach(function (abspath) {
+			fs.unlinkSync(abspath);
+		});
+
+		// Remove files
+		listHiddenFiles.forEach(function (abspath) {
+			fs.unlinkSync(abspath);
+		});
+
+		// Remove directories
+		listDirectories.forEach(function (abspath) {
+			fs.rmdirSync(abspath);
+		});
+
+		// Collect broken symlinks
 		(grunt.file)
 			.expand("**/*")
 			.forEach(function (abspath) {
 				var lstat = fs.lstatSync(abspath = abspath.replace(/\/$/, ""));
 
 				if (lstat.isSymbolicLink() && !fs.existsSync(abspath)) {
-					fs.unlinkSync(abspath);
+					listBrokenLinks.push(abspath);
 				}
 			});
+
+
+		// Remove files
+		listBrokenLinks.forEach(function (abspath) {
+			fs.unlinkSync(abspath);
+		});
 	});
 
 	grunt.task.registerMultiTask("copy", "Copy files to distribution.", function () {
