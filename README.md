@@ -31,7 +31,7 @@ git clone git://github.com/evanvosberg/snowjs.git
 Enter the directory and install the Node dependencies:
 
 ```bash
-cd appdk/external/jquery-ui && npm install
+cd snowjs/external/jquery-ui && npm install
 ```
 
 Then, build a complete, version of jQuery UI, type the following:
