@@ -1,4 +1,4 @@
-# [Snow JS](http://github.com/evanvosberb/snowjs)
+# [Snow JS](http://github.com/evanvosberg/snowjs)
 A snowflake (module) based Javascript library.
 
 ## Library
@@ -8,8 +8,8 @@ A snowflake (module) based Javascript library.
 - [jQuery](http://github.com/jquery/jquery)
 - [jQuery UI](http://github.com/jquery/jquery-ui)
 - [jQuery Color](http://github.com/jquery/jquery-color)
-- [jQuery Datalink](http://github.com/jquery/jquery-datalink)
-- [jQuery Metadata](http://github.com/jquery/jquery-metadata)
+- [jQuery Datalink](http://github.com/jquery-orphans/jquery-datalink)
+- [jQuery Metadata](http://github.com/github.com/jquery-orphans/jquery-metadata)
 - [jQuery scrollTo](http://github.com/flesler/jquery.scrollTo)
 - [JSON 2](http://github.com/douglascrockford/JSON-js)
 - [QUnit](http://github.com/jquery/qunit)
@@ -21,31 +21,13 @@ A snowflake (module) based Javascript library.
 First, clone a copy of the main Snow JS git repo by running:
 
 ```bash
-git clone git://github.com/evanvosberg/snowjs.git
+git clone git://github.com/evanvosberg/snowjs.git && cd snowjs
 ```
 
-### Initialize sub modules
-
-#### jQuery UI
-
-Enter the directory and install the Node dependencies:
+### Install grunt command line interface
 
 ```bash
-cd snowjs/external/jquery-ui && npm install
-```
-
-Then, build a complete, version of jQuery UI, type the following:
-
-```bash
-grunt release
-```
-
-### Initialize Snow JS
-
-Enter the directory and install the Node dependencies:
-
-```bash
-cd snowjs && npm install
+npm install grunt-cli -g
 ```
 
 Make sure you have `grunt` installed by testing:
@@ -54,10 +36,22 @@ Make sure you have `grunt` installed by testing:
 grunt -version
 ```
 
-Run the setup task by this command:
+### Initialize sub modules
+
+#### jQuery UI
+
+Enter the directory, install the Node dependencies and build a complete version of jQuery UI:
 
 ```bash
-grunt setup
+cd external/jquery-ui && npm install && grunt release && ../..
+```
+
+### Initialize Snow JS
+
+Enter the directory, install the Node dependencies and run the setup task:
+
+```bash
+npm install && grunt setup
 ```
 
 ### Running grunt build / test tasks
