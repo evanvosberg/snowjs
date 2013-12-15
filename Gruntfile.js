@@ -128,7 +128,7 @@ module.exports = function (grunt) {
 
 		cssmin: {
 			"dist-min": {
-				src: "<%= paths.dest %>/lib-min/**/*.js"
+				src: "<%= paths.dest %>/lib-min/**/*.css"
 			}
 		},
 

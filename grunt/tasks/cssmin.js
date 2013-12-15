@@ -23,7 +23,13 @@ module.exports = function (grunt) {
 					.isDirectory();
 			})
 			.forEach(function (abspath) {
-				grunt.file.write(rename(abspath), sqwish.minify(grunt.file.read(abspath)));
+				var sourceFile = abspath,
+					sourceCode = grunt.file.read(sourceFile),
+
+					targetFile = rename(abspath),
+					targetCode = sqwish.minify(sourceCode);
+
+				grunt.file.write(targetFile, targetCode);
 			});
 	});
 };
