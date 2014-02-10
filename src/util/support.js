@@ -33,7 +33,7 @@ define("util/support", [], function () {
 	// Adjust helper elements
 	inputFile.setAttribute("type", "file");
 	form.setAttribute("id", "support-form-attr");
-	button.setAttribute("form", "support-form-attr");
+	try { button.setAttribute("form", "support-form-attr"); } catch (error) {}
 	div.appendChild(form);
 	div.appendChild(button);
 	head.appendChild(div);
