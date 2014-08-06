@@ -1,4 +1,6 @@
 # [Snow JS](http://github.com/evanvosberb/snowjs)
+
+## DEPRECATED: This repo is no longer in development.
 A snowflake (module) based Javascript library.
 
 ## Library
